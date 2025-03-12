@@ -9,6 +9,8 @@ public class InputManager : Singleton<InputManager>
     private void Awake()
     {
         playerAC = new Player_AC();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void OnEnable()
