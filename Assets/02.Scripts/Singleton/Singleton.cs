@@ -28,7 +28,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                     // 새로운 게임오브젝트를 만들어서 싱글톤 Attach
                     var singletonObject = new GameObject();
                     _Instance = singletonObject.AddComponent<T>();
-                    singletonObject.name = typeof(T).ToString() + " (Singleton)";
+                    singletonObject.name = typeof(T).ToString();
                     DontDestroyOnLoad(singletonObject);
                 }
             }
