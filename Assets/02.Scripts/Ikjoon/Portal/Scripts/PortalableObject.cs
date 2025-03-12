@@ -81,7 +81,7 @@ public class PortalableObject : MonoBehaviour
             cloneObject.SetActive(false);
         }
     }
-    public void Warp()
+    public virtual void Warp()
     {
         //워프
         var inTransform = inPortal.transform;
