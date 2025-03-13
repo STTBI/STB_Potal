@@ -1,10 +1,12 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
     private CharacterController controller;
+    private Rigidbody rigid;
     [HideInInspector] public Vector3 playerVelocity;
     private bool groundedPlayer;
 
@@ -16,6 +18,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnValidate()
     {
+        rigid = GetComponent<Rigidbody>();
+        rigid.isKinematic = true;
+
         controller = GetComponent<CharacterController>();
         inputManager = InputManager.Instance;
         cameraTransform = Camera.main.transform;
