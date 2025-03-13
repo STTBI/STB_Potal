@@ -15,12 +15,12 @@ public class InputManager : Singleton<InputManager>
 
     private void OnEnable()
     {
-        playerAC.Enable();
+        if(playerAC != null) playerAC.Enable();
     }
 
     private void OnDisable()
     {
-        playerAC.Disable();
+        if(playerAC != null) playerAC.Disable();
     }
 
     public Vector2 GetPlayerMovement()

@@ -5,6 +5,7 @@ using System.Collections;
 
 public class CinemachinePOVExtension : CinemachineExtension
 {
+    [SerializeField] private Transform playerBody;
     [SerializeField] private float horizontalSpeed = 10f;
     [SerializeField] private float verticalSpeed = 10f;
     [SerializeField] private float clampAngle = 80f;
@@ -30,7 +31,7 @@ public class CinemachinePOVExtension : CinemachineExtension
                 startingRotation.y += deltaInput.y * horizontalSpeed * Time.deltaTime;
                 startingRotation.y = Mathf.Clamp(startingRotation.y, -clampAngle, clampAngle);
                 state.RawOrientation = Quaternion.Euler(-startingRotation.y, startingRotation.x, 0f);
-                transform.root.rotation = Quaternion.Euler(0f, startingRotation.x, 0f);
+                playerBody.localRotation = Quaternion.Euler(0f, startingRotation.x, 0f);
             }
         }
     }
