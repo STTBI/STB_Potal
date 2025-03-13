@@ -7,15 +7,14 @@ using UnityEngine.Rendering;
 public class TriggerManager : MonoBehaviour
 {
     public Button button;
-
+    public Door door;
 
     public event Action PressAction;
     public event Action ReleaseAction;
 
     public void Start()
     {
-        
-    }
 
+    }
 
 }

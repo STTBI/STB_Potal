@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 public class Button : MonoBehaviour
@@ -10,6 +11,7 @@ public class Button : MonoBehaviour
     private void OnValidate()
     {
         buttonAnim = GetComponent<Animator>();
+        buttonAnim.SetBool(IsPressed, true);
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -44,12 +46,12 @@ public class Button : MonoBehaviour
 
     public void Press()
     {
-        buttonAnim.SetBool("IsPressed", false);
+        buttonAnim.SetBool(IsPressed, false);
     }
 
     public void Release()
     {
-        buttonAnim.SetBool("IsPressed", false);
+        buttonAnim.SetBool(IsPressed, true);
     }
 
 
