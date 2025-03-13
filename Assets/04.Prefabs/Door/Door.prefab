@@ -283,7 +283,7 @@ GameObject:
   - component: {fileID: 914728567184059096}
   - component: {fileID: 4326582823023280019}
   m_Layer: 0
-  m_Name: Sci Fi Gates
+  m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
