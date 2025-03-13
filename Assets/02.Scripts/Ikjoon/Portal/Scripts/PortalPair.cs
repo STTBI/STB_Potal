@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +12,7 @@ public class PortalPair : MonoBehaviour
 
         if(Portals.Length != 2)
         {
-            Debug.LogError("포탈페어는 포탈 두개가 있어야함");
+            Debug.LogError("PortalPair children must contain exactly two Portal components in total.");
         }
     }
 }

@@ -1,9 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
 public class Portal : MonoBehaviour
 {
     [field: SerializeField]
@@ -13,7 +12,7 @@ public class Portal : MonoBehaviour
     private Renderer outlineRenderer;
 
     [field: SerializeField]
-    public Color PortalColor { get; private set; }
+    public Color PortalColour { get; private set; }
 
     [SerializeField]
     private LayerMask placementMask;
@@ -25,33 +24,38 @@ public class Portal : MonoBehaviour
     public bool IsPlaced { get; private set; } = false;
     private Collider wallCollider;
 
-    // Components.
+    // 컴포넌트들.
     public Renderer Renderer { get; private set; }
     private new BoxCollider collider;
 
     private void Awake()
     {
+        // BoxCollider와 Renderer 컴포넌트를 가져옴.
         collider = GetComponent<BoxCollider>();
         Renderer = GetComponent<Renderer>();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        outlineRenderer.material.SetColor("_OutlineColor", PortalColor);
+        // 아웃라인 컬러를 포탈 컬러로 설정.
+        outlineRenderer.material.SetColor("_OutlineColour", PortalColour);
+        
+        // 포탈을 비활성화 상태로 설정.
         gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
+        // 다른 포탈이 배치되어 있으면 렌더러 활성화.
         Renderer.enabled = OtherPortal.IsPlaced;
 
-        for(int i = 0; i < portalObjects.Count; i++)
+        // 포탈에 들어간 모든 물체들에 대해 Warp 실행.
+        for (int i = 0; i < portalObjects.Count; ++i)
         {
             Vector3 objPos = transform.InverseTransformPoint(portalObjects[i].transform.position);
 
-            if(objPos.z > 0.0f)
+            // 포탈에 들어간 물체의 z축 위치가 0보다 크면 포탈을 통과.
+            if (objPos.z > 0.0f)
             {
                 portalObjects[i].Warp();
             }
@@ -60,15 +64,18 @@ public class Portal : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // 포탈에 들어온 물체 처리.
         var obj = other.GetComponent<PortalableObject>();
-        if(obj != null)
+        if (obj != null)
         {
             portalObjects.Add(obj);
             obj.SetIsInPortal(this, OtherPortal, wallCollider);
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
+        // 포탈을 나가는 물체 처리.
         var obj = other.GetComponent<PortalableObject>();
 
         if(portalObjects.Contains(obj))
@@ -77,63 +84,73 @@ public class Portal : MonoBehaviour
             obj.ExitPortal(wallCollider);
         }
     }
-    //포탈 배치
+
+    // 포탈을 배치할 수 있는지 확인 후, 배치가 가능하면 포탈을 배치.
     public bool PlacePortal(Collider wallCollider, Vector3 pos, Quaternion rot)
     {
         testTransform.position = pos;
         testTransform.rotation = rot;
         testTransform.position -= testTransform.forward * 0.001f;
 
+        // 포탈 배치 전의 충돌을 수정.
         FixOverhangs();
         FixIntersects();
 
-        if(CheckOverlap())
+        // 겹침이 없으면 포탈을 배치.
+        if (CheckOverlap())
         {
             this.wallCollider = wallCollider;
             transform.position = testTransform.position;
             transform.rotation = testTransform.rotation;
 
+            // 포탈을 활성화하고 배치 완료.
             gameObject.SetActive(true);
             IsPlaced = true;
             return true;
         }
+
         return false;
     }
+
+    // 포탈이 겹치지 않도록 하기 위해 포탈이 벽을 넘어가지 않도록 수정.
     private void FixOverhangs()
     {
-        var testPoints = new List<Vector3> //검사 방향
+        var testPoints = new List<Vector3>
         {
-            new Vector3(-1.1f, 0.0f, 0.1f),
-            new Vector3( 1.1f, 0.0f, 0.1f),
-            new Vector3(0.0f, -2.1f, 0.1f),
-            new Vector3(0.0f, 2.1f, 0.1f)
+            new Vector3(-1.1f,  0.0f, 0.1f),
+            new Vector3( 1.1f,  0.0f, 0.1f),
+            new Vector3( 0.0f, -2.1f, 0.1f),
+            new Vector3( 0.0f,  2.1f, 0.1f)
         };
 
-        var testDirs = new List<Vector3> //레이 방향
+        var testDirs = new List<Vector3>
         {
-            Vector3.right,
+             Vector3.right,
             -Vector3.right,
-            Vector3.up,
+             Vector3.up,
             -Vector3.up
         };
-        for(int i = 0; i < 4; ++i)//네 방향 반복검사
+
+        for(int i = 0; i < 4; ++i)
         {
             RaycastHit hit;
             Vector3 raycastPos = testTransform.TransformPoint(testPoints[i]);
             Vector3 raycastDir = testTransform.TransformDirection(testDirs[i]);
 
-            if(Physics.CheckSphere(raycastPos, 0.0f, placementMask))//다른 콜라이더와 겹치나 확인 있으면 반복 종료 포탈 위치 변경 x
+            if(Physics.CheckSphere(raycastPos, 0.05f, placementMask))
             {
                 break;
             }
-            else if(Physics.Raycast(raycastPos, raycastDir, out hit, 2.1f, placementMask)) //충돌 없으면 벽 찾음
+            else if(Physics.Raycast(raycastPos, raycastDir, out hit, 2.1f, placementMask))
             {
                 var offset = hit.point - raycastPos;
                 testTransform.Translate(offset, Space.World);
             }
         }
     }
-    private void FixIntersects()//포탈이 벽에 박혀있으면 바깥으로 이동
+
+    // 포탈이 벽과 겹치지 않도록 하기 위해 충돌을 수정.
+    private void FixIntersects()
     {
         var testDirs = new List<Vector3>
         {
@@ -143,10 +160,10 @@ public class Portal : MonoBehaviour
             -Vector3.up
         };
 
-         var testDists = new List<float> { 1.1f, 1.1f, 2.1f, 2.1f };
+        var testDists = new List<float> { 1.1f, 1.1f, 2.1f, 2.1f };
 
-         for(int i = 0; i < 4; ++i)
-         {
+        for (int i = 0; i < 4; ++i)
+        {
             RaycastHit hit;
             Vector3 raycastPos = testTransform.TransformPoint(0.0f, 0.0f, -0.1f);
             Vector3 raycastDir = testTransform.TransformDirection(testDirs[i]);
@@ -157,8 +174,10 @@ public class Portal : MonoBehaviour
                 var newOffset = -raycastDir * (testDists[i] - offset.magnitude);
                 testTransform.Translate(newOffset, Space.World);
             }
-         }
+        }
     }
+
+    // 포탈이 다른 물체와 겹치지 않는지 확인.
     private bool CheckOverlap()
     {
         var checkExtents = new Vector3(0.9f, 1.9f, 0.05f);
@@ -166,6 +185,7 @@ public class Portal : MonoBehaviour
         var checkPositions = new Vector3[]
         {
             testTransform.position + testTransform.TransformVector(new Vector3( 0.0f,  0.0f, -0.1f)),
+
             testTransform.position + testTransform.TransformVector(new Vector3(-1.0f, -2.0f, -0.1f)),
             testTransform.position + testTransform.TransformVector(new Vector3(-1.0f,  2.0f, -0.1f)),
             testTransform.position + testTransform.TransformVector(new Vector3( 1.0f, -2.0f, -0.1f)),
@@ -174,9 +194,8 @@ public class Portal : MonoBehaviour
             testTransform.TransformVector(new Vector3(0.0f, 0.0f, 0.2f))
         };
 
-        
+        // 포탈이 벽과 겹치지 않는지 확인.
         var intersections = Physics.OverlapBox(checkPositions[0], checkExtents, testTransform.rotation, placementMask);
-        
 
         if(intersections.Length > 1)
         {
@@ -184,13 +203,14 @@ public class Portal : MonoBehaviour
         }
         else if(intersections.Length == 1) 
         {
-            
+            // 이전 포탈 위치와 겹치는 것은 허용.
             if (intersections[0] != collider)
             {
                 return false;
             }
         }
 
+        // 포탈의 모서리가 벽과 겹치지 않는지 확인.
         bool isOverlapping = true;
 
         for(int i = 1; i < checkPositions.Length - 1; ++i)
@@ -201,11 +221,11 @@ public class Portal : MonoBehaviour
 
         return isOverlapping;
     }
+
+    // 포탈을 제거.
     public void RemovePortal()
     {
         gameObject.SetActive(false);
         IsPlaced = false;
-        
     }
-
 }
