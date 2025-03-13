@@ -11,7 +11,12 @@ public class Button : MonoBehaviour
     private void OnValidate()
     {
         buttonAnim = GetComponent<Animator>();
-        buttonAnim.SetBool(IsPressed, true);
+        
+    }
+
+    private void Start()
+    {
+        buttonAnim.SetBool(IsPressed, false);
     }
 
     private void OnTriggerEnter(Collider collider)

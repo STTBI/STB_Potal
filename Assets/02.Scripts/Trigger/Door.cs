@@ -14,12 +14,12 @@ public class Door : MonoBehaviour
     { 
         buttonCount = 1;                         //몇 개의 버튼을 눌러야 문이 열리는지 설정
         
-        DoorAnim = GetComponent<Animator>();
-        DoorAnim.SetBool(IsOpen, false);
+        DoorAnim = GetComponent<Animator>();    
     }
 
     private void Start()
-    { 
+    {
+        DoorAnim.SetBool(IsOpen, false);
         isButtonPressed = new bool[buttonCount]; //버튼의 갯수만큼 bool 변수를 만들어준다.
     }
 
