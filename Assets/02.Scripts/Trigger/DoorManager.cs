@@ -16,6 +16,9 @@ public class DoorManager : MonoBehaviour
     public ITriggerObject[] triggerObject;
     public Door door;
 
+    [Header("Debug")]
+    [SerializeField] private int TriggerObjectCount = 0;
+
     private void OnValidate()
     {
         //ICheckTrigger를 상속 받은 모든 자식들을 찾아온다.
@@ -23,6 +26,9 @@ public class DoorManager : MonoBehaviour
 
         //트리거와 연결해줄 문을 찾아온다. (문은 한 개여야 함)
         door = GetComponentInChildren<Door>();
+
+        //확인용
+        TriggerObjectCount = triggerObject.Length;
     }
 
     private void Update()

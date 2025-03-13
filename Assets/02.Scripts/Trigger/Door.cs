@@ -9,8 +9,6 @@ public class Door : MonoBehaviour
     [SerializeField] private Animator DoorAnim;
     private static readonly int IsOpen = Animator.StringToHash("IsOpen"); // 미리 해시 값 저장
 
-    public int triggerCount;
-
     private void OnValidate()
     {                         
         DoorAnim = GetComponent<Animator>();
