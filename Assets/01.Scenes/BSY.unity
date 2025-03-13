@@ -725,7 +725,7 @@ GameObject:
   - component: {fileID: 1616813890}
   - component: {fileID: 1616813889}
   m_Layer: 0
-  m_Name: Virtual Camera
+  m_Name: Vcam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -752,7 +752,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 364012831}
   m_Lens:
-    FieldOfView: 60.000004
+    FieldOfView: 65
     OrthographicSize: 5
     NearClipPlane: 0.05
     FarClipPlane: 100
@@ -810,13 +810,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2048557178}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.28, y: -1.565, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 840213458}
-  m_Father: {fileID: 979784981545045047}
+  m_Father: {fileID: 5314517051772687775}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &189048478050183409
 GameObject:
@@ -1041,7 +1041,6 @@ Transform:
   - {fileID: 364012831}
   - {fileID: 1497997627}
   - {fileID: 806999058}
-  - {fileID: 2048557179}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1088701679287690293
@@ -1905,7 +1904,7 @@ Camera:
     height: 1
   near clip plane: 0.05
   far clip plane: 100
-  field of view: 60.000004
+  field of view: 65
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1936,7 +1935,7 @@ GameObject:
   - component: {fileID: 8767759535920107731}
   - component: {fileID: 8767759535920107732}
   m_Layer: 6
-  m_Name: Main Camera
+  m_Name: FPSView
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2353,9 +2352,10 @@ Transform:
   m_LocalPosition: {x: -0.068, y: 1.565, z: 0.109}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2048557179}
   m_Father: {fileID: 1497997627}
-  m_LocalEulerAnglesHint: {x: 0, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5333263774166817726
 GameObject:
   m_ObjectHideFlags: 0
