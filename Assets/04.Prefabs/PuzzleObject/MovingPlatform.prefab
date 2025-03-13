@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 2068407263666141898}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.2100816, y: -2.763908, z: 6.1399508}
+  m_LocalPosition: {x: 5.15, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -61,7 +61,7 @@ Transform:
   m_GameObject: {fileID: 4673965605467132488}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5400817, y: -2.763908, z: 6.1399508}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2.5, y: 0.2, z: 2.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -178,12 +178,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentObj: {fileID: 437077384144683901}
-  wayPoints:
+  _wayPoints:
   - {fileID: 8501590620617682614}
-  moveSpeed: 5
+  _moveSpeed: 5
   waitTime: 0.5
-  isPlayOnAwake: 1
-  isLoop: 1
+  _isPlayOnAwake: 1
+  _isLoop: 1
 --- !u!1 &5077070847517878391
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,7 +209,7 @@ Transform:
   m_GameObject: {fileID: 5077070847517878391}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5400817, y: 2.763908, z: -6.1399508}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
