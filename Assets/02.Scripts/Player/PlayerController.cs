@@ -28,18 +28,22 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        // 그라운드에 접지 상태이면 y속도값을 0으로 초기화
+        DtectedGround();
+        ApplyMovement();
+        ApplyGravity();
+    }
+
+    private void DtectedGround()
+    {
         if (groundedPlayer && playerVelocity.y < 0)
         {
             playerVelocity.y = 0f;
         }
+    }
 
-        Vector2 movement = inputManager.GetPlayerMovement();
-        Vector3 move = new Vector3(movement.x, 0f, movement.y);
-        move = cameraTransform.forward * move.z + cameraTransform.right * move.x;
-        move.y = 0f;
-
-        controller.Move(move * Time.deltaTime * playerSpeed);
-
+    private void ApplyGravity()
+    {
         // Makes the player jump
         if (inputManager.PlayerJumpedThisFrame() && groundedPlayer)
         {
@@ -48,5 +52,15 @@ public class PlayerController : MonoBehaviour
 
         playerVelocity.y += gravityValue * Time.deltaTime;
         groundedPlayer = (controller.Move(playerVelocity * Time.deltaTime) & CollisionFlags.Below) != 0;
+    }
+
+    private void ApplyMovement()
+    {
+        Vector2 movement = inputManager.GetPlayerMovement();
+        Vector3 move = new Vector3(movement.x, 0f, movement.y);
+        move = cameraTransform.forward * move.z + cameraTransform.right * move.x;
+        move.y = 0f;
+
+        controller.Move(move * Time.deltaTime * playerSpeed);
     }
 }
