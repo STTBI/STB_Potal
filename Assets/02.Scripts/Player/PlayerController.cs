@@ -10,9 +10,11 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Vector3 playerVelocity;
     private bool groundedPlayer;
 
+    [SerializeField] private LayerMask whatIsGround;
     [SerializeField] private float playerSpeed = 2.0f;
     [SerializeField] private float jumpHeight = 1.0f;
     [SerializeField] private float gravityValue = -9.81f;
+
     private InputManager inputManager;
     private Transform cameraTransform;
 
@@ -38,7 +40,7 @@ public class PlayerController : MonoBehaviour
     {
         if (groundedPlayer && playerVelocity.y < 0)
         {
-            playerVelocity.y = 0f;
+            playerVelocity.y = -2f;
         }
     }
 
