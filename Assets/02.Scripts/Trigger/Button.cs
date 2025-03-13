@@ -5,6 +5,7 @@ using UnityEngine;
 public class Button : MonoBehaviour
 {
     [SerializeField] private Animator buttonAnim;
+    private static readonly int IsPressed = Animator.StringToHash("IsPressed"); // ¹Ì¸® ÇØ½Ã °ª ÀúÀå
 
     private void OnValidate()
     {
@@ -17,11 +18,11 @@ public class Button : MonoBehaviour
         {
             case "Player":
                 Debug.Log("Player¿Í Ãæµ¹");
-                buttonAnim.SetBool("IsPressed", true);
+                buttonAnim.SetBool(IsPressed, true);
                 break;
             case "Obstacle":
                 Debug.Log("Obstacle Ãæµ¹");
-                buttonAnim.SetBool("IsPressed", true);
+                buttonAnim.SetBool(IsPressed, true);
                 break;
         }
     }
@@ -32,13 +33,23 @@ public class Button : MonoBehaviour
         {
             case "Player":
                 Debug.Log("Player ¶³¾îÁü");
-                buttonAnim.SetBool("IsPressed", false);
+                buttonAnim.SetBool(IsPressed, false);
                 break;
             case "Obstacle":
                 Debug.Log("Obstacle ¶³¾îÁü");
-                buttonAnim.SetBool("IsPressed", false);
+                buttonAnim.SetBool(IsPressed, false);
                 break;
         }
+    }
+
+    public void Press()
+    {
+        buttonAnim.SetBool("IsPressed", false);
+    }
+
+    public void Release()
+    {
+        buttonAnim.SetBool("IsPressed", false);
     }
 
 
