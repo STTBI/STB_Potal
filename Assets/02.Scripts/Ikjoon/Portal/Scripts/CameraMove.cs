@@ -60,6 +60,12 @@ public class CameraMove : MonoBehaviour
             float x = Input.GetAxis("Horizontal");
             float z = Input.GetAxis("Vertical");
             moveVector = new Vector3(x, 0.0f, z) * moveSpeed;
+        }if(isInPortal == true && Input.GetKey(KeyCode.Space))
+        {
+            Time.timeScale = 0.2f;
+        }else
+        {
+            Time.timeScale = 1f;
         }
         
         //moveY = Input.GetAxis("Elevation");

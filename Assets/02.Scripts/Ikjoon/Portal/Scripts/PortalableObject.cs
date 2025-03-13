@@ -105,6 +105,7 @@ public class PortalableObject : MonoBehaviour
         if (inPortalCount == 0)
         {
             cloneObject.SetActive(false);
+            
         }
     }
 
