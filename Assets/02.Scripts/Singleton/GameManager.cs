@@ -12,7 +12,7 @@ public class GameManager : Singleton<GameManager>
         GameObject prefabs = ResourceManager.Instance.GetResource<GameObject>("player");
         GameObject objPlayer = Instantiate(prefabs, newPosition, quater);
         objPlayer.transform.position = newPosition;
-        objPlayer.GetComponent<PlayerController>().playerVelocity = originVelocity;
+        //objPlayer.GetComponent<PlayerController>().MoveMent.playerVelocity = originVelocity;
         return objPlayer;
     }
 
