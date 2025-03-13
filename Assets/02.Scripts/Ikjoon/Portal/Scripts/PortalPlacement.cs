@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CameraMove))]
 public class PortalPlacement : MonoBehaviour
 {
     [SerializeField]
@@ -16,6 +15,7 @@ public class PortalPlacement : MonoBehaviour
 
     private CameraMove cameraMove;
 
+    
     private void Awake()
     {
         cameraMove = GetComponent<CameraMove>();

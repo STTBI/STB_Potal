@@ -33,6 +33,7 @@ public class Portal : MonoBehaviour
         // BoxCollider와 Renderer 컴포넌트를 가져옴.
         collider = GetComponent<BoxCollider>();
         Renderer = GetComponent<Renderer>();
+
     }
 
     private void Start()
@@ -64,12 +65,20 @@ public class Portal : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+    
         // 포탈에 들어온 물체 처리.
+        
         var obj = other.GetComponent<PortalableObject>();
         if (obj != null)
         {
             portalObjects.Add(obj);
             obj.SetIsInPortal(this, OtherPortal, wallCollider);
+            
+            if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                CameraMove cameraMove = other.GetComponent<CameraMove>();
+                cameraMove.isInPortal = true;
+            }
         }
     }
 
