@@ -23,7 +23,7 @@ public class PortalPlacement : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1"))
         {
             FirePortal(0, transform.position, transform.forward, 250.0f);
         }
@@ -38,42 +38,43 @@ public class PortalPlacement : MonoBehaviour
         RaycastHit hit;
         Physics.Raycast(pos, dir, out hit, distance, layerMask);
 
-        if(hit.collider != null)
+        if (hit.collider != null)
         {
-            // If we shoot a portal, recursively fire through the portal.
+            // 포탈에 충돌했을 때, 재귀적으로 포탈을 통해 레이캐스트를 발사
             if (hit.collider.tag == "Portal")
             {
                 var inPortal = hit.collider.GetComponent<Portal>();
 
-                if(inPortal == null)
+                if (inPortal == null)
                 {
                     return;
                 }
 
                 var outPortal = inPortal.OtherPortal;
 
-                // Update position of raycast origin with small offset.
+                // 레이캐스트의 원점을 다른 포탈의 위치에 맞게 계산
                 Vector3 relativePos = inPortal.transform.InverseTransformPoint(hit.point + dir);
                 relativePos = Quaternion.Euler(0.0f, 180.0f, 0.0f) * relativePos;
                 pos = outPortal.transform.TransformPoint(relativePos);
 
-                // Update direction of raycast.
+                // 레이캐스트의 방향도 포탈을 통과하도록 계산
                 Vector3 relativeDir = inPortal.transform.InverseTransformDirection(dir);
                 relativeDir = Quaternion.Euler(0.0f, 180.0f, 0.0f) * relativeDir;
                 dir = outPortal.transform.TransformDirection(relativeDir);
 
                 distance -= Vector3.Distance(pos, hit.point);
 
+                // 재귀적으로 포탈을 통해 레이캐스트 발사
                 FirePortal(portalID, pos, dir, distance);
 
                 return;
             }
 
-            // Orient the portal according to camera look direction and surface direction.
+            // 레이캐스트가 포탈이 아니면, 충돌한 표면에 포탈을 배치
             var cameraRotation = cameraMove.TargetRotation;
             var portalRight = cameraRotation * Vector3.right;
             
-            if(Mathf.Abs(portalRight.x) >= Mathf.Abs(portalRight.z))
+            if (Mathf.Abs(portalRight.x) >= Mathf.Abs(portalRight.z))
             {
                 portalRight = (portalRight.x >= 0) ? Vector3.right : -Vector3.right;
             }
@@ -87,13 +88,24 @@ public class PortalPlacement : MonoBehaviour
 
             var portalRotation = Quaternion.LookRotation(portalForward, portalUp);
             
-            // Attempt to place the portal.
+            // 포탈을 배치하려 시도
             bool wasPlaced = portals.Portals[portalID].PlacePortal(hit.collider, hit.point, portalRotation);
 
-            if(wasPlaced)
+            if (wasPlaced)
             {
                 crosshair.SetPortalPlaced(portalID, true);
             }
         }
+    }
+
+    // 레이캐스트 경로를 Gizmos로 시각화
+    private void OnDrawGizmos()
+    {
+        // 레이캐스트의 시작 위치와 방향을 가져와서 레이그리기
+        Vector3 startPos = transform.position;
+        Vector3 direction = transform.forward * 250.0f;  // 레이캐스트 거리
+
+        Gizmos.color = Color.red;  // 레이의 색상 설정
+        Gizmos.DrawLine(startPos, startPos + direction);  // 레이캐스트 경로 그리기
     }
 }
