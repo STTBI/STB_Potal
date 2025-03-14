@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
@@ -104,9 +105,14 @@ public class PortalableObject : MonoBehaviour
         // 포탈 내부에 남아있는 객체가 없으면 클론 객체를 비활성화
         if (inPortalCount == 0)
         {
-            cloneObject.SetActive(false);
+            Invoke(nameof(DisableCloneObject),0.5f);
             
         }
+    }
+
+    private void DisableCloneObject()
+    {
+        cloneObject.SetActive(false);
     }
 
     // 포탈을 통한 이동

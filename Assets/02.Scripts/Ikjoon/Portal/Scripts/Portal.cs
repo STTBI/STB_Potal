@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
@@ -10,6 +11,7 @@ public class Portal : MonoBehaviour
 
     [SerializeField]
     private Renderer outlineRenderer;
+    public Renderer portalRenderer;
 
     [field: SerializeField]
     public Color PortalColour { get; private set; }
@@ -118,10 +120,32 @@ public class Portal : MonoBehaviour
             // 포탈을 활성화하고 배치 완료.
             gameObject.SetActive(true);
             IsPlaced = true;
+
+            portalRenderer.transform.localScale = Vector3.zero;
+            StartCoroutine(GrowPortal());
+
             return true;
         }
 
         return false;
+    }
+
+    private IEnumerator GrowPortal()
+    {
+        float duration = 0.5f;
+        float elapsed =0f;
+
+        Vector3 startScale = Vector3.zero;
+        Vector3 targetScale = Vector3.one;
+
+        while(elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float progress = elapsed / duration;
+            portalRenderer.transform.localScale = Vector3.Lerp(startScale, targetScale, progress);
+            yield return null;
+        }
+        portalRenderer.transform.localScale = targetScale;
     }
 
     // 포탈이 겹치지 않도록 하기 위해 포탈이 벽을 넘어가지 않도록 수정.
