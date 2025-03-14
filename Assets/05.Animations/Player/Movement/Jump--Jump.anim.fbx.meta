@@ -28,12 +28,16 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'Jump' has import animation warnings that might
+      lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
+      retargeting quality.\n\t'Spine' has translation animation that will be discarded.\n\t'Chest'
+      has translation animation that will be discarded.\n\t'UpperChest' has translation
+      animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 3
+    animationCompression: 1
     animationRotationError: 0.05
     animationPositionError: 0.05
     animationScaleError: 0.25
@@ -64,111 +68,7 @@ ModelImporter:
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves:
-      - name: IKLeftFootWeight
-        curve:
-          serializedVersion: 2
-          curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: -2.857143
-            outSlope: 0
-            tangentMode: 69
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 0.05
-            value: 1
-            inSlope: -0
-            outSlope: -0.0046074255
-            tangentMode: 5
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.4683714
-          - serializedVersion: 3
-            time: 0.35
-            value: 0
-            inSlope: -3.3333335
-            outSlope: 0
-            tangentMode: 69
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 0.7
-            value: 0
-            inSlope: -0
-            outSlope: 3.3333333
-            tangentMode: 69
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: -0.0021211617
-            outSlope: 4
-            tangentMode: 1
-            weightedMode: 0
-            inWeight: 0.604712
-            outWeight: 0
-          preInfinity: 2
-          postInfinity: 2
-          rotationOrder: 4
-      - name: Curve
-        curve:
-          serializedVersion: 2
-          curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: -0.0021211617
-            outSlope: 0
-            tangentMode: 65
-            weightedMode: 0
-            inWeight: 0.604712
-            outWeight: 0
-          - serializedVersion: 3
-            time: 0.037308607
-            value: 1
-            inSlope: -0
-            outSlope: 0
-            tangentMode: 69
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 0.3
-            value: 1
-            inSlope: -0
-            outSlope: -0.012692717
-            tangentMode: 5
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.30878368
-          - serializedVersion: 3
-            time: 0.5
-            value: 0
-            inSlope: -0.06180944
-            outSlope: 0
-            tangentMode: 65
-            weightedMode: 0
-            inWeight: 0.2715187
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 0.7
-            value: 0
-            inSlope: -0
-            outSlope: 3.3333333
-            tangentMode: 69
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.33333334
-          preInfinity: 2
-          postInfinity: 2
-          rotationOrder: 4
+      curves: []
       events: []
       transformMask: []
       maskType: 3
@@ -197,111 +97,7 @@ ModelImporter:
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves:
-      - name: Curve
-        curve:
-          serializedVersion: 2
-          curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: -2.857143
-            outSlope: 0
-            tangentMode: 69
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 0.05
-            value: 1
-            inSlope: -0
-            outSlope: -0.0046074255
-            tangentMode: 5
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.4683714
-          - serializedVersion: 3
-            time: 0.35
-            value: 0
-            inSlope: -3.3333335
-            outSlope: 0
-            tangentMode: 69
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 0.7
-            value: 0
-            inSlope: -0
-            outSlope: 3.3333333
-            tangentMode: 69
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: -0.0021211617
-            outSlope: 4
-            tangentMode: 1
-            weightedMode: 0
-            inWeight: 0.604712
-            outWeight: 0
-          preInfinity: 2
-          postInfinity: 2
-          rotationOrder: 4
-      - name: IKRightFootWeight
-        curve:
-          serializedVersion: 2
-          curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: -0.0021211617
-            outSlope: 0
-            tangentMode: 65
-            weightedMode: 0
-            inWeight: 0.604712
-            outWeight: 0
-          - serializedVersion: 3
-            time: 0.037308607
-            value: 1
-            inSlope: -0
-            outSlope: 0
-            tangentMode: 69
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 0.3
-            value: 1
-            inSlope: -0
-            outSlope: -0.012692717
-            tangentMode: 5
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.30878368
-          - serializedVersion: 3
-            time: 0.5
-            value: 0
-            inSlope: -0.06180944
-            outSlope: 0
-            tangentMode: 65
-            weightedMode: 0
-            inWeight: 0.2715187
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 0.7
-            value: 0
-            inSlope: -0
-            outSlope: 3.3333333
-            tangentMode: 69
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.33333334
-          preInfinity: 2
-          postInfinity: 2
-          rotationOrder: 4
+      curves: []
       events:
       - time: 0.1615599
         functionName: OnLand
@@ -1161,7 +957,7 @@ ModelImporter:
     hasTranslationDoF: 1
     hasExtraRoot: 0
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 36078ab0369161e49a29d349ae3e0739, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1

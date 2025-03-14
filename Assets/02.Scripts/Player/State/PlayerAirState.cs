@@ -2,17 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAirState : MonoBehaviour
+public class PlayerAirState : PlayerState
 {
-    // Start is called before the first frame update
-    void Start()
+    public PlayerAirState(PlayerController _player, StateMachine _stateMachine, CharacterController _charCtrl, string _animName, PlayerStateSystem _stateSystem) : base(_player, _stateMachine, _charCtrl, _animName, _stateSystem)
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Enter()
     {
-        
+        base.Enter();
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+    }
+
+    public override void Update()
+    {
+        base.Update();
+        player.MoveMent.ApplyJump();
+
+        if (player.MoveMent.groundedPlayer)
+            stateMachine.ChangeState(player.StateSystem.landState);
     }
 }

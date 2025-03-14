@@ -2,17 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerJumpStartState : MonoBehaviour
+public class PlayerJumpStartState : PlayerState
 {
-    // Start is called before the first frame update
-    void Start()
+    public PlayerJumpStartState(PlayerController _player, StateMachine _stateMachine, CharacterController _charCtrl, string _animName, PlayerStateSystem _stateSystem) : base(_player, _stateMachine, _charCtrl, _animName, _stateSystem)
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Enter()
     {
-        
+        base.Enter();
+        timer = 0.5f;
+
+        player.MoveMent.ApplyJump();
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+    }
+
+    public override void Update()
+    {
+        base.Update();
+
+        if (timer < 0f && player.MoveMent.groundedPlayer)
+            stateMachine.ChangeState(stateSystem.IdleState);
     }
 }

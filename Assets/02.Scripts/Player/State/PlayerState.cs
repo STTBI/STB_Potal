@@ -11,6 +11,8 @@ public class PlayerState
 
     protected CharacterController charCtrl;
 
+    protected float timer;
+
     public PlayerState(PlayerController _player, StateMachine _stateMachine, CharacterController _charCtrl, string _animName, PlayerStateSystem _stateSystem)
     {
         player = _player;
@@ -28,7 +30,9 @@ public class PlayerState
 
     public virtual void Update()
     {
+        timer -= Time.deltaTime;
         player.MoveMent.ApplyGravity();
+        player.MoveMent.ApplyMovement();
     }
 
     public virtual void Exit()

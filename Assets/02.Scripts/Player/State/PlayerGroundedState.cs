@@ -22,7 +22,12 @@ public class PlayerGroundedState : PlayerState
     {
         base.Update();
 
-        if (player.MoveMent.ApplyJump())
+        if (InputManager.Instance.PlayerJumpedThisFrame())
+        {
+            player.animBody.SetTrigger("Jump");
+            player.animShadow.SetTrigger("Jump");
+            stateMachine.ChangeState(stateSystem.JumpStartState);
             return;  
+        }
     }
 }
