@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -28,7 +29,7 @@ public class CameraMove : MonoBehaviour
     private new Rigidbody rigidbody;
     
     [SerializeField]
-    private Vector3 currentVelocity;
+    public Vector3 currentVelocity;
 
     private void Awake()
     {
