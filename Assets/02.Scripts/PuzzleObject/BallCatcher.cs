@@ -4,7 +4,7 @@ public class BallCatcher : MonoBehaviour
 {
     private Ball _catchedBall;
 
-    private bool isBallCatched = false;
+    //private bool isBallCatched = false;
 
 
     private void OnTriggerEnter(Collider other)
@@ -12,7 +12,7 @@ public class BallCatcher : MonoBehaviour
         if (other.gameObject.TryGetComponent<Ball>(out _catchedBall))
         {
             _catchedBall.OnCatched();
-            isBallCatched = true;
+            //isBallCatched = true;
         }
     }
 }
