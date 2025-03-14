@@ -24,6 +24,8 @@ public class PortalableObject : MonoBehaviour
     private new Rigidbody rigidbody;
     protected new Collider collider;
 
+    public bool IsInPortal = false;
+
     // 포탈 회전 각도를 180도 반전시키는 고정된 Quaternion. 
     // 포탈의 시점에서 이동할 때 물체의 회전을 반전시킴.
     private static readonly Quaternion halfTurn = Quaternion.Euler(0.0f, 180.0f, 0.0f);
@@ -85,6 +87,7 @@ public class PortalableObject : MonoBehaviour
     {
         this.inPortal = inPortal;  // 입력 포탈
         this.outPortal = outPortal;  // 출력 포탈
+        IsInPortal = true;
 
         // 포탈 벽과 충돌하지 않도록 처리
         Physics.IgnoreCollision(collider, wallCollider);
@@ -100,6 +103,7 @@ public class PortalableObject : MonoBehaviour
     {
         // 포탈 벽과 충돌 처리를 복원
         Physics.IgnoreCollision(collider, wallCollider, false);
+        IsInPortal = false;
         --inPortalCount;  // 포탈을 나간 객체의 수 감소
 
         // 포탈 내부에 남아있는 객체가 없으면 클론 객체를 비활성화
