@@ -13,9 +13,20 @@ public class Turret : MonoBehaviour
     public float fireRate = 1f;  // 발사 간격
     private float nextFireTime = 0f;
 
+
     private bool isDying = false; // 터렛이 죽기 직전인지 여부
     private float dyingTimer = 3f; // 터렛이 죽기 직전 타이머
 
+    private LineRenderer laserLine; // 레이저를 나타내는 라인랜더러
+
+    void Start()
+    {
+        laserLine = firePoint.GetComponent<LineRenderer>();
+        laserLine.startWidth = 0.01f;  // 레이저 크기
+        laserLine.endWidth = 0.03f;
+        Material material = new Material(Shader.Find("Standard")); // 레이저 색상
+        material.color = new Color(0, 255, 0, 0f);
+    }
 
 
     void Update()
@@ -34,22 +45,39 @@ public class Turret : MonoBehaviour
                 {
                     // 플레이어를 감지한 경우
                     RotateAndFire();
+                    DrawLaser(hit.point); // 레이저 그리기
                 }
+            }
+            else
+            {
+                laserLine.enabled = false; // 플레이어 감지 못하면 레이저x
             }
         }
         else
         {
             dyingTimer -= Time.deltaTime;
+
             if(dyingTimer <= 0f)
             {
-                StopTurret();
+                RotateAndFire(); // 죽기 직전까지 공격 
+                DrawLaser(target.position);
+            }
+            else
+            {
+                StopTurret(); // 터렛 중지
             }
         }
 
-        // !!테스트용 끝나고 삭제!!
-        if (Input.GetKeyDown(KeyCode.T))
+    }
+
+    void DrawLaser(Vector3 tartgetposition)
+    {
+        if(laserLine != null)
         {
-            Die();
+            laserLine.enabled = true; //레이저 활성화
+
+            laserLine.SetPosition(0, firePoint.position); // 시작점
+            laserLine.SetPosition(1, tartgetposition); // 타겟의 위치
         }
     }
 
@@ -78,19 +106,11 @@ public class Turret : MonoBehaviour
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
     }
 
-    public void Die()
-    {
-        isDying = true;
-        dyingTimer = 3f;
-    }
 
     public void StopTurret()
     {
-        // !!테스트용 끝나고 삭제!!
-        GetComponent<Renderer>().material.color = Color.red; // 터렛 작동 중지시 빨간색
-
         isDying = false;
         nextFireTime = Mathf.Infinity;
-        target = null;
+        laserLine.enabled = false; // 레이저 비활성화
     }
 }
