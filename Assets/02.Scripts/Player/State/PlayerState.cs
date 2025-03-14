@@ -22,7 +22,8 @@ public class PlayerState
 
     public virtual void Enter()
     {
-        player.Anim.SetBool("Grounded", true);
+        player.animBody.SetBool(animName, true);
+        player.animShadow.SetBool(animName, true);
     }
 
     public virtual void Update()
@@ -32,6 +33,7 @@ public class PlayerState
 
     public virtual void Exit()
     {
-        player.Anim.SetBool("Grounded", false);
+        player.animBody.SetBool(animName, false);
+        player.animShadow.SetBool(animName, false);
     }
 }

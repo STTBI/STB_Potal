@@ -22,8 +22,8 @@ public class PlayerStateSystem : MonoBehaviour
 
         #region State
 
-        IdleState = new PlayerIdleState(player, stateMachine, charCtrl, "Grounded", this);
-        MoveState = new PlayerMoveState(player, stateMachine, charCtrl, "Grounded", this);
+        IdleState = new PlayerIdleState(player, stateMachine, charCtrl, "Idle", this);
+        MoveState = new PlayerMoveState(player, stateMachine, charCtrl, "Move", this);
 
         #endregion
     }

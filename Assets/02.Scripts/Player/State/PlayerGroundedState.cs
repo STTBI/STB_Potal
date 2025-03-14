@@ -22,7 +22,7 @@ public class PlayerGroundedState : PlayerState
     {
         base.Update();
 
-        if (InputManager.Instance.GetPlayerMovement().magnitude > 0)
-            stateMachine.ChangeState(stateSystem.MoveState);
+        if (player.MoveMent.ApplyJump())
+            return;  
     }
 }

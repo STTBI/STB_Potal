@@ -22,12 +22,18 @@ public class PlayerMoveState : PlayerGroundedState
     {
         base.Update();
 
+
         player.MoveMent.ApplyMovement();
-        player.Anim.SetFloat("VelocityX", charCtrl.velocity.x);
-        player.Anim.SetFloat("VelocityY", charCtrl.velocity.z);
+
+        player.animBody.SetFloat("VelocityX", player.MoveMent.Direction.x);
+        player.animBody.SetFloat("VelocityY", player.MoveMent.Direction.y);
+
+        player.animShadow.SetFloat("VelocityX", player.MoveMent.Direction.x);
+        player.animShadow.SetFloat("VelocityY", player.MoveMent.Direction.y);
+        
         Debug.Log(charCtrl.velocity.x);
 
-        if (InputManager.Instance.GetPlayerMovement().magnitude == 0f)
+        if (InputManager.Instance.GetPlayerMovement().magnitude < 0.2f)
             stateMachine.ChangeState(stateSystem.IdleState);
     }
 }

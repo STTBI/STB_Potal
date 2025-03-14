@@ -7,12 +7,12 @@ public class PlayerController : MonoBehaviour
 {
     public PlayerMovement MoveMent { get; set; }
     public PlayerStateSystem StateSystem { get; set; }
-    public Animator Anim { get; set; }
 
+    public Animator animShadow;
+    public Animator animBody;
     private void OnValidate()
     {
         MoveMent = GetComponent<PlayerMovement>();
         StateSystem = GetComponent<PlayerStateSystem>();
-        Anim = GetComponentInChildren<Animator>();
     }
 }

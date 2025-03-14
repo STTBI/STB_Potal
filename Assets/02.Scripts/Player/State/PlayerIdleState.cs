@@ -11,8 +11,6 @@ public class PlayerIdleState : PlayerGroundedState
     public override void Enter()
     {
         base.Enter();
-        player.Anim.SetFloat("VelocityX", 0f);
-        player.Anim.SetFloat("VelocityY", 0f);
     }
 
     public override void Exit()
@@ -23,5 +21,8 @@ public class PlayerIdleState : PlayerGroundedState
     public override void Update()
     {
         base.Update();
+
+        if (InputManager.Instance.GetPlayerMovement().magnitude > 0)
+            stateMachine.ChangeState(stateSystem.MoveState);
     }
 }

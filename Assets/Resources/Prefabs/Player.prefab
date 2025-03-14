@@ -735,7 +735,7 @@ GameObject:
   - component: {fileID: 6961857604679250851}
   - component: {fileID: 9041768607648111654}
   m_Layer: 0
-  m_Name: Vcam
+  m_Name: Virtual Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -808,7 +808,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8c3ca3fbc9468d41b0dee51d24ea4d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerBody: {fileID: 7528051445769966914}
+  playerRoot: {fileID: 3796558217563571194}
   horizontalSpeed: 10
   verticalSpeed: 10
   clampAngle: 80
@@ -2610,7 +2610,7 @@ GameObject:
   - component: {fileID: 2709137131323805286}
   - component: {fileID: 8054684679494406471}
   m_Layer: 6
-  m_Name: FPSView
+  m_Name: MainCamera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3392,10 +3392,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0b5d2e0af18f5b4aaf1a6857edc0578, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerVelocity: {x: 0, y: 0, z: 0}
-  playerSpeed: 5
-  jumpHeight: 1
+  backWalkSpeed: 2
+  sideWalkSpeed: 3
+  frontWalkSpeed: 4
+  RunSpeed: 5
+  jumpHeight: 2
   gravityValue: -9.81
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  playerVelocity: {x: 0, y: 0, z: 0}
 --- !u!114 &694739757096226182
 MonoBehaviour:
   m_ObjectHideFlags: 0

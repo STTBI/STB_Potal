@@ -5,21 +5,32 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
+    private InputManager inputManager;
+
     private CharacterController controller;
     private Rigidbody rigid;
     private bool groundedPlayer;
 
-    [SerializeField] private float playerSpeed = 2.0f;
+    [Header("Move Info")]
+    [SerializeField] private float backWalkSpeed = 1.0f;
+    [SerializeField] private float sideWalkSpeed = 2.0f;
+    [SerializeField] private float frontWalkSpeed = 3.0f;
+    [SerializeField] private float RunSpeed = 5.0f;
     [SerializeField] private float jumpHeight = 1.0f;
     [SerializeField] private float gravityValue = -9.81f;
 
-    private InputManager inputManager;
-    private Transform cameraTransform;
+    [Header("Slope")]
+    private const float RAY_DISTANCE = 2f;
+    private float maxSlope;
+    private RaycastHit slopeHit;
+    public LayerMask groundLayer;
 
-    
-    [HideInInspector] public Vector2 inputDirection;
+
     [HideInInspector] public Vector3 playerVelocity;
-    [HideInInspector] public Vector3 moveDirection;
+    private Vector3 moveDirection;
+    
+    public float CurrentSpeed { get; private set; }
+    public Vector3 Direction { get; private set; }
 
     private void OnValidate()
     {
@@ -28,48 +39,79 @@ public class PlayerMovement : MonoBehaviour
 
         controller = GetComponent<CharacterController>();
         inputManager = InputManager.Instance;
-        cameraTransform = Camera.main.transform;
     }
 
     private void Update()
     {
-        inputDirection = inputManager.GetPlayerMovement();
+        Direction = inputManager.GetPlayerMovement();
+        ChangeSpeed();
+        maxSlope = controller.slopeLimit;
+    }
+
+    private void ChangeSpeed()
+    {
+        if (Direction.y > 0f)
+            CurrentSpeed = frontWalkSpeed;
+        else if (Direction.y < 0f)
+            CurrentSpeed = backWalkSpeed;
+        else if (Direction.x != 0f)
+            CurrentSpeed = sideWalkSpeed;
+    }
+
+    // 경사면 체크
+    private bool IsOnSlope()
+    {
+        Ray ray = new Ray(transform.position, Vector3.down);
+        if(Physics.Raycast(ray, out slopeHit, RAY_DISTANCE, groundLayer))
+        {
+            var angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            return angle != 0f && angle < maxSlope;
+        }
+
+        return false;
+    }
+
+    // 방향 벡터 추출
+    private Vector3 AdjustDirectionToSlope(Vector3 direction)
+    {
+        return Vector3.ProjectOnPlane(direction, slopeHit.normal).normalized;
     }
 
     public void DtectedGround()
     {
         if (groundedPlayer && playerVelocity.y < 0)
         {
-            playerVelocity.y = -2f;
+            playerVelocity.y = 0f;
         }
+    }
+
+    public bool ApplyJump()
+    {
+        if (inputManager.PlayerJumpedThisFrame() && groundedPlayer)
+        {
+            playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
+            return true;
+        }
+
+        return false;
     }
 
     public void ApplyGravity()
     {
         // Makes the player jump
-        /*if (inputManager.PlayerJumpedThisFrame() && groundedPlayer)
-        {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
-        }
-
+        DtectedGround();
         playerVelocity.y += gravityValue * Time.deltaTime;
-        groundedPlayer = (controller.Move(playerVelocity * Time.deltaTime) & CollisionFlags.Below) != 0;*/
-        moveDirection.y += gravityValue * Time.deltaTime;
-        groundedPlayer = (controller.Move(Vector3.up * moveDirection.y * Time.deltaTime) & CollisionFlags.Below) != 0;
+        groundedPlayer = (controller.Move(Vector3.up * playerVelocity.y * Time.deltaTime) & CollisionFlags.Below) != 0;
     }
 
     public void ApplyMovement()
     {
-        /*Vector2 movement = inputManager.GetPlayerMovement();
-        Vector3 move = new Vector3(movement.x, 0f, movement.y);
-        move = cameraTransform.forward * move.z + cameraTransform.right * move.x;
-        move.y = 0f;
-
-        controller.Move(move * Time.deltaTime * playerSpeed);*/
-        moveDirection = new Vector3(inputDirection.x, -1f, inputDirection.y);
-        if (groundedPlayer)
-            moveDirection = transform.TransformDirection(moveDirection) * playerSpeed;
-
-        groundedPlayer = (controller.Move(moveDirection * Time.deltaTime) & CollisionFlags.Below) != 0;
+        bool isOnSlope = IsOnSlope();
+        moveDirection = new Vector3(Direction.x, 0, Direction.y);
+        moveDirection = transform.TransformDirection(moveDirection) * CurrentSpeed;
+        Vector3 velocity = isOnSlope ? AdjustDirectionToSlope(moveDirection) * CurrentSpeed : moveDirection;
+        velocity = velocity * Time.deltaTime;
+        playerVelocity = new Vector3(velocity.x, playerVelocity.y, velocity.z);
+        groundedPlayer = (controller.Move(velocity) & CollisionFlags.Below) != 0;
     }
 }
