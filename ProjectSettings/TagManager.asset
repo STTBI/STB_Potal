@@ -9,6 +9,8 @@ TagManager:
   - Obstacle
   - Ground
   - Wall
+  - Portal
+  - Handle
   layers:
   - Default
   - TransparentFX

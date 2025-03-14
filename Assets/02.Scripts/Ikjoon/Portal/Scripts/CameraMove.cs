@@ -1,23 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CameraMove : MonoBehaviour
 {
-    private const float moveSpeed = 7.5f; // 이동 속도
+    [Header("Movement")]
+    public float moveSpeed = 7.5f; // 이동 속도
     private const float cameraSpeed = 3.0f; // 카메라 회전 속도
     public float jumpForce = 40.0f; // 점프 힘
     private const float gravity = 9.81f; // 중력
-    
-    private float rayLength = 2f;
+    public float maxVelocity = -30f;
+    public bool isGrounded = false;
+
+    [Header("Raycast")]
+    public float rayLength = 2f;
+
     public Quaternion TargetRotation { private set; get; }
 
     private Vector3 moveVector = Vector3.zero;
     private float moveY = 0.0f;
-    private bool isGrounded = false;
+    public bool isInPortal = false;
+    
+    
 
     private new Rigidbody rigidbody;
+    
+    [SerializeField]
+    public Vector3 currentVelocity;
 
     private void Awake()
     {
@@ -44,30 +56,62 @@ public class CameraMove : MonoBehaviour
             Time.deltaTime * 15.0f);
 
         // 이동
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-        moveVector = new Vector3(x, 0.0f, z) * moveSpeed;
-
+        if(isInPortal == false)
+        {
+            float x = Input.GetAxis("Horizontal");
+            float z = Input.GetAxis("Vertical");
+            moveVector = new Vector3(x, 0.0f, z) * moveSpeed;
+        }if(isInPortal == true && Input.GetKey(KeyCode.Space))
+        {
+            Time.timeScale = 0.2f;
+        }else
+        {
+            Time.timeScale = 1f;
+        }
+        
         //moveY = Input.GetAxis("Elevation");
 
         // 점프 처리
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space)) // 점프 버튼이 눌리면
+        if (isGrounded && Input.anyKeyDown)
         {
-            Debug.Log("Jump");
-            rigidbody.velocity = new Vector3(rigidbody.velocity.x, jumpForce, rigidbody.velocity.z); // 점프
+            isInPortal = false;
+            
+            if(Input.GetKeyDown(KeyCode.Space)) // 점프 버튼이 눌리면
+            {
+                rigidbody.velocity = new Vector3(rigidbody.velocity.x, jumpForce, rigidbody.velocity.z); // 점프
+            }
         }
     }
 
     private void FixedUpdate()
     {
         // Raycast를 캐릭터 발 아래에서 발사하여 바닥에 닿았는지 체크
-        isGrounded = Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, rayLength);  // 발 아래 0.5 단위로 Raycast
+        isGrounded = Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down, rayLength);
 
-        Vector3 newVelocity = transform.TransformDirection(moveVector);
-        newVelocity.y = rigidbody.velocity.y; // Y 방향 속도는 물리엔진에 의해 처리
+        Vector3 newVelocity;
+
+        if (isInPortal == false)
+        {
+            // 일반 이동 처리
+            newVelocity = transform.TransformDirection(moveVector);
+            newVelocity.y = rigidbody.velocity.y; // Y 방향 속도는 물리엔진에 의해 처리
+        }
+        else
+        {
+            // 포탈 안에서는 기존 속도를 유지
+            newVelocity = rigidbody.velocity;
+        }
+
+        // Y축 속도가 maxVelocity를 넘지 않도록 제한
+        if (newVelocity.y < maxVelocity)
+        {
+            newVelocity.y = maxVelocity;
+        }
 
         rigidbody.velocity = newVelocity;
+        currentVelocity = newVelocity;
     }
+
 
     public void ResetTargetRotation()
     {
@@ -80,4 +124,4 @@ public class CameraMove : MonoBehaviour
         Gizmos.color = Color.red;
          Gizmos.DrawLine(transform.position + Vector3.up * 0.1f, transform.position + Vector3.up * 0.1f + Vector3.down * rayLength);
     }
-}
+} 
