@@ -23,9 +23,10 @@ public class Turret : MonoBehaviour
     {
         laserLine = firePoint.GetComponent<LineRenderer>();
         laserLine.startWidth = 0.01f;  // 레이저 크기
-        laserLine.endWidth = 0.03f;
-        Material material = new Material(Shader.Find("Standard")); // 레이저 색상
-        material.color = new Color(0, 255, 0, 0f);
+        laserLine.endWidth = 0.02f;
+        laserLine.material = new Material(Shader.Find("Sprites/Default")); // 레이저 색상
+        laserLine.startColor = Color.white;
+        laserLine.endColor = Color.red;
     }
 
 
