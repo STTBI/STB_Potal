@@ -13,30 +13,50 @@ public class Turret : MonoBehaviour
     public float fireRate = 1f;  // 발사 간격
     private float nextFireTime = 0f;
 
+    private bool isDying = false; // 터렛이 죽기 직전인지 여부
+    private float dyingTimer = 3f; // 터렛이 죽기 직전 타이머
+
 
 
     void Update()
     {
-        // 플레이어를 감지할 레이저를 쏘는 부분
-        RaycastHit hit;
-        Vector3 direction = target.position - transform.position;
-
-        // 레이저를 플레이어를 향해 쏘기
-        if (Physics.Raycast(transform.position, direction.normalized, out hit, detectionRange))
+        if (!isDying)
         {
-            // 레이저가 플레이어와 충돌하면
-            if (hit.collider.transform == target)
+            // 플레이어를 감지할 레이저를 쏘는 부분
+            RaycastHit hit;
+            Vector3 direction = target.position - transform.position;
+
+            // 레이저를 플레이어를 향해 쏘기
+            if (Physics.Raycast(transform.position, direction.normalized, out hit, detectionRange))
             {
-                // 플레이어를 감지한 경우
-                RotateAndFire();
+                // 레이저가 플레이어와 충돌하면
+                if (hit.collider.transform == target)
+                {
+                    // 플레이어를 감지한 경우
+                    RotateAndFire();
+                }
             }
         }
-        // 레이저 시각적으로 그리기 (디버그용)
-        Debug.DrawRay(transform.position, direction.normalized * detectionRange, Color.red);
+        else
+        {
+            dyingTimer -= Time.deltaTime;
+            if(dyingTimer <= 0f)
+            {
+                StopTurret();
+            }
+        }
+
+        // !!테스트용 끝나고 삭제!!
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            Die();
+        }
     }
 
     void RotateAndFire()
     {
+        if (isDying) return;
+
         // 타겟을 향해 회전
         Vector3 direction = target.position - transform.position;
         direction.y = 0;  // y축 회전 안함 (수평 회전만 하게 함)
@@ -51,11 +71,26 @@ public class Turret : MonoBehaviour
             nextFireTime = Time.time + 1f / fireRate;
         }
     }
-
-    
+   
     void FireBullet()// 탄환 발사
     {
         // 발사된 탄환을 생성
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+    }
+
+    public void Die()
+    {
+        isDying = true;
+        dyingTimer = 3f;
+    }
+
+    public void StopTurret()
+    {
+        // !!테스트용 끝나고 삭제!!
+        GetComponent<Renderer>().material.color = Color.red; // 터렛 작동 중지시 빨간색
+
+        isDying = false;
+        nextFireTime = Mathf.Infinity;
+        target = null;
     }
 }
