@@ -88,7 +88,7 @@ public class MovingPlatform : MonoBehaviour
         float moveTime = Vector3.Distance(start, end)/ _moveSpeed;
 
         //start에서 end까지의 위치이동이 끝날때까지 반복
-        while(percent < 1)
+        while (percent < 1)
         {
             percent += Time.deltaTime / moveTime;
 

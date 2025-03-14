@@ -8,6 +8,7 @@ public class Ball : MonoBehaviour
 
     private Vector3 _direction; // 이동방향
     private Rigidbody _rigidbody;
+    private bool _isCatched = false; // BallCatcher에게 붙잡힌지 체크
 
     [Tooltip("공 속도")]
     public float ballSpeed = 5f;
@@ -30,8 +31,10 @@ public class Ball : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+        if (_isCatched) return;
+
         //반사 횟수가 남았다면 부딪힐때 반사
-        if(reflectCount > 0)
+        if (reflectCount > 0)
         {
             //이동방향과 반사되는 표면의 수직벡터를 이용해 반사 방향 다시 저장
             _direction = Vector3.Reflect(_direction, collision.GetContact(0).normal);
@@ -41,6 +44,14 @@ public class Ball : MonoBehaviour
         else //남은 반사횟수 없이 충돌시 Destroy
             DestroyBall();
     }
+    public void OnCatched()
+    {
+        //Catched시 속도 0, 그린 색 변경
+        _isCatched = true;
+        _rigidbody.velocity = Vector3.zero;
+        GetComponent<MeshRenderer>().material.color = Color.green;
+    }
+
     void DestroyBall()
     {
         //Destroy전에 BallDispenser에서 등록한 메서드 실행
