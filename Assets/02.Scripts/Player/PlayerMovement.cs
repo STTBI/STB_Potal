@@ -116,7 +116,5 @@ public class PlayerMovement : MonoBehaviour
         AddForceMove = Vector3.Lerp(AddForceMove, moveDirection, Time.deltaTime * 19f); // testScalar
         playerVelocity = new Vector3(velocity.x, playerVelocity.y, velocity.z);
         groundedPlayer = (controller.Move(AddForceMove * Time.deltaTime) & CollisionFlags.Below) != 0;
-
-        Debug.Log(AddForceMove);
     }
 }

@@ -493,7 +493,7 @@ GameObject:
   - component: {fileID: 810621377}
   m_Layer: 0
   m_Name: w
-  m_TagString: Untagged
+  m_TagString: Walkable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -598,7 +598,7 @@ GameObject:
   - component: {fileID: 970220828}
   m_Layer: 8
   m_Name: Cube
-  m_TagString: Ground
+  m_TagString: Walkable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -741,6 +741,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 133094219123384922, guid: d0689f0ed773ba44c9c767ac19d6156c, type: 3}
+      propertyPath: m_Height
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 133094219123384922, guid: d0689f0ed773ba44c9c767ac19d6156c, type: 3}
+      propertyPath: m_Center.y
+      value: 0.85
+      objectReference: {fileID: 0}
     - target: {fileID: 3796558217563571194, guid: d0689f0ed773ba44c9c767ac19d6156c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -783,7 +791,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4480565245109050528, guid: d0689f0ed773ba44c9c767ac19d6156c, type: 3}
       propertyPath: DistanceToGround
-      value: 0.32
+      value: 0.219
+      objectReference: {fileID: 0}
+    - target: {fileID: 4480565245109050528, guid: d0689f0ed773ba44c9c767ac19d6156c, type: 3}
+      propertyPath: IgnoreLayer.m_Bits
+      value: 3221226423
       objectReference: {fileID: 0}
     - target: {fileID: 5113316026932436571, guid: d0689f0ed773ba44c9c767ac19d6156c, type: 3}
       propertyPath: m_Name

@@ -12,12 +12,11 @@ public class IKFootPlacement : MonoBehaviour
     private float weightLeftIK = 0;
     private float weightRightIK = 0;
 
-
     private void Start()
     {
         anim = GetComponent<Animator>();
-
     }
+
 
     private void OnAnimatorIK(int layerIndex)
     {
@@ -28,14 +27,15 @@ public class IKFootPlacement : MonoBehaviour
 
             RaycastHit hit;
             Ray ray = new Ray(anim.GetIKPosition(AvatarIKGoal.LeftFoot) + Vector3.up, Vector3.down);
-            if(Physics.Raycast(ray, out hit, DistanceToGround + 1f, IgnoreLayer))
+            if(Physics.Raycast(ray, out hit, DistanceToGround + 2f, IgnoreLayer))
             {
-                if(hit.transform.tag == "Walkable")
+                if(hit.transform.CompareTag("Walkable"))
                 {
                     weightLeftIK = 1f;
-                    Vector3 footPosition = hit.point;
-                    footPosition.y += DistanceToGround;
-                    anim.SetIKPosition(AvatarIKGoal.LeftFoot, footPosition);
+
+                    Vector3 hitPosition = hit.point;
+                    hitPosition.y += DistanceToGround;
+                    anim.SetIKPosition(AvatarIKGoal.LeftFoot, hitPosition);
                     anim.SetIKRotation(AvatarIKGoal.LeftFoot, Quaternion.LookRotation(transform.forward, hit.normal));
                 }
             }
@@ -48,14 +48,15 @@ public class IKFootPlacement : MonoBehaviour
             anim.SetIKRotationWeight(AvatarIKGoal.RightFoot, weightRightIK);
 
             ray = new Ray(anim.GetIKPosition(AvatarIKGoal.RightFoot) + Vector3.up, Vector3.down);
-            if (Physics.Raycast(ray, out hit, DistanceToGround + 1f, IgnoreLayer))
+            if (Physics.Raycast(ray, out hit, DistanceToGround + 2f, IgnoreLayer))
             {
-                if(hit.transform.tag == "Walkable")
+                if(hit.transform.CompareTag("Walkable"))
                 {
                     weightRightIK = 1f;
-                    Vector3 footPosition = hit.point;
-                    footPosition.y += DistanceToGround;
-                    anim.SetIKPosition(AvatarIKGoal.RightFoot, footPosition);
+
+                    Vector3 hitPosition = hit.point;
+                    hitPosition.y += DistanceToGround;
+                    anim.SetIKPosition(AvatarIKGoal.RightFoot, hitPosition);
                     anim.SetIKRotation(AvatarIKGoal.RightFoot, Quaternion.LookRotation(transform.forward, hit.normal));
                 }
             }
