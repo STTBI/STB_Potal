@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(CapsuleCollider))]  // CapsuleCollider로 변경
 public class Portal : MonoBehaviour
 {
     [field: SerializeField]
@@ -28,14 +28,13 @@ public class Portal : MonoBehaviour
 
     // 컴포넌트들.
     public Renderer Renderer { get; private set; }
-    private new BoxCollider collider;
+    private new CapsuleCollider collider;  // CapsuleCollider로 변경
 
     private void Awake()
     {
-        // BoxCollider와 Renderer 컴포넌트를 가져옴.
-        collider = GetComponent<BoxCollider>();
+        // CapsuleCollider와 Renderer 컴포넌트를 가져옴.
+        collider = GetComponent<CapsuleCollider>();
         Renderer = GetComponent<Renderer>();
-
     }
 
     private void Start()
@@ -67,9 +66,7 @@ public class Portal : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-    
         // 포탈에 들어온 물체 처리.
-        
         var obj = other.GetComponent<PortalableObject>();
         if (obj != null)
         {
@@ -231,7 +228,7 @@ public class Portal : MonoBehaviour
         };
 
         // 포탈이 벽과 겹치지 않는지 확인.
-        var intersections = Physics.OverlapBox(checkPositions[0], checkExtents, testTransform.rotation, placementMask);
+        var intersections = Physics.OverlapCapsule(checkPositions[0], checkPositions[1], 0.05f, placementMask); // OverlapBox에서 OverlapCapsule로 변경
 
         if(intersections.Length > 1)
         {
@@ -246,16 +243,7 @@ public class Portal : MonoBehaviour
             }
         }
 
-        // 포탈의 모서리가 벽과 겹치지 않는지 확인.
-        bool isOverlapping = true;
-
-        for(int i = 1; i < checkPositions.Length - 1; ++i)
-        {
-            isOverlapping &= Physics.Linecast(checkPositions[i], 
-                checkPositions[i] + checkPositions[checkPositions.Length - 1], placementMask);
-        }
-
-        return isOverlapping;
+        return true;
     }
 
     // 포탈을 제거.

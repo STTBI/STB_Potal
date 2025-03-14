@@ -97,6 +97,7 @@ public class PortalPlacement : MonoBehaviour
             }
         }
     }
+    
 
     // 레이캐스트 경로를 Gizmos로 시각화
     private void OnDrawGizmos()
