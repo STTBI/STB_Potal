@@ -25,15 +25,13 @@ public class PlayerMoveState : PlayerGroundedState
 
         player.MoveMent.ApplyMovement();
 
-        player.animBody.SetFloat("VelocityX", player.MoveMent.Direction.x);
-        player.animBody.SetFloat("VelocityY", player.MoveMent.Direction.y);
+        player.animBody.SetFloat("VelocityX", player.MoveMent.Direction.x * player.MoveMent.AddForceMove.magnitude);
+        player.animBody.SetFloat("VelocityY", player.MoveMent.Direction.y * player.MoveMent.AddForceMove.magnitude);
 
-        player.animShadow.SetFloat("VelocityX", player.MoveMent.Direction.x);
-        player.animShadow.SetFloat("VelocityY", player.MoveMent.Direction.y);
-        
-        Debug.Log(charCtrl.velocity.x);
+        player.animShadow.SetFloat("VelocityX", player.MoveMent.Direction.x * player.MoveMent.AddForceMove.magnitude);
+        player.animShadow.SetFloat("VelocityY", player.MoveMent.Direction.y * player.MoveMent.AddForceMove.magnitude);
 
-        if (InputManager.Instance.GetPlayerMovement().magnitude < 0.2f)
+        if (player.MoveMent.AddForceMove.magnitude == 0f)
             stateMachine.ChangeState(stateSystem.IdleState);
     }
 }

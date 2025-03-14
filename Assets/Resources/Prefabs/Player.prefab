@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5936631221908812956}
   - component: {fileID: 7244339996950415351}
+  - component: {fileID: 4480565245109050528}
   m_Layer: 4
   m_Name: PlayerArmature
   m_TagString: Player
@@ -55,6 +56,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4480565245109050528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 39836138722849452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac6f65f9c59e62248ab9b12a8652aa13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IgnoreLayer:
+    serializedVersion: 2
+    m_Bits: 3221227447
+  DistanceToGround: 0.2
 --- !u!1 &60609249537973399
 GameObject:
   m_ObjectHideFlags: 0
@@ -2172,6 +2189,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4904867807339041867}
   - component: {fileID: 5546196845135668803}
+  - component: {fileID: 8893349757574465151}
   m_Layer: 6
   m_Name: PlayerArmature
   m_TagString: Player
@@ -2217,6 +2235,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8893349757574465151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3899150705710136082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac6f65f9c59e62248ab9b12a8652aa13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IgnoreLayer:
+    serializedVersion: 2
+    m_Bits: 3221227447
+  DistanceToGround: 0
 --- !u!1 &4047234232004928128
 GameObject:
   m_ObjectHideFlags: 0
@@ -3340,7 +3374,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0.89, z: 0}
+  m_Center: {x: 0, y: 0.98, z: 0}
 --- !u!54 &11634906585886286
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3380,6 +3414,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e47c7d7a4c920134ba2c9ade4f3b4de8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animShadow: {fileID: 5546196845135668803}
+  animBody: {fileID: 7244339996950415351}
 --- !u!114 &-1826385990664740145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3392,9 +3428,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0b5d2e0af18f5b4aaf1a6857edc0578, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backWalkSpeed: 2
-  sideWalkSpeed: 3
-  frontWalkSpeed: 4
+  backWalkSpeed: 3
+  sideWalkSpeed: 2
+  frontWalkSpeed: 3
   RunSpeed: 5
   jumpHeight: 2
   gravityValue: -9.81

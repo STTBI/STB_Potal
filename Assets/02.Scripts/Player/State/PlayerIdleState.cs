@@ -22,6 +22,9 @@ public class PlayerIdleState : PlayerGroundedState
     {
         base.Update();
 
+        if (player.MoveMent.AddForceMove.magnitude > 0)
+            player.MoveMent.AddForceMove = Vector3.Lerp(player.MoveMent.AddForceMove, Vector3.zero, Time.deltaTime);
+
         if (InputManager.Instance.GetPlayerMovement().magnitude > 0)
             stateMachine.ChangeState(stateSystem.MoveState);
     }

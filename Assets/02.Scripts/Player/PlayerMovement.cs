@@ -30,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 moveDirection;
     
     public float CurrentSpeed { get; private set; }
+    public Vector3 AddForceMove { get; set; } = Vector3.zero;
     public Vector3 Direction { get; private set; }
 
     private void OnValidate()
@@ -59,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // 경사면 체크
-    private bool IsOnSlope()
+    public bool IsOnSlope()
     {
         Ray ray = new Ray(transform.position, Vector3.down);
         if(Physics.Raycast(ray, out slopeHit, RAY_DISTANCE, groundLayer))
@@ -111,7 +112,11 @@ public class PlayerMovement : MonoBehaviour
         moveDirection = transform.TransformDirection(moveDirection) * CurrentSpeed;
         Vector3 velocity = isOnSlope ? AdjustDirectionToSlope(moveDirection) * CurrentSpeed : moveDirection;
         velocity = velocity * Time.deltaTime;
+        
+        AddForceMove = Vector3.Lerp(AddForceMove, moveDirection, Time.deltaTime * 19f); // testScalar
         playerVelocity = new Vector3(velocity.x, playerVelocity.y, velocity.z);
-        groundedPlayer = (controller.Move(velocity) & CollisionFlags.Below) != 0;
+        groundedPlayer = (controller.Move(AddForceMove * Time.deltaTime) & CollisionFlags.Below) != 0;
+
+        Debug.Log(AddForceMove);
     }
 }
