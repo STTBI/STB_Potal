@@ -79,6 +79,8 @@ public class Portal : MonoBehaviour
                 if(cameraMove.currentVelocity.magnitude > 10f)
                 {
                     cameraMove.isInPortal = true;
+                }else{
+                    cameraMove.isWalkInPortal = true;
                 }
             }
         }
@@ -94,7 +96,13 @@ public class Portal : MonoBehaviour
             portalObjects.Remove(obj);
             obj.ExitPortal(wallCollider);
         }
-    }
+        if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                CameraMove cameraMove = other.GetComponent<CameraMove>();
+                
+                cameraMove.isWalkInPortal = false;
+            }
+            }
 
     // 포탈을 배치할 수 있는지 확인 후, 배치가 가능하면 포탈을 배치.
     public bool PlacePortal(Collider wallCollider, Vector3 pos, Quaternion rot)

@@ -607,8 +607,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rayDistance: 7
-  handleDistance: 3
-  handleSpeed: 8
+  handleDistance: 2.4
+  handleSpeed: 10
+  isGrab: 0
 --- !u!1 &288914031
 GameObject:
   m_ObjectHideFlags: 0

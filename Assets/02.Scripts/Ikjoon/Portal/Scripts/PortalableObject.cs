@@ -87,6 +87,7 @@ public class PortalableObject : MonoBehaviour
     {
         this.inPortal = inPortal;  // 입력 포탈
         this.outPortal = outPortal;  // 출력 포탈
+        
         IsInPortal = true;
 
         // 포탈 벽과 충돌하지 않도록 처리

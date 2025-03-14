@@ -23,6 +23,7 @@ public class CameraMove : MonoBehaviour
     private Vector3 moveVector = Vector3.zero;
     private float moveY = 0.0f;
     public bool isInPortal = false;
+    public bool isWalkInPortal = false;
     
     
 
