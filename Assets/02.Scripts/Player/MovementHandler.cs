@@ -5,17 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class MovementHandler : MonoBehaviour
 {
-    public Rigidbody Rigid { get; private set; }
-
-    [Header("Move")]
-    #region MoveData
-    [SerializeField] private float backWalkSpeed;
-    [SerializeField] private float sideWalkSpeed;
-    [SerializeField] private float frontWalkSpeed;
-    [SerializeField] private float RunSpeed;
-    [SerializeField] private float jumpHeight;
-    #endregion
-
     [Header("Slope")]
     #region SlopeData
     [SerializeField] private float rayDistance;
@@ -31,29 +20,12 @@ public class MovementHandler : MonoBehaviour
     #endregion
 
     // 프로퍼티
-    public Vector3 Direction { get; private set; }
-    public float CurrentSpeed { get; private set; }
+    public Vector3 Direction { get; set; }
+    public float CurrentSpeed { get; set; }
 
     private bool CheckGround()
     {
         return Physics.CheckBox(checkGround.position, checkSize, Quaternion.identity, whatIsGround);
-    }
-
-    private void Update()
-    {
-        if (CheckGround())
-            Debug.Log("Check");
-    }
-
-    // 현재 스피드 변경
-    private void ChangeSpeed()
-    {
-        if (Direction.y > 0f)
-            CurrentSpeed = frontWalkSpeed;
-        else if (Direction.y < 0f)
-            CurrentSpeed = backWalkSpeed;
-        else if (Direction.x != 0f)
-            CurrentSpeed = sideWalkSpeed;
     }
 
     // 경사면 체크

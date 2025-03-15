@@ -1,18 +1,18 @@
 ﻿using Unity.VisualScripting;
 using UnityEngine;
 
-[RequireComponent(typeof(MovementHandler))]
+[RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerStateSystem))]
 public class PlayerController : MonoBehaviour
 {
     // 플레이어 인풋 시스템
-    public Player_AC PlayerAC { get; private set; }
+    private PlayerInput playerInput;
 
     // 유니티 컴포넌트
     public Rigidbody Rigid { get; private set; }
 
     // 스크립트 컴포넌트
-    public MovementHandler Movement { get; private set; }
+    public PlayerMovement Movement { get; private set; }
     public PlayerStateSystem StateSystem { get; private set; }
 
     private void OnValidate()
@@ -22,6 +22,27 @@ public class PlayerController : MonoBehaviour
 
         // 스크립트 컴포넌트
         StateSystem = GetComponent<PlayerStateSystem>();
-        Movement = GetComponent<MovementHandler>();
+        Movement = GetComponent<PlayerMovement>();
+
+        // 일반 스크립트
+        playerInput = new PlayerInput(this);
+    }
+
+    // 플레이어 입력 이벤트 관리
+    private void Awake()
+    {
+        // 인풋 시스템 초기화
+        playerInput.Initionalize();
+    }
+
+    private void OnEnable()
+    {
+        playerInput.Enable();
+        
+    }
+
+    private void OnDisable()
+    {
+        playerInput.Disable();
     }
 }

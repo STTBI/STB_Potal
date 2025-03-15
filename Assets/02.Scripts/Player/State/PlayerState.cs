@@ -11,6 +11,7 @@ public class PlayerState
     protected PlayerController player;
     protected MovementHandler movement;
     protected PlayerStateSystem stateSystem;
+    protected Player_AC inputAction;
 
     // 유한 상태 기계
     protected string animName;
@@ -25,6 +26,7 @@ public class PlayerState
         stateMachine = _stateMachine;
         animName = _animName;
 
+        inputAction = player.PlayerAC;
         movement = player.Movement;
         stateSystem = player.StateSystem;
 

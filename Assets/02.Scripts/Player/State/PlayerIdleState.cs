@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerIdleState : PlayerState
 {
-    public PlayerIdleState(PlayerController _player, StateMachine _stateMachine, string _animName, PlayerStateSystem _stateSystem) : base(_player, _stateMachine, _animName, _stateSystem)
+    public PlayerIdleState(PlayerController _player, StateMachine _stateMachine, string _animName) : base(_player, _stateMachine, _animName)
     {
     }
 
