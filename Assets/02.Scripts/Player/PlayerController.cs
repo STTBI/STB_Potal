@@ -1,18 +1,27 @@
-using Unity.VisualScripting;
+﻿using Unity.VisualScripting;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(MovementHandler))]
 [RequireComponent(typeof(PlayerStateSystem))]
 public class PlayerController : MonoBehaviour
 {
-    public PlayerMovement MoveMent { get; set; }
-    public PlayerStateSystem StateSystem { get; set; }
+    // 플레이어 인풋 시스템
+    public Player_AC PlayerAC { get; private set; }
 
-    public Animator animShadow;
-    public Animator animBody;
+    // 유니티 컴포넌트
+    public Rigidbody Rigid { get; private set; }
+
+    // 스크립트 컴포넌트
+    public MovementHandler Movement { get; private set; }
+    public PlayerStateSystem StateSystem { get; private set; }
+
     private void OnValidate()
     {
-        MoveMent = GetComponent<PlayerMovement>();
+        // 유니티 컴포넌트
+        Rigid = GetComponent<Rigidbody>();
+
+        // 스크립트 컴포넌트
         StateSystem = GetComponent<PlayerStateSystem>();
+        Movement = GetComponent<MovementHandler>();
     }
 }

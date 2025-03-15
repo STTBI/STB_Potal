@@ -1,10 +1,10 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerIdleState : PlayerGroundedState
+public class PlayerIdleState : PlayerState
 {
-    public PlayerIdleState(PlayerController _player, StateMachine _stateMachine, CharacterController _charCtrl, string _animName, PlayerStateSystem _stateSystem) : base(_player, _stateMachine, _charCtrl, _animName, _stateSystem)
+    public PlayerIdleState(PlayerController _player, StateMachine _stateMachine, string _animName, PlayerStateSystem _stateSystem) : base(_player, _stateMachine, _animName, _stateSystem)
     {
     }
 
@@ -18,14 +18,13 @@ public class PlayerIdleState : PlayerGroundedState
         base.Exit();
     }
 
+    public override void FixedUpdate()
+    {
+        base.FixedUpdate();
+    }
+
     public override void Update()
     {
         base.Update();
-
-        if (player.MoveMent.AddForceMove.magnitude > 0)
-            player.MoveMent.AddForceMove = Vector3.Lerp(player.MoveMent.AddForceMove, Vector3.zero, Time.deltaTime);
-
-        if (InputManager.Instance.GetPlayerMovement().magnitude > 0)
-            stateMachine.ChangeState(stateSystem.MoveState);
     }
 }

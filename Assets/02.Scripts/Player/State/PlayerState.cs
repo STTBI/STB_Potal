@@ -1,43 +1,53 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerState
 {
+    // 유니티 컴포넌트
+    protected Rigidbody rigid;
+
+    // 스크립트 컴포넌트
     protected PlayerController player;
-    protected string animName;
-    protected StateMachine stateMachine;
+    protected MovementHandler movement;
     protected PlayerStateSystem stateSystem;
 
-    protected CharacterController charCtrl;
+    // 유한 상태 기계
+    protected string animName;
+    protected StateMachine stateMachine;
 
-    protected float timer;
+    // 행동 타이머
+    protected float stateTimer;
 
-    public PlayerState(PlayerController _player, StateMachine _stateMachine, CharacterController _charCtrl, string _animName, PlayerStateSystem _stateSystem)
+    public PlayerState(PlayerController _player, StateMachine _stateMachine, string _animName)
     {
         player = _player;
         stateMachine = _stateMachine;
-        charCtrl = _charCtrl;
         animName = _animName;
-        stateSystem = _stateSystem;
+
+        movement = player.Movement;
+        stateSystem = player.StateSystem;
+
+        rigid = player.Rigid;
     }
 
     public virtual void Enter()
     {
-        player.animBody.SetBool(animName, true);
-        player.animShadow.SetBool(animName, true);
+
+    }
+
+    public virtual void FixedUpdate()
+    {
+
     }
 
     public virtual void Update()
     {
-        timer -= Time.deltaTime;
-        player.MoveMent.ApplyGravity();
-        player.MoveMent.ApplyMovement();
+        stateTimer -= Time.deltaTime;
     }
 
     public virtual void Exit()
     {
-        player.animBody.SetBool(animName, false);
-        player.animShadow.SetBool(animName, false);
+
     }
 }
