@@ -17,6 +17,7 @@ public class PlayerInput
     {
         playerAC.Player.Movement.performed += ctx => movement.Direction = ctx.ReadValue<Vector2>();
         playerAC.Player.Movement.canceled += ctx => movement.Direction = Vector2.zero;
+        playerAC.Player.Jump.started += ctx => movement.CanJump();
     }
 
     public void Enable()

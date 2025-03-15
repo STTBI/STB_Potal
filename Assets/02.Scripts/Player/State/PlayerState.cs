@@ -9,9 +9,8 @@ public class PlayerState
 
     // 스크립트 컴포넌트
     protected PlayerController player;
-    protected MovementHandler movement;
+    protected PlayerMovement movement;
     protected PlayerStateSystem stateSystem;
-    protected Player_AC inputAction;
 
     // 유한 상태 기계
     protected string animName;
@@ -26,7 +25,6 @@ public class PlayerState
         stateMachine = _stateMachine;
         animName = _animName;
 
-        inputAction = player.PlayerAC;
         movement = player.Movement;
         stateSystem = player.StateSystem;
 
@@ -40,7 +38,7 @@ public class PlayerState
 
     public virtual void FixedUpdate()
     {
-
+        movement.OnMove(rigid);
     }
 
     public virtual void Update()

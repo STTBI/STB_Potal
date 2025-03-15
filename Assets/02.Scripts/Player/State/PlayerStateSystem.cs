@@ -12,7 +12,7 @@ public class PlayerStateSystem : MonoBehaviour
     public Animator animShadow;
     #endregion
 
-    public StateMachine stateMachine { get; set; }
+    public StateMachine stateMachine { get; private set; }
     public PlayerIdleState IdleState { get; private set; }
 
     public PlayerMoveState MoveState { get; private set; }
@@ -24,8 +24,8 @@ public class PlayerStateSystem : MonoBehaviour
         stateMachine = new StateMachine();
 
         #region State
-        IdleState = new PlayerIdleState(player, stateMachine, "Idle", this);
-        MoveState = new PlayerMoveState(player, stateMachine, "Move", this);
+        IdleState = new PlayerIdleState(player, stateMachine, "Idle");
+        MoveState = new PlayerMoveState(player, stateMachine, "Move");
         #endregion
     }
 

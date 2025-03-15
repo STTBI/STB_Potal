@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerGroundedState : PlayerState
 {
-    public PlayerGroundedState(PlayerController _player, StateMachine _stateMachine, string _animName, PlayerStateSystem _stateSystem) : base(_player, _stateMachine, _animName, _stateSystem)
+    public PlayerGroundedState(PlayerController _player, StateMachine _stateMachine, string _animName) : base(_player, _stateMachine, _animName)
     {
     }
 
@@ -21,10 +22,12 @@ public class PlayerGroundedState : PlayerState
     public override void FixedUpdate()
     {
         base.FixedUpdate();
+        movement.OnJump(rigid);
     }
 
     public override void Update()
     {
         base.Update();
+        movement.ChangeSpeed();
     }
 }

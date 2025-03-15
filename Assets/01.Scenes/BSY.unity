@@ -1202,6 +1202,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85af34451f5dfaf45ab5e5d9f803ef72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animBody: {fileID: 7244339996137156820}
+  animShadow: {fileID: 5546196844909859168}
 --- !u!1 &705035435295763608
 GameObject:
   m_ObjectHideFlags: 0
@@ -3845,7 +3847,7 @@ GameObject:
   - component: {fileID: 5113316026671704442}
   - component: {fileID: 961470465228264362}
   - component: {fileID: 694739756315409061}
-  - component: {fileID: 5113316026671704441}
+  - component: {fileID: 5113316026671704444}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -3853,30 +3855,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &5113316026671704441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5113316026671704440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0b5d2e0af18f5b4aaf1a6857edc0578, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  backWalkSpeed: 3
-  sideWalkSpeed: 4
-  frontWalkSpeed: 5
-  RunSpeed: 7
-  jumpHeight: 10
-  rayDistance: 0
-  maxSlope: 0
-  checkSize: {x: 0.38, y: 0.13, z: 0.33}
-  checkGround: {fileID: 567893534}
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!54 &5113316026671704442
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3902,7 +3880,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &5113316026671704443
 CapsuleCollider:
@@ -3911,7 +3889,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5113316026671704440}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 52a3bf7b3ebc540408d570cd0450c8ab, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -3927,6 +3905,30 @@ CapsuleCollider:
   m_Height: 1.79
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!114 &5113316026671704444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5113316026671704440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 318c0f0417906b54fb99072ed68c3dec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rayDistance: 5
+  maxSlope: 45
+  checkSize: {x: 0.38, y: 0.12, z: 0.33}
+  checkGround: {fileID: 567893534}
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 256
+  backWalkSpeed: 3
+  sideWalkSpeed: 4
+  frontWalkSpeed: 5
+  RunSpeed: 7
+  jumpHeight: 5
 --- !u!4 &5206356309141746219
 Transform:
   m_ObjectHideFlags: 0

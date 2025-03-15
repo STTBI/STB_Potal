@@ -9,7 +9,7 @@ public class MovementHandler : MonoBehaviour
     #region SlopeData
     [SerializeField] private float rayDistance;
     [SerializeField] private float maxSlope;
-    [SerializeField] private RaycastHit slopeHit;
+    protected RaycastHit slopeHit;
     #endregion
 
     [Header("Collision")]
@@ -23,7 +23,7 @@ public class MovementHandler : MonoBehaviour
     public Vector3 Direction { get; set; }
     public float CurrentSpeed { get; set; }
 
-    private bool CheckGround()
+    public bool CheckGround()
     {
         return Physics.CheckBox(checkGround.position, checkSize, Quaternion.identity, whatIsGround);
     }
@@ -42,7 +42,7 @@ public class MovementHandler : MonoBehaviour
     }
 
     // 방향 벡터 추출
-    private Vector3 AdjustDirectionToSlope(Vector3 direction)
+    public Vector3 AdjustDirectionToSlope(Vector3 direction)
     {
         return Vector3.ProjectOnPlane(direction, slopeHit.normal).normalized;
     }
