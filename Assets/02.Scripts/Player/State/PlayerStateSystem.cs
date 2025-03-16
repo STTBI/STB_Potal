@@ -10,12 +10,14 @@ public class PlayerStateSystem : MonoBehaviour
     #region Animator
     public Animator animBody;
     public Animator animShadow;
+    public Animator animArms;
     #endregion
 
     public StateMachine stateMachine { get; private set; }
     public PlayerIdleState IdleState { get; private set; }
 
     public PlayerMoveState MoveState { get; private set; }
+    public PlayerAirState AirState { get; private set; }
 
 
     private void Awake()
@@ -26,6 +28,7 @@ public class PlayerStateSystem : MonoBehaviour
         #region State
         IdleState = new PlayerIdleState(player, stateMachine, "Idle");
         MoveState = new PlayerMoveState(player, stateMachine, "Move");
+        AirState = new PlayerAirState(player, stateMachine, "IsJump");
         #endregion
     }
 
@@ -42,5 +45,26 @@ public class PlayerStateSystem : MonoBehaviour
     private void Update()
     {
         stateMachine.CurrentState.Update();
+    }
+
+    public void SetTrigger(string animName)
+    {
+        animBody.SetTrigger(animName);
+        animShadow.SetTrigger(animName);
+        animArms.SetTrigger(animName);
+    }
+
+    public void SetFloat(string valueName, float value)
+    {
+        animBody.SetFloat(valueName, value);
+        animShadow.SetFloat(valueName, value);
+        animArms.SetFloat(valueName, value);
+    }
+
+    public void SetBool(string boolName, bool value)
+    {
+        animBody.SetBool(boolName, value);
+        animShadow.SetBool(boolName, value);
+        animArms.SetBool(boolName, value);
     }
 }

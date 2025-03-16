@@ -22,12 +22,19 @@ public class PlayerGroundedState : PlayerState
     public override void FixedUpdate()
     {
         base.FixedUpdate();
-        movement.OnJump(rigid);
+        if(movement.OnJump(rigid))
+        {
+            stateSystem.SetTrigger("Jump");
+            stateMachine.ChangeState(stateSystem.AirState);
+            return;
+        }    
     }
 
     public override void Update()
     {
         base.Update();
         movement.ChangeSpeed();
+        stateSystem.SetFloat("DirX", movement.Direction.x);
+        stateSystem.SetFloat("DirY", movement.Direction.y);
     }
 }

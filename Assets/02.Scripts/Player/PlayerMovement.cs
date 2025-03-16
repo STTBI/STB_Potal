@@ -40,7 +40,7 @@ public class PlayerMovement : MovementHandler
             CurrentSpeed = sideWalkSpeed;
     }
 
-    public void OnMove(Rigidbody rigid)
+    public bool OnMove(Rigidbody rigid)
     {
         bool onSlope = IsOnSlope(); // 경사면 체크
         moveDirection = Vector3.right * Direction.x + Vector3.forward * Direction.y;
@@ -59,19 +59,24 @@ public class PlayerMovement : MovementHandler
         {
             rigid.velocity = new Vector3(moveDirection.x * CurrentSpeed, rigid.velocity.y, moveDirection.z * CurrentSpeed);
         }
+
+        return Direction.magnitude > 0f;
     }
 
     public void StopMove(Rigidbody rigid)
     {
         rigid.velocity = Vector3.up * rigid.velocity.y;
     }
-    public void OnJump(Rigidbody rigid)
+    public bool OnJump(Rigidbody rigid)
     {
         if(IsJump)
         {
             rigid.AddForce(Vector3.up * (IsOnSlope() ? jumpSlopeHeight : jumpHeight), ForceMode.Impulse);
             IsJump = false;
+            return true;
         }
+
+        return false;
     }
 
     public void CanJump()

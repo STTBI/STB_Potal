@@ -38,12 +38,18 @@ public class PlayerState
 
     public virtual void FixedUpdate()
     {
-        movement.OnMove(rigid);
+        stateSystem.SetBool("Move", movement.OnMove(rigid));
     }
 
     public virtual void Update()
     {
         stateTimer -= Time.deltaTime;
+
+        if(rigid.velocity.y < 0f)
+        {
+            stateMachine.ChangeState(stateSystem.AirState);
+            return;
+        }
     }
 
     public virtual void Exit()
