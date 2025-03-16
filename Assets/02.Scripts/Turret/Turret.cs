@@ -19,6 +19,11 @@ public class Turret : MonoBehaviour
 
     private LineRenderer laserLine; // 레이저를 나타내는 라인랜더러
 
+    public float maxRotationAngle = 30f; // 터렛이 회전할 수 있는 최대 각도
+
+    private bool isLifted = false; // 플레이어가 터렛을 들었는지 여부
+    private Vector3 liftOffset = new Vector3(0, 3f, 0); // 터렛이 플레이어에게 들릴 때
+
     void Start()
     {
         laserLine = firePoint.GetComponent<LineRenderer>();
@@ -32,43 +37,80 @@ public class Turret : MonoBehaviour
 
     void Update()
     {
-        if (!isDying)
+        // "E" 키로 터렛을 드는 기능
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            // 플레이어를 감지할 레이저를 쏘는 부분
-            RaycastHit hit;
-            Vector3 direction = target.position - transform.position;
+            LiftTurretByPlayer();
+        }
 
-            // 레이저를 플레이어를 향해 쏘기
-            if (Physics.Raycast(transform.position, direction.normalized, out hit, detectionRange))
+        // "Q" 키로 터렛을 놓는 기능
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            DropTurret();
+        }
+
+        if (isLifted)
+        {
+            // 플레이어 위치에 맞춰 터렛을 이동
+            LiftTurret();
+        }
+        else
+        {
+            if (!isDying)
             {
-                // 레이저가 플레이어와 충돌하면
-                if (hit.collider.transform == target)
+                // 플레이어를 감지할 레이저를 쏘는 부분
+                RaycastHit hit;
+                Vector3 direction = target.position - transform.position;
+
+                // 정면에서만 감지하게 각도 조절
+                float angle = Vector3.Angle(transform.forward, direction);
+                if (angle <= maxRotationAngle)
                 {
-                    // 플레이어를 감지한 경우
-                    RotateAndFire();
-                    DrawLaser(hit.point); // 레이저 그리기
+                    // 레이저를 플레이어를 향해 쏘기
+                    if (Physics.Raycast(transform.position, direction.normalized, out hit, detectionRange))
+                    {
+                        // 레이저가 플레이어와 충돌하면
+                        if (hit.collider.transform == target)
+                        {
+                            // 플레이어를 감지한 경우
+                            RotateAndFire();
+                            DrawLaser(hit.point); // 레이저 그리기
+                        }
+                    }
+                    else
+                    {
+                        laserLine.enabled = false; // 플레이어 감지 못하면 레이저x
+                    }
+                }
+                else
+                {
+                    laserLine.enabled = false; // 정해진 각도 외에 플레이어 감지x
                 }
             }
             else
             {
-                laserLine.enabled = false; // 플레이어 감지 못하면 레이저x
+                dyingTimer -= Time.deltaTime;
+
+                if (dyingTimer <= 0f)
+                {
+                    RotateAndFire(); // 죽기 직전까지 공격 
+                    DrawLaser(target.position);
+                }
+                else
+                {
+                    StopTurret(); // 터렛 중지
+                }
             }
         }
-        else
+    }
+
+    void LiftTurret()
+    {
+        if (target != null)
         {
-            dyingTimer -= Time.deltaTime;
-
-            if(dyingTimer <= 0f)
-            {
-                RotateAndFire(); // 죽기 직전까지 공격 
-                DrawLaser(target.position);
-            }
-            else
-            {
-                StopTurret(); // 터렛 중지
-            }
+            // 플레이어에게 터렛이 들린 상태에서 플레이어 위치에 따라 이동
+            transform.position = target.position + liftOffset;
         }
-
     }
 
     void DrawLaser(Vector3 tartgetposition)
@@ -88,7 +130,7 @@ public class Turret : MonoBehaviour
 
         // 타겟을 향해 회전
         Vector3 direction = target.position - transform.position;
-        direction.y = 0;  // y축 회전 안함 (수평 회전만 하게 함)
+        direction.y = 0;  // y축 회전 안함
 
         Quaternion targetRotation = Quaternion.LookRotation(direction);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
@@ -101,7 +143,7 @@ public class Turret : MonoBehaviour
         }
     }
    
-    void FireBullet()// 탄환 발사
+    void FireBullet() // 탄환 발사
     {
         // 발사된 탄환을 생성
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
@@ -113,5 +155,15 @@ public class Turret : MonoBehaviour
         isDying = false;
         nextFireTime = Mathf.Infinity;
         laserLine.enabled = false; // 레이저 비활성화
+    }
+
+    public void LiftTurretByPlayer()
+    {
+        isLifted = true; // 터렛이 들린 상태
+    }
+
+    public void DropTurret()
+    {
+        isLifted = false; // 터렛을 내려놓을 때
     }
 }
