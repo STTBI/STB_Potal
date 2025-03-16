@@ -5,7 +5,7 @@ using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEditor.Build;
 using UnityEngine;
 
-public class TriggerButton : MonoBehaviour, ITriggerObject
+public class TriggerableButton : MonoBehaviour, ITriggerObject
 {
     [SerializeField] private Animator buttonAnim;
     private static readonly int IsPressed = Animator.StringToHash("IsPressed"); // 미리 해시 값 저장
