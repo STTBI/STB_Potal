@@ -38,9 +38,9 @@ public partial class @Player_AC: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Jump"",
-                    ""type"": ""Button"",
+                    ""type"": ""TriggerButton"",
                     ""id"": ""ed7658b5-8a1c-47d9-8ecf-e0445629f564"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""TriggerButton"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
