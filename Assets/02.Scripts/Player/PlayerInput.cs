@@ -5,12 +5,15 @@ using UnityEngine;
 public class PlayerInput
 {
     Player_AC playerAC;
+
     PlayerMovement movement;
+    PlayerCameraLook cameraLook;
 
     public PlayerInput(PlayerController player)
     {
         playerAC = new Player_AC();
         movement = player.Movement;
+        cameraLook = player.CameraLook;
     }
 
     public void Initionalize()
@@ -18,6 +21,8 @@ public class PlayerInput
         playerAC.Player.Movement.performed += ctx => movement.Direction = ctx.ReadValue<Vector2>();
         playerAC.Player.Movement.canceled += ctx => movement.Direction = Vector2.zero;
         playerAC.Player.Jump.started += ctx => movement.CanJump();
+
+        playerAC.Player.Look.performed += ctx => cameraLook.Direction = ctx.ReadValue<Vector2>();
     }
 
     public void Enable()

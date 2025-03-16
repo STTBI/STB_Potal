@@ -1,4 +1,5 @@
-﻿using Unity.VisualScripting;
+﻿using Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerMovement))]
@@ -14,6 +15,7 @@ public class PlayerController : MonoBehaviour
     // 스크립트 컴포넌트
     public PlayerMovement Movement { get; private set; }
     public PlayerStateSystem StateSystem { get; private set; }
+    public PlayerCameraLook CameraLook { get; private set; }
 
     private void OnValidate()
     {
@@ -23,6 +25,8 @@ public class PlayerController : MonoBehaviour
         // 스크립트 컴포넌트
         StateSystem = GetComponent<PlayerStateSystem>();
         Movement = GetComponent<PlayerMovement>();
+        CameraLook = GetComponentInChildren<PlayerCameraLook>();
+        
 
         // 일반 스크립트
         playerInput = new PlayerInput(this);
