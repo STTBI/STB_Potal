@@ -38,12 +38,14 @@ public class PlayerState
 
     public virtual void FixedUpdate()
     {
-        stateSystem.SetBool("Move", movement.OnMove(rigid));
     }
 
     public virtual void Update()
     {
         stateTimer -= Time.deltaTime;
+
+        if (!movement.CheckGround())
+            rigid.useGravity = true;
 
         if(rigid.velocity.y < 0f)
         {

@@ -42,24 +42,30 @@ public class PlayerMovement : MovementHandler
 
     public bool OnMove(Rigidbody rigid)
     {
+        bool isGround = CheckGround();
         bool onSlope = IsOnSlope(); // 경사면 체크
         moveDirection = Vector3.right * Direction.x + Vector3.forward * Direction.y;
         moveDirection = transform.TransformDirection(moveDirection); // 로컬 좌표에서 월드 좌표로 변경
-        moveDirection = (onSlope) ? AdjustDirectionToSlope(moveDirection) : moveDirection; // 법선벡터방향 : 월드방향
+        //moveDirection = (onSlope) ? AdjustDirectionToSlope(moveDirection) : moveDirection; // 법선벡터방향 : 월드방향
 
         // 법선 벡터 리턴값이 y축 포함되어서 나오기에 중력을 0으로 만들어준다.
-        Vector3 gravity = (onSlope) ? Vector3.zero : Vector3.down * Mathf.Abs(rigid.velocity.y);
+        //Vector3 gravity = (onSlope) ? Vector3.zero : Vector3.down * Mathf.Abs(rigid.velocity.y);
+        Vector3 gravity = Vector3.down * Mathf.Abs(rigid.velocity.y);
 
 
-        if (CheckGround())
+        if (isGround && onSlope)
         {
-            rigid.velocity = moveDirection * CurrentSpeed + gravity;
+            moveDirection = AdjustDirectionToSlope(moveDirection);
+            gravity = Vector3.zero;
+            rigid.useGravity = false;
         }
         else
         {
-            rigid.velocity = new Vector3(moveDirection.x * CurrentSpeed, rigid.velocity.y, moveDirection.z * CurrentSpeed);
+            rigid.useGravity = true;
+            //rigid.velocity = new Vector3(moveDirection.x * CurrentSpeed, rigid.velocity.y, moveDirection.z * CurrentSpeed);
         }
 
+        rigid.velocity = moveDirection * CurrentSpeed + gravity;
         return Direction.magnitude > 0f;
     }
 
@@ -71,6 +77,7 @@ public class PlayerMovement : MovementHandler
     {
         if(IsJump)
         {
+            rigid.useGravity = true;
             rigid.AddForce(Vector3.up * (IsOnSlope() ? jumpSlopeHeight : jumpHeight), ForceMode.Impulse);
             IsJump = false;
             return true;

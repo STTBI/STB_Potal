@@ -30,6 +30,7 @@ public class PlayerAirState : PlayerState
         if (movement.CheckGround())
         {
             stateSystem.SetFloat("VerticalY", 0f);
+            rigid.velocity = Vector3.zero;
             stateMachine.ChangeState(stateSystem.IdleState);
             return;
         }

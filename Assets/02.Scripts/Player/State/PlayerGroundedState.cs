@@ -22,7 +22,10 @@ public class PlayerGroundedState : PlayerState
     public override void FixedUpdate()
     {
         base.FixedUpdate();
-        if(movement.OnJump(rigid))
+
+        stateSystem.SetBool("Move", movement.OnMove(rigid));
+
+        if (movement.OnJump(rigid))
         {
             stateSystem.SetTrigger("Jump");
             stateMachine.ChangeState(stateSystem.AirState);
