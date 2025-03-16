@@ -16,10 +16,10 @@ public class PlayerMovement : MovementHandler
     [SerializeField] private float frontWalkSpeed;
     [SerializeField] private float RunSpeed;
     [SerializeField] private float jumpHeight;
+    [SerializeField] private float jumpSlopeHeight;
     #endregion
 
     private Vector3 moveDirection;
-    private Vector3 moveTransform;
 
     // 프로퍼티
     public bool IsJump { get; private set; }
@@ -42,45 +42,34 @@ public class PlayerMovement : MovementHandler
 
     public void OnMove(Rigidbody rigid)
     {
-        if(Direction.magnitude > 0f)
+        bool onSlope = IsOnSlope(); // 경사면 체크
+        moveDirection = Vector3.right * Direction.x + Vector3.forward * Direction.y;
+        moveDirection = transform.TransformDirection(moveDirection); // 로컬 좌표에서 월드 좌표로 변경
+        moveDirection = (onSlope) ? AdjustDirectionToSlope(moveDirection) : moveDirection; // 법선벡터방향 : 월드방향
+
+        // 법선 벡터 리턴값이 y축 포함되어서 나오기에 중력을 0으로 만들어준다.
+        Vector3 gravity = (onSlope) ? Vector3.zero : Vector3.down * Mathf.Abs(rigid.velocity.y);
+
+
+        if (CheckGround())
         {
-            bool onSlope = IsOnSlope(); // 경사면 체크
-            moveDirection = Vector3.right * Direction.x + Vector3.forward * Direction.y;
-            moveDirection = transform.TransformDirection(moveDirection); // 로컬 좌표에서 월드 좌표로 변경
-            moveDirection = (onSlope) ? AdjustDirectionToSlope(moveDirection) : moveDirection; // 법선벡터방향 : 월드방향
-
-            // 법선 벡터 리턴값이 y축 포함되어서 나오기에 중력을 0으로 만들어준다.
-            Vector3 gravity = (onSlope) ? Vector3.zero : Vector3.down * Mathf.Abs(rigid.velocity.y);
-
-            Vector3 endPoint = transform.position + moveDirection * CurrentSpeed * Time.fixedDeltaTime;
-            Debug.Log(endPoint);
-            transform.position = Vector3.Lerp(transform.position, endPoint, Time.fixedDeltaTime * 19f);
-            /*if (CheckGround())
-            {
-                Vector3 endPoint = transform.position + moveDirection * CurrentSpeed * Time.fixedDeltaTime;
-                transform.position = Vector3.Lerp(transform.position, endPoint, Time.fixedDeltaTime * 19f);
-                //rigid.velocity = moveDirection * CurrentSpeed + gravity;            
-            }
-            else
-            {
-                Vector3 endPoint = transform.position + moveDirection * CurrentSpeed * Time.fixedDeltaTime;
-                transform.position = Vector3.Lerp(transform.position, endPoint, Time.fixedDeltaTime * 19f);
-                //rigid.velocity = new Vector3(moveDirection.x * CurrentSpeed, rigid.velocity.y, moveDirection.z * CurrentSpeed);
-            }*/
-
+            rigid.velocity = moveDirection * CurrentSpeed + gravity;
+        }
+        else
+        {
+            rigid.velocity = new Vector3(moveDirection.x * CurrentSpeed, rigid.velocity.y, moveDirection.z * CurrentSpeed);
         }
     }
 
     public void StopMove(Rigidbody rigid)
     {
-        Vector3 newVector = Vector3.up * rigid.velocity.y;
-        rigid.velocity = newVector;
+        rigid.velocity = Vector3.up * rigid.velocity.y;
     }
     public void OnJump(Rigidbody rigid)
     {
-        if(CheckGround() && IsJump)
+        if(IsJump)
         {
-            rigid.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
+            rigid.AddForce(Vector3.up * (IsOnSlope() ? jumpSlopeHeight : jumpHeight), ForceMode.Impulse);
             IsJump = false;
         }
     }
