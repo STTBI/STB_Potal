@@ -51,20 +51,20 @@ public class PlayerStateSystem : MonoBehaviour
     {
         animBody.SetTrigger(animName);
         animShadow.SetTrigger(animName);
-        animArms.SetTrigger(animName);
+        //animArms.SetTrigger(animName);
     }
 
     public void SetFloat(string valueName, float value)
     {
         animBody.SetFloat(valueName, value);
         animShadow.SetFloat(valueName, value);
-        animArms.SetFloat(valueName, value);
+        //animArms.SetFloat(valueName, value);
     }
 
     public void SetBool(string boolName, bool value)
     {
         animBody.SetBool(boolName, value);
         animShadow.SetBool(boolName, value);
-        animArms.SetBool(boolName, value);
+        //animArms.SetBool(boolName, value);
     }
 }

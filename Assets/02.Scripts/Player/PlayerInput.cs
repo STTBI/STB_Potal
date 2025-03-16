@@ -14,6 +14,9 @@ public class PlayerInput
         playerAC = new Player_AC();
         movement = player.Movement;
         cameraLook = player.CameraLook;
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void Initionalize()
