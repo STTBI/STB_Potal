@@ -4533,8 +4533,8 @@ GameObject:
   - component: {fileID: 1194427503360024851}
   - component: {fileID: 3274417769805838516}
   - component: {fileID: 5556263717761719541}
-  - component: {fileID: 4315748815635958699}
-  m_Layer: 0
+  - component: {fileID: 5556263717761719542}
+  m_Layer: 10
   m_Name: StandButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15524,7 +15524,7 @@ GameObject:
   - component: {fileID: 239109727730364490}
   - component: {fileID: 7753518297896509621}
   - component: {fileID: 4613260522850375935}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19919,19 +19919,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4315748815635958699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 931661941888515781}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5854d8fcd73fc840a8009f0926c83bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonAnim: {fileID: 3274417769805838516}
 --- !u!4 &4316579289124529364
 Transform:
   m_ObjectHideFlags: 0
@@ -25399,6 +25386,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5556263717761719542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931661941888515781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4ee0898df8b3d744b766e58a046b4c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonAnim: {fileID: 3274417769805838516}
 --- !u!4 &5558918138939090358
 Transform:
   m_ObjectHideFlags: 0
@@ -27434,7 +27434,7 @@ GameObject:
   - component: {fileID: 178453039537033862}
   - component: {fileID: 472910639433855117}
   - component: {fileID: 8473818818433272659}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30276,6 +30276,7 @@ GameObject:
   - component: {fileID: 7729722928233051791}
   - component: {fileID: 8192849124150287341}
   - component: {fileID: 8120965535420923906}
+  - component: {fileID: 8376681660142928684}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -38463,7 +38464,7 @@ GameObject:
   - component: {fileID: 8466719910728083075}
   - component: {fileID: 3472803270294033829}
   - component: {fileID: 1642520792225254532}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GlassTank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39401,6 +39402,25 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &8376681660142928684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6544300441417340339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e34fd410d38e56c4b9c597c686d007e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkRate: 0.05
+  maxCheckDistance: 10
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  interactObject: {fileID: 0}
+  _camera: {fileID: 3399404982677194975}
 --- !u!4 &8376806589447623287
 Transform:
   m_ObjectHideFlags: 0

@@ -11,6 +11,12 @@ public interface ITriggerObject
     void Exit();
 }
 
+public interface IInteractable
+{
+    public string GetinteractText();    //화면에 띄워줄 텍스트를 반환하는 함수
+    public void OnInteract();           //상호작용을 했을 때 실행할 함수
+}
+
 public class DoorManager : MonoBehaviour
 {
     public ITriggerObject[] triggerObject;
