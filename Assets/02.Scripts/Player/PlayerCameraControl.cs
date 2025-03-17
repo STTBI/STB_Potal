@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UIElements;
 
 public class PlayerCameraControl : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class PlayerCameraControl : MonoBehaviour
 
     [SerializeField] private float sensivityX;
     [SerializeField] private float sensivityY;
+
+    private Quaternion playerRotation;
+    private Vector3 camRotation;
 
     private Vector2 mouseSensivity;
     [SerializeField] private float clampAngle;
@@ -22,6 +26,8 @@ public class PlayerCameraControl : MonoBehaviour
     private void Awake()
     {
         cam = Camera.main.transform;
+        playerRotation = transform.rotation;
+        camRotation = Vector3.zero;
     }
 
     private void LateUpdate()
@@ -35,18 +41,18 @@ public class PlayerCameraControl : MonoBehaviour
         {
             mouseSensivity.y -= 360.0f;
         }
-        mouseSensivity.x = Mathf.Clamp(mouseSensivity.x, -clampAngle, clampAngle);
 
-        Quaternion camRotation = cam.localRotation;
-        camRotation = camRotation *  Quaternion.Euler(mouseSensivity.x, 0f, 0f);
-        cam.localRotation = camRotation;
-
-        Quaternion playerRotation = transform.rotation;
         playerRotation = playerRotation * Quaternion.Euler(0f, mouseSensivity.y, 0f);
         transform.rotation = playerRotation;
 
+        camRotation += Vector3.right * mouseSensivity.x;
+        camRotation.x = Mathf.Clamp(camRotation.x, -clampAngle, clampAngle);
+        Debug.Log(camRotation);
+        cam.localRotation = Quaternion.Euler(camRotation.x, 0, 0);
+
+
         // 포탈 마우스 동기화
-        TargetRotation = Quaternion.Euler((Vector3)mouseSensivity);
+        TargetRotation = Quaternion.Euler(camRotation.x, playerRotation.y, 0f);
     }
 
     public void ResetTargetRotation()
