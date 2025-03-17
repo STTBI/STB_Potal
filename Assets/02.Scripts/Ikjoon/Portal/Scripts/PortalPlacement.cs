@@ -18,7 +18,7 @@ public class PortalPlacement : MonoBehaviour
     
     private void Awake()
     {
-        cameraMove = GetComponent<CameraMove>();
+        cameraMove = GetComponentInParent<CameraMove>();
     }
 
     private void Update()

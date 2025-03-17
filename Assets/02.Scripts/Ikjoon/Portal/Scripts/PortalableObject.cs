@@ -30,9 +30,7 @@ public class PortalableObject : MonoBehaviour
     // 포탈의 시점에서 이동할 때 물체의 회전을 반전시킴.
     private static readonly Quaternion halfTurn = Quaternion.Euler(0.0f, 180.0f, 0.0f);
 
-    // 워프 제한 시간
-    private float lastWarpTime = -1f;
-    private float warpCooldown = 0.3f; // 0.4초 동안 다시 워프하지 않도록 제한
+    
 
     // 초기화: 포탈 객체의 복제본 생성 및 설정
     protected virtual void Awake()
@@ -155,7 +153,6 @@ public class PortalableObject : MonoBehaviour
         inPortal = outPortal;
         outPortal = tmp;
 
-        // 마지막 워프 시간을 기록
-        lastWarpTime = Time.time;
+       
     }
 }
