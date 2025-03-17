@@ -11,6 +11,7 @@ TagManager:
   - Wall
   - Portal
   - Handle
+  - Walkable
   layers:
   - Default
   - TransparentFX
