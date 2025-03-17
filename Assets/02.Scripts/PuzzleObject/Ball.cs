@@ -3,47 +3,59 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    //볼 재 생성 이벤트
+    //Create Ball Event
     public event Action BallDestroy;
 
-    private Vector3 _direction; // 이동방향
+    private Vector3 _direction; // move Dir
     private Rigidbody _rigidbody;
+    private bool _isCatched = false;
 
-    [Tooltip("공 속도")]
+    [Tooltip("Ball Speed")]
     public float ballSpeed = 5f;
-    [Tooltip("반사 횟수")]
+    [Tooltip("Reflection Count")]
     public int reflectCount = 4;
-    [Tooltip("사라질 때 이펙트")]
+    [Tooltip("Effect on Destroy")]
     public bool fxOnDestroy = true;
 
     private void Awake()
     {
-        //컴포넌트 가져오기
+        //GetComponent 
         if (!TryGetComponent<Rigidbody>(out _rigidbody))
             Debug.LogError("Ball rigidbody is Null");
     }
     private void Start()
     {
-        //방향,속도 설정
+        //Set dir,speed
         _direction = transform.up;
         _rigidbody.velocity = _direction * ballSpeed;
     }
     private void OnCollisionEnter(Collision collision)
     {
-        //반사 횟수가 남았다면 부딪힐때 반사
-        if(reflectCount > 0)
+        if (_isCatched) return;
+
+        //is can Reflect 
+        if (reflectCount > 0)
         {
-            //이동방향과 반사되는 표면의 수직벡터를 이용해 반사 방향 다시 저장
+            //_direction : MoveDir , GetContact : Vertical Vector dir
             _direction = Vector3.Reflect(_direction, collision.GetContact(0).normal);
+            //Set Speed,Dir
             _rigidbody.velocity = _direction * ballSpeed;
             reflectCount--;
         }
-        else //남은 반사횟수 없이 충돌시 Destroy
+        else //Reflect Count  <= 0 
             DestroyBall();
     }
+    public void OnCatched()
+    {
+        // make velocity zero , change color
+        _isCatched = true;
+        _rigidbody.velocity = Vector3.zero;
+        GetComponent<MeshRenderer>().material.color = Color.green;
+    }
+
     void DestroyBall()
     {
-        //Destroy전에 BallDispenser에서 등록한 메서드 실행
+        //Process Event Method
         BallDestroy?.Invoke();
 
         Destroy(gameObject);
