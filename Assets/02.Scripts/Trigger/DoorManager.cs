@@ -13,8 +13,8 @@ public interface ITriggerObject
 
 public interface IInteractable
 {
-    public string GetinteractText();    //È­¸é¿¡ ¶ç¿öÁÙ ÅØ½ºÆ®¸¦ ¹İÈ¯ÇÏ´Â ÇÔ¼ö
-    public void OnInteract();           //»óÈ£ÀÛ¿ëÀ» ÇßÀ» ¶§ ½ÇÇàÇÒ ÇÔ¼ö
+    public string GetinteractText();    //í™”ë©´ì— ë„ì›Œì¤„ í…ìŠ¤íŠ¸ë¥¼ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
+    public void OnInteract();           //ìƒí˜¸ì‘ìš©ì„ í–ˆì„ ë•Œ ì‹¤í–‰í•  í•¨ìˆ˜
 }
 
 public class DoorManager : MonoBehaviour
@@ -41,10 +41,6 @@ public class DoorManager : MonoBehaviour
 
     public void Decision()
     {
-        //?ê¾¨? true?ì‡°ãˆƒ Open
-        //?ì„êµ¹?ì‡°ë£„ falseï§?Close
-        //?è¢? true??ê²¹ëŠº Open
-        //??ë¡ªëŒ??ê³•ì¦² falseç­Œ?Close
         for (int i = 0; i < triggerObject.Length; i++)
         {
             if (triggerObject[i].TriggerCheck == false)
