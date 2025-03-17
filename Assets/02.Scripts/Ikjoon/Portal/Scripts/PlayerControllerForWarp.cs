@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class PlayerControllerForWarp : PortalableObject
 {
-    private CameraMove cameraMove;
+    private PlayerCameraLook cameraLook;
 
     protected override void Awake()
     {
         base.Awake();
 
-        cameraMove = GetComponent<CameraMove>();
+        cameraLook = GetComponent<PlayerCameraLook>();
     }
 
     public override void Warp()
     {
         base.Warp();
-        cameraMove.ResetTargetRotation();
+        cameraLook.ResetTargetRotation();
     }
 }

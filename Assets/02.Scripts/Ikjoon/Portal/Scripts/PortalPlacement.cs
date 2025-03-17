@@ -13,12 +13,21 @@ public class PortalPlacement : MonoBehaviour
     [SerializeField]
     private Crosshair crosshair;
 
-    private CameraMove cameraMove;
+    public PlayerCameraLook cameraLook;
 
     
     private void Awake()
     {
-        cameraMove = GetComponent<CameraMove>();
+        cameraLook = GetComponent<PlayerCameraLook>();
+    
+        if (cameraLook == null)
+        {
+            cameraLook = FindObjectOfType<PlayerCameraLook>();
+            if (cameraLook == null)
+            {
+                Debug.LogError("❌ PlayerCameraLook을 찾을 수 없습니다! PortalPlacement가 올바른 오브젝트에 있는지 확인하세요.");
+            }
+        }
     }
 
     private void Update()
@@ -71,7 +80,7 @@ public class PortalPlacement : MonoBehaviour
             }
 
             // 레이캐스트가 포탈이 아니면, 충돌한 표면에 포탈을 배치
-            var cameraRotation = cameraMove.TargetRotation;
+            var cameraRotation = cameraLook.TargetRotation;
             var portalRight = cameraRotation * Vector3.right;
             
             if (Mathf.Abs(portalRight.x) >= Mathf.Abs(portalRight.z))

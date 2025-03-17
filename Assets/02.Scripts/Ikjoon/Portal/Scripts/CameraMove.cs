@@ -18,6 +18,7 @@ public class CameraMove : MonoBehaviour
     [Header("Raycast")]
     public float rayLength = 2f;
 
+    [SerializeField]
     public Quaternion TargetRotation { private set; get; }
 
     private Vector3 moveVector = Vector3.zero;
