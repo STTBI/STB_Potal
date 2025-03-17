@@ -27,7 +27,7 @@ public class PlayerIdleState : PlayerGroundedState
     public override void Update()
     {
         base.Update();
-        //movement.StopMove(rigid);
+        movement.StopMove(rigid);
 
         // 입력값이 있으면 움직임 상태 처리
         if (movement.Direction.magnitude != 0)

@@ -12,12 +12,6 @@ public class PlayerCameraLook : CinemachineExtension
 
     [SerializeField] private float clampAngle;
 
-    public bool isInPortal = false;
-
-    public bool isWalkInPortal = false;
-
-    public Quaternion TargetRotation { private set; get; }
-
     private Vector3 startingRotation;
 
     public Vector2 Direction { get; set; }
@@ -42,9 +36,4 @@ public class PlayerCameraLook : CinemachineExtension
             }
         }
     }
-    public void ResetTargetRotation()
-{
-    TargetRotation = Quaternion.LookRotation(transform.forward, Vector3.up);
-}
-
 }

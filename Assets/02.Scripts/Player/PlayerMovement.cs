@@ -17,9 +17,6 @@ public class PlayerMovement : MovementHandler
     [SerializeField] private float RunSpeed;
     [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpSlopeHeight;
-    public bool isInPortal;
-    public bool isWalkInPortal;
-    public Vector3 currentVelocity;
     #endregion
 
     private Vector3 moveDirection;
@@ -59,7 +56,7 @@ public class PlayerMovement : MovementHandler
         if (isGround && onSlope)
         {
             moveDirection = AdjustDirectionToSlope(moveDirection);
-            //gravity = Vector3.zero;
+            gravity = Vector3.zero;
             rigid.useGravity = false;
         }
         else
@@ -69,7 +66,6 @@ public class PlayerMovement : MovementHandler
         }
 
         rigid.velocity = moveDirection * CurrentSpeed + gravity;
-        currentVelocity = rigid.velocity;
         return Direction.magnitude > 0f;
     }
 
@@ -84,8 +80,6 @@ public class PlayerMovement : MovementHandler
             rigid.useGravity = true;
             rigid.AddForce(Vector3.up * (IsOnSlope() ? jumpSlopeHeight : jumpHeight), ForceMode.Impulse);
             IsJump = false;
-            currentVelocity = rigid.velocity;
-
             return true;
         }
 

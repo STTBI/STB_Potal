@@ -75,7 +75,7 @@ public class Portal : MonoBehaviour
             
             if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
-                PlayerMovement cameraMove = other.GetComponent<PlayerMovement>();
+                CameraMove cameraMove = other.GetComponent<CameraMove>();
                 if(cameraMove.currentVelocity.magnitude > 10f)
                 {
                     cameraMove.isInPortal = true;
@@ -100,7 +100,7 @@ public class Portal : MonoBehaviour
             {
                 CameraMove cameraMove = other.GetComponent<CameraMove>();
                 
-//                cameraMove.isWalkInPortal = false;
+                cameraMove.isWalkInPortal = false;
             }
             }
 
