@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class ObjectHandler : MonoBehaviour
@@ -9,59 +10,79 @@ public class ObjectHandler : MonoBehaviour
     public float handleSpeed = 2f;
     private GameObject handleObj;
 
+    public bool isWalkInPortal = false;
+
     public bool isGrab = false;
 
     private Ray ray;
 
     void Update()
-{
-    RaycastHit hit;
-    int layerMask = ~LayerMask.GetMask("Portal"); // "PortalLayer"를 제외한 모든 레이어 감지
-
-    ray = new Ray(transform.position, transform.forward);
-    if (Physics.Raycast(ray, out hit, rayDistance, layerMask)) // 특정 레이어 무시
     {
-        if (hit.collider.CompareTag("Handle"))
-        {
-            // E키를 누르면 오브젝트를 잡거나 놓음
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                if (handleObj == null)
-                {
-                    handleObj = hit.collider.gameObject;
-                    Rigidbody rb = handleObj.GetComponent<Rigidbody>();
-                    rb.useGravity = false;  
+        RaycastHit hit;
+        int layerMask = ~LayerMask.GetMask("Portal"); // "PortalLayer"를 제외한 모든 레이어 감지
 
-                    StartCoroutine(GrabDelay(1f));
-                }
-                else
-                {
-                    isGrab = false;
-                    ReleaseObject();
-                }
-            }
-            if (handleObj != null)
+        ray = new Ray(transform.position, transform.forward);
+        if (Physics.Raycast(ray, out hit, rayDistance, layerMask)) // 특정 레이어 무시
+        {
+            if (hit.collider.CompareTag("Handle"))
             {
-                PortalableObject portalableObject = handleObj.GetComponent<PortalableObject>();
-                if (isGrab && portalableObject != null && portalableObject.IsInPortal)
+                // E키를 누르면 오브젝트를 잡거나 놓음
+                if (Input.GetKeyDown(KeyCode.E))
                 {
-                    ReleaseObject();
+                    if (handleObj == null)
+                    {
+                        handleObj = hit.collider.gameObject;
+                        Rigidbody rb = handleObj.GetComponent<Rigidbody>();
+                        rb.useGravity = false;
+                        handleObj.transform.SetParent(this.transform);  
+
+                        StartCoroutine(GrabDelay(1f));
+                    }
+                    else
+                    {
+                        PortalableObject portalableObject = handleObj.GetComponent<PortalableObject>();
+                        BoxCollider cd = handleObj.GetComponent<BoxCollider>();
+
+                        Debug.Log($"[Update] {handleObj.name} 놓기 시도");
+                        handleObj.transform.SetParent(null);
+                        portalableObject.enabled = true;
+                        cd.isTrigger = false;
+                        ReleaseObject();
+                    }
+                }
+
+                if (handleObj != null)
+                {
+                    PortalableObject portalableObject = handleObj.GetComponent<PortalableObject>();
+                    BoxCollider cd = handleObj.GetComponent<BoxCollider>();
+                    
+                    if (isGrab && portalableObject != null && portalableObject.IsInPortal)
+                    {
+                        portalableObject.enabled = false;
+                        cd.isTrigger = true;
+                    }
+                    else if (!portalableObject.IsInPortal)
+                    {
+                        // IsInPortal이 false가 되면 다시 PortalableObject와 BoxCollider를 활성화
+                        portalableObject.enabled = true;
+                        cd.isTrigger = false;
+                    }
                 }
             }
         }
-    }
 
-    if (handleObj != null)
-    {
-        GrabObject();
+        if (handleObj != null)
+        {
+            GrabObject();
+        }
     }
-}
 
     IEnumerator GrabDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
         isGrab = true;
     }
+
     private void GrabObject()
     {
         // 오브젝트를 잡고 있을 때, 이동 처리
@@ -76,10 +97,11 @@ public class ObjectHandler : MonoBehaviour
     {
         if (handleObj != null)
         {
-            isGrab =false;
+            isGrab = false;
             Rigidbody rb = handleObj.GetComponent<Rigidbody>();
-            rb.useGravity = true;  // 중력을 다시 켬
-            handleObj = null;  // 오브젝트를 놓음
+            rb.useGravity = true;  // 중력을 다시 활성화
+            handleObj.transform.SetParent(null);  // 부모 해제
+            handleObj = null;
         }
     }
 }
