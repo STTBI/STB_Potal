@@ -27,13 +27,10 @@ public class DoorManager : MonoBehaviour
 
     private void OnValidate()
     {
-        //ICheckTrigger瑜??곸냽 諛쏆? 紐⑤뱺 ?먯떇?ㅼ쓣 李얠븘?⑤떎.
         triggerObject = GetComponentsInChildren<ITriggerObject>();
 
-        //?몃━嫄곗? ?곌껐?댁쨪 臾몄쓣 李얠븘?⑤떎. (臾몄? ??媛쒖뿬????
         door = GetComponentInChildren<Door>();
 
-        //?뺤씤??
         TriggerObjectCount = triggerObject.Length;
     }
 
@@ -46,6 +43,8 @@ public class DoorManager : MonoBehaviour
     {
         //?꾨? true?쇰㈃ Open
         //?섎굹?쇰룄 false硫?Close
+        //?袁? true??겹늺 Open
+        //??롪돌??곕즲 false筌?Close
         for (int i = 0; i < triggerObject.Length; i++)
         {
             if (triggerObject[i].TriggerCheck == false)
