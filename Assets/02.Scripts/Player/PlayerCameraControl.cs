@@ -47,7 +47,6 @@ public class PlayerCameraControl : MonoBehaviour
 
         camRotation += Vector3.right * mouseSensivity.x;
         camRotation.x = Mathf.Clamp(camRotation.x, -clampAngle, clampAngle);
-        Debug.Log(camRotation);
         cam.localRotation = Quaternion.Euler(camRotation.x, 0, 0);
 
 
