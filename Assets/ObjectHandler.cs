@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 public class ObjectHandler : MonoBehaviour
 {
+    [TagSelector] public string selectedTag;
     public float rayDistance = 5f;
     public float handleDistance = 2f;
     public float handleSpeed = 2f;
@@ -13,6 +15,7 @@ public class ObjectHandler : MonoBehaviour
     public bool isWalkInPortal = false;
 
     public bool isGrab = false;
+    
 
     private Ray ray;
 
@@ -24,7 +27,7 @@ public class ObjectHandler : MonoBehaviour
         ray = new Ray(transform.position, transform.forward);
         if (Physics.Raycast(ray, out hit, rayDistance, layerMask)) // 특정 레이어 무시
         {
-            if (hit.collider.CompareTag("Handle"))
+            if (hit.collider.CompareTag(selectedTag))
             {
                 // E키를 누르면 오브젝트를 잡거나 놓음
                 if (Input.GetKeyDown(KeyCode.E))
