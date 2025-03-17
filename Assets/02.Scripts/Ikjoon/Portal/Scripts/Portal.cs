@@ -94,7 +94,10 @@ public class Portal : MonoBehaviour
         var obj = other.GetComponent<PortalableObject>();
         obj.IsInPortal = false;
         ObjectHandler objectHandler = other.GetComponent<ObjectHandler>();
-        objectHandler.isWalkInPortal = false;
+        if(objectHandler != null)
+        {
+            objectHandler.isWalkInPortal = false;
+        }
 
         if(portalObjects.Contains(obj))
         {

@@ -42,11 +42,13 @@ public class ObjectHandler : MonoBehaviour
                     {
                         PortalableObject portalableObject = handleObj.GetComponent<PortalableObject>();
                         BoxCollider cd = handleObj.GetComponent<BoxCollider>();
+                        cd.isTrigger = false;
 
                         Debug.Log($"[Update] {handleObj.name} 놓기 시도");
+
                         handleObj.transform.SetParent(null);
                         portalableObject.enabled = true;
-                        cd.isTrigger = false;
+                        
                         ReleaseObject();
                     }
                 }
@@ -61,7 +63,7 @@ public class ObjectHandler : MonoBehaviour
                         portalableObject.enabled = false;
                         cd.isTrigger = true;
                     }
-                    else if (!portalableObject.IsInPortal)
+                    else if (!isWalkInPortal && !portalableObject.IsInPortal)
                     {
                         // IsInPortal이 false가 되면 다시 PortalableObject와 BoxCollider를 활성화
                         portalableObject.enabled = true;
