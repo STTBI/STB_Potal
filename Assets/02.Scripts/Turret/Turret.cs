@@ -32,6 +32,9 @@ public class Turret : MonoBehaviour
         laserLine.material = new Material(Shader.Find("Sprites/Default")); // 레이저 색상
         laserLine.startColor = Color.white;
         laserLine.endColor = Color.red;
+
+        // 플레이어 태그로 찾기
+        GameObject player = GameObject.FindWithTag("Player");
     }
 
 

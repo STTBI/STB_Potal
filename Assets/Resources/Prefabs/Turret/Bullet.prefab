@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b6053a54c34bfa43b207768a3a0b687, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletSpeed: 5
+  bulletSpeed: 10
   lifespawn: 5
 --- !u!23 &4537069634437407578
 MeshRenderer:
