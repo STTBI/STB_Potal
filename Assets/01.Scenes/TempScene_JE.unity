@@ -305,6 +305,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2907246570797301165, guid: 936331ed0c546444bb574f9cba3209a2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.029
+      objectReference: {fileID: 0}
+    - target: {fileID: 2907246570797301165, guid: 936331ed0c546444bb574f9cba3209a2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.029
+      objectReference: {fileID: 0}
+    - target: {fileID: 2907246570797301165, guid: 936331ed0c546444bb574f9cba3209a2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.15906441
+      objectReference: {fileID: 0}
+    - target: {fileID: 2907246570797301165, guid: 936331ed0c546444bb574f9cba3209a2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.15906441
+      objectReference: {fileID: 0}
+    - target: {fileID: 2907246570797301165, guid: 936331ed0c546444bb574f9cba3209a2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.6889837
+      objectReference: {fileID: 0}
+    - target: {fileID: 2907246570797301165, guid: 936331ed0c546444bb574f9cba3209a2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.6889837
+      objectReference: {fileID: 0}
+    - target: {fileID: 2907246570797301165, guid: 936331ed0c546444bb574f9cba3209a2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2907246570797301165, guid: 936331ed0c546444bb574f9cba3209a2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 154
+      objectReference: {fileID: 0}
     - target: {fileID: 3209270008358135466, guid: 936331ed0c546444bb574f9cba3209a2, type: 3}
       propertyPath: m_Name
       value: SentryRobot
@@ -714,7 +746,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1741786738198045562, guid: 1b8bee0615e48c04793d2e2f9715381d, type: 3}
   firePoint: {fileID: 1377731585}
   fireRate: 1
-  maxRotationAngle: 30
+  maxRotationAngle: 50
 --- !u!65 &1576050664
 BoxCollider:
   m_ObjectHideFlags: 0

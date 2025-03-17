@@ -17,7 +17,6 @@ public class Turret : MonoBehaviour
     public float fireRate = 1f;  // 발사 간격
     private float nextFireTime = 0f;
 
-
     private bool isDying = false; // 터렛이 죽기 직전인지 여부
     private float dyingTimer = 3f; // 터렛이 죽기 직전 타이머
 
@@ -47,6 +46,7 @@ public class Turret : MonoBehaviour
             Transform robotGun = sentryRobot.transform.Find("Rig_Body_Upper/RobotGun");
             if (robotGun != null)
             {
+                // RobotGun의 자식으로 firePoint가 있으므로, 그 자식 Transform을 firePoint로 설정
                 firePoint = robotGun.Find("firePoint");  // RobotGun의 자식에 있는 firePoint를 찾기
                 if (firePoint == null)
                 {
@@ -63,7 +63,6 @@ public class Turret : MonoBehaviour
             Debug.LogWarning("SentryRobot not found in the scene");
         }
     }
-
 
     void Update()
     {
@@ -133,16 +132,16 @@ public class Turret : MonoBehaviour
         }
     }
 
-    void DrawLaser(Vector3 tartgetposition)
+    void DrawLaser(Vector3 targetPosition)
     {
-        if(laserLine != null)
+        if (laserLine != null)
         {
             laserLine.enabled = true; //레이저 활성화
 
             laserLine.positionCount = 2;
 
             laserLine.SetPosition(0, firePoint.position); // 시작점
-            laserLine.SetPosition(1, tartgetposition); // 타겟의 위치
+            laserLine.SetPosition(1, targetPosition); // 타겟의 위치
         }
     }
 
@@ -171,19 +170,22 @@ public class Turret : MonoBehaviour
         {
             // 플레이어의 위치로 회전 방향 계산
             Vector3 direction = target.position - transform.position;
-            direction.y = 0;  // y축을 고정하여 위아래 회전을 방지
+            direction.y = 0;  // Y축을 고정하여 위아래 회전 방지
 
             // 목표 회전 방향 계산 (Y축만 회전)
             Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-            // 회전 각도를 제한하기 위해 EulerAngles를 사용
+            // 회전 각도를 제한하기 위해 EulerAngles 사용
             Vector3 currentRotation = targetRotation.eulerAngles;
 
-            currentRotation.x = -90f;  // X는 -90도로 고정
+            // X와 Z축을 고정 (Y축만 회전)
+            currentRotation.x = -90f;  // X는 고정
+            //currentRotation.z = -180f; // Z는 고정
 
             // 목표 회전 각도와 현재 회전 각도의 차이를 구하여 제한을 적용
             float angle = Mathf.Abs(Mathf.DeltaAngle(transform.eulerAngles.y, currentRotation.y));
 
+            // 회전 제한
             if (angle <= maxRotationAngle)
             {
                 // 회전 제한 이내일 경우 부드럽게 회전
@@ -202,9 +204,16 @@ public class Turret : MonoBehaviour
     void FireBullet() // 탄환 발사
     {
         // 발사된 탄환을 생성
-        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        if (firePoint != null)
+        {
+            // firePoint 방향으로 탄환이 나가게 회전 적용
+            Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        }
+        else
+        {
+            Debug.LogWarning("FirePoint is not assigned");
+        }
     }
-
 
     public void StopTurret()
     {
@@ -224,3 +233,4 @@ public class Turret : MonoBehaviour
         transform.position = new Vector3(0, 1, 0); // 원래 위치로 되돌리기
     }
 }
+
