@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(CapsuleCollider))]  // CapsuleCollider로 변경
 public class Portal : MonoBehaviour
 {
     [field: SerializeField]
@@ -10,6 +11,7 @@ public class Portal : MonoBehaviour
 
     [SerializeField]
     private Renderer outlineRenderer;
+    public Renderer portalRenderer;
 
     [field: SerializeField]
     public Color PortalColour { get; private set; }
@@ -26,12 +28,12 @@ public class Portal : MonoBehaviour
 
     // 컴포넌트들.
     public Renderer Renderer { get; private set; }
-    private new BoxCollider collider;
+    private new CapsuleCollider collider;  // CapsuleCollider로 변경
 
     private void Awake()
     {
-        // BoxCollider와 Renderer 컴포넌트를 가져옴.
-        collider = GetComponent<BoxCollider>();
+        // CapsuleCollider와 Renderer 컴포넌트를 가져옴.
+        collider = GetComponent<CapsuleCollider>();
         Renderer = GetComponent<Renderer>();
     }
 
@@ -70,6 +72,17 @@ public class Portal : MonoBehaviour
         {
             portalObjects.Add(obj);
             obj.SetIsInPortal(this, OtherPortal, wallCollider);
+            
+            if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                PlayerMovement cameraMove = other.GetComponent<PlayerMovement>();
+                if(cameraMove.currentVelocity.magnitude > 10f)
+                {
+                    cameraMove.isInPortal = true;
+                }else{
+                    cameraMove.isWalkInPortal = true;
+                }
+            }
         }
     }
 
@@ -83,7 +96,13 @@ public class Portal : MonoBehaviour
             portalObjects.Remove(obj);
             obj.ExitPortal(wallCollider);
         }
-    }
+        if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
+            {
+                CameraMove cameraMove = other.GetComponent<CameraMove>();
+                
+//                cameraMove.isWalkInPortal = false;
+            }
+            }
 
     // 포탈을 배치할 수 있는지 확인 후, 배치가 가능하면 포탈을 배치.
     public bool PlacePortal(Collider wallCollider, Vector3 pos, Quaternion rot)
@@ -106,10 +125,32 @@ public class Portal : MonoBehaviour
             // 포탈을 활성화하고 배치 완료.
             gameObject.SetActive(true);
             IsPlaced = true;
+
+            portalRenderer.transform.localScale = Vector3.zero;
+            StartCoroutine(GrowPortal());
+
             return true;
         }
 
         return false;
+    }
+
+    private IEnumerator GrowPortal()
+    {
+        float duration = 0.5f;
+        float elapsed =0f;
+
+        Vector3 startScale = Vector3.zero;
+        Vector3 targetScale = Vector3.one;
+
+        while(elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float progress = elapsed / duration;
+            portalRenderer.transform.localScale = Vector3.Lerp(startScale, targetScale, progress);
+            yield return null;
+        }
+        portalRenderer.transform.localScale = targetScale;
     }
 
     // 포탈이 겹치지 않도록 하기 위해 포탈이 벽을 넘어가지 않도록 수정.
@@ -195,7 +236,7 @@ public class Portal : MonoBehaviour
         };
 
         // 포탈이 벽과 겹치지 않는지 확인.
-        var intersections = Physics.OverlapBox(checkPositions[0], checkExtents, testTransform.rotation, placementMask);
+        var intersections = Physics.OverlapCapsule(checkPositions[0], checkPositions[1], 0.05f, placementMask); // OverlapBox에서 OverlapCapsule로 변경
 
         if(intersections.Length > 1)
         {
@@ -210,16 +251,7 @@ public class Portal : MonoBehaviour
             }
         }
 
-        // 포탈의 모서리가 벽과 겹치지 않는지 확인.
-        bool isOverlapping = true;
-
-        for(int i = 1; i < checkPositions.Length - 1; ++i)
-        {
-            isOverlapping &= Physics.Linecast(checkPositions[i], 
-                checkPositions[i] + checkPositions[checkPositions.Length - 1], placementMask);
-        }
-
-        return isOverlapping;
+        return true;
     }
 
     // 포탈을 제거.

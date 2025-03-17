@@ -1,66 +1,52 @@
+﻿using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(PlayerStateSystem))]
 public class PlayerController : MonoBehaviour
 {
-    private CharacterController controller;
-    private Rigidbody rigid;
-    [HideInInspector] public Vector3 playerVelocity;
-    private bool groundedPlayer;
+    // 플레이어 인풋 시스템
+    private PlayerInput playerInput;
 
-    [SerializeField] private float playerSpeed = 2.0f;
-    [SerializeField] private float jumpHeight = 1.0f;
-    [SerializeField] private float gravityValue = -9.81f;
-    private InputManager inputManager;
-    private Transform cameraTransform;
+    // 유니티 컴포넌트
+    public Rigidbody Rigid { get; private set; }
+
+    // 스크립트 컴포넌트
+    public PlayerMovement Movement { get; private set; }
+    public PlayerStateSystem StateSystem { get; private set; }
+    public PlayerCameraLook CameraLook { get; private set; }
 
     private void OnValidate()
     {
-        rigid = GetComponent<Rigidbody>();
-        rigid.isKinematic = true;
+        // 유니티 컴포넌트
+        Rigid = GetComponent<Rigidbody>();
 
-        controller = GetComponent<CharacterController>();
-        inputManager = InputManager.Instance;
-        cameraTransform = Camera.main.transform;
+        // 스크립트 컴포넌트
+        StateSystem = GetComponent<PlayerStateSystem>();
+        Movement = GetComponent<PlayerMovement>();
+        CameraLook = GetComponentInChildren<PlayerCameraLook>();
+        
+
+        // 일반 스크립트
+        playerInput = new PlayerInput(this);
     }
 
-    void Update()
+    // 플레이어 입력 이벤트 관리
+    private void Awake()
     {
-        // �׶��忡 ���� �����̸� y�ӵ����� 0���� �ʱ�ȭ
-        DtectedGround();
-        ApplyMovement();
-        ApplyGravity();
+        // 인풋 시스템 초기화
+        playerInput.Initionalize();
     }
 
-    private void DtectedGround()
+    private void OnEnable()
     {
-        if (groundedPlayer && playerVelocity.y < 0)
-        {
-            playerVelocity.y = 0f;
-        }
+        playerInput.Enable();
+        
     }
 
-    private void ApplyGravity()
+    private void OnDisable()
     {
-        // Makes the player jump
-        if (inputManager.PlayerJumpedThisFrame() && groundedPlayer)
-        {
-            playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
-        }
-
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        groundedPlayer = (controller.Move(playerVelocity * Time.deltaTime) & CollisionFlags.Below) != 0;
-    }
-
-    private void ApplyMovement()
-    {
-        Vector2 movement = inputManager.GetPlayerMovement();
-        Vector3 move = new Vector3(movement.x, 0f, movement.y);
-        move = cameraTransform.forward * move.z + cameraTransform.right * move.x;
-        move.y = 0f;
-
-        controller.Move(move * Time.deltaTime * playerSpeed);
+        playerInput.Disable();
     }
 }
