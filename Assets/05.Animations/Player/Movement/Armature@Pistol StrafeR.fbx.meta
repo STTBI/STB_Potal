@@ -55,112 +55,22 @@ ModelImporter:
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves:
-      - name: IKLeftFootWeight
-        curve:
-          serializedVersion: 2
-          curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: -2.857143
-            outSlope: 0
-            tangentMode: 69
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 0.05
-            value: 1
-            inSlope: -0
-            outSlope: -0.0046074255
-            tangentMode: 5
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.4683714
-          - serializedVersion: 3
-            time: 0.35
-            value: 0
-            inSlope: -3.3333335
-            outSlope: 0
-            tangentMode: 69
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 0.7
-            value: 0
-            inSlope: -0
-            outSlope: 3.3333333
-            tangentMode: 69
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 1
-            value: 1
-            inSlope: -0.0021211617
-            outSlope: 4
-            tangentMode: 1
-            weightedMode: 0
-            inWeight: 0.604712
-            outWeight: 0
-          preInfinity: 2
-          postInfinity: 2
-          rotationOrder: 4
-      - name: IKRightFootWeight
-        curve:
-          serializedVersion: 2
-          curve:
-          - serializedVersion: 3
-            time: 0
-            value: 1
-            inSlope: -0.0021211617
-            outSlope: 0
-            tangentMode: 65
-            weightedMode: 0
-            inWeight: 0.604712
-            outWeight: 0
-          - serializedVersion: 3
-            time: 0.037308607
-            value: 1
-            inSlope: -0
-            outSlope: 0
-            tangentMode: 69
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 0.3
-            value: 1
-            inSlope: -0
-            outSlope: -0.012692717
-            tangentMode: 5
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.30878368
-          - serializedVersion: 3
-            time: 0.5
-            value: 0
-            inSlope: -0.06180944
-            outSlope: 0
-            tangentMode: 65
-            weightedMode: 0
-            inWeight: 0.2715187
-            outWeight: 0.33333334
-          - serializedVersion: 3
-            time: 0.7
-            value: 0
-            inSlope: -0
-            outSlope: 3.3333333
-            tangentMode: 69
-            weightedMode: 0
-            inWeight: 0.33333334
-            outWeight: 0.33333334
-          preInfinity: 2
-          postInfinity: 2
-          rotationOrder: 4
-      events: []
+      curves: []
+      events:
+      - time: 0.63017756
+        functionName: StepEvent
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 2
+        messageOptions: 0
+      - time: 0.17455621
+        functionName: StepEvent
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

@@ -14,7 +14,8 @@ public class MovementHandler : MonoBehaviour
 
     [Header("Collision")]
     #region CollisionData
-    [SerializeField] private float radius;
+    [SerializeField] private Vector3 boxSize;
+    //[SerializeField] private float radius;
     [SerializeField] private Transform checkGround;
     [SerializeField] private LayerMask whatIsGround;
     #endregion
@@ -25,7 +26,8 @@ public class MovementHandler : MonoBehaviour
 
     public bool CheckGround()
     {
-        return Physics.CheckSphere(checkGround.position, radius, whatIsGround);
+        return Physics.CheckBox(checkGround.position, boxSize, Quaternion.identity, whatIsGround);
+        //return Physics.CheckSphere(checkGround.position, radius, whatIsGround);
     }
 
     // 경사면 체크
@@ -50,6 +52,6 @@ public class MovementHandler : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(checkGround.position, radius);
+        Gizmos.DrawWireCube(checkGround.position, boxSize);
     }
 }

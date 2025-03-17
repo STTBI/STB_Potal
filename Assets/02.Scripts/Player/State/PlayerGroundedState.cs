@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerGroundedState : PlayerState
@@ -12,16 +13,19 @@ public class PlayerGroundedState : PlayerState
     public override void Enter()
     {
         base.Enter();
+        stateSystem.SetBool("Grounded", true);
     }
 
     public override void Exit()
     {
         base.Exit();
+        stateSystem.SetBool("Grounded", false);
     }
 
     public override void FixedUpdate()
     {
         base.FixedUpdate();
+        movement.ZeroGravity();
 
         stateSystem.SetBool("Move", movement.OnMove(rigid));
 
