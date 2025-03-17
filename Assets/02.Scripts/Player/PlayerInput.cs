@@ -7,7 +7,7 @@ public class PlayerInput
     Player_AC playerAC;
 
     PlayerMovement movement;
-    PlayerCameraLook cameraLook;
+    PlayerCameraControl cameraLook;
 
     public PlayerInput(PlayerController player)
     {

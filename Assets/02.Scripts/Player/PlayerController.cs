@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     // 스크립트 컴포넌트
     public PlayerMovement Movement { get; private set; }
     public PlayerStateSystem StateSystem { get; private set; }
-    public PlayerCameraLook CameraLook { get; private set; }
+    public PlayerCameraControl CameraLook { get; private set; }
 
     private void OnValidate()
     {
@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
         // 스크립트 컴포넌트
         StateSystem = GetComponent<PlayerStateSystem>();
         Movement = GetComponent<PlayerMovement>();
-        CameraLook = GetComponentInChildren<PlayerCameraLook>();
+        CameraLook = GetComponentInChildren<PlayerCameraControl>();
         
 
         // 일반 스크립트
