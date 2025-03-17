@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingPlatform : MonoBehaviour
+public class MovingPlatform : MonoBehaviour, IPuzzleObj
 {
     [Header("MovingPlatform Info")]
     [Tooltip("Playeform parent obj")]
@@ -48,6 +48,16 @@ public class MovingPlatform : MonoBehaviour
         }
         if (_isPlayOnAwake == true)
             Play();
+    }
+
+    public void PuzzleTrue()
+    {
+        Play();
+    }
+
+    public void PuzzleFalse()
+    {
+
     }
 
     public void Play()
@@ -120,4 +130,5 @@ public class MovingPlatform : MonoBehaviour
         _wayPoints.Insert(1,temp);
         _wayPointCnt++;
     }
+
 }

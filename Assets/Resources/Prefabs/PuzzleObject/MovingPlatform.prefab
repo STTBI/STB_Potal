@@ -182,7 +182,7 @@ MonoBehaviour:
   - {fileID: 8501590620617682614}
   _moveSpeed: 5
   waitTime: 0.5
-  _isPlayOnAwake: 1
+  _isPlayOnAwake: 0
   _isLoop: 1
 --- !u!1 &5077070847517878391
 GameObject:
