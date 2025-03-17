@@ -6,6 +6,10 @@ using UnityEngine;
 public class Turret : MonoBehaviour
 {
     public Transform target;  // 플레이어
+    public Transform RobotGun; // 에셋 총구
+    public Transform RobotMount; // 에셋 연결부
+    public Transform UpperBody; // 에셋 상반신
+    public Transform RigBodyLower; // 에셋 하반신
     public float detectionRange = 10f;  // 감지 범위
     public float rotationSpeed = 5f;  // 회전 속도
     public GameObject bulletPrefab;  // 발사할 탄환 프리팹
@@ -35,22 +39,35 @@ public class Turret : MonoBehaviour
 
         // 플레이어 태그로 찾기
         GameObject player = GameObject.FindWithTag("Player");
+
+        // SentryRobot에서 RobotGun을 찾고, RobotGun의 자식으로 있는 firePoint를 할당
+        GameObject sentryRobot = GameObject.Find("SentryRobot");
+        if (sentryRobot != null)
+        {
+            Transform robotGun = sentryRobot.transform.Find("Rig_Body_Upper/RobotGun");
+            if (robotGun != null)
+            {
+                firePoint = robotGun.Find("firePoint");  // RobotGun의 자식에 있는 firePoint를 찾기
+                if (firePoint == null)
+                {
+                    Debug.LogWarning("firePoint not found in RobotGun");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("RobotGun not found in SentryRobot");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("SentryRobot not found in the scene");
+        }
     }
 
 
     void Update()
     {
-        // 터렛을 드는 기능
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            LiftTurretByPlayer();
-        }
-
-        //  터렛을 놓는 기능
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            DropTurret();
-        }
+        RotateTowardsPlayer(); // 상반신만 플레이어 쪽으로 회전
 
         if (isLifted)
         {
@@ -147,7 +164,41 @@ public class Turret : MonoBehaviour
             nextFireTime = Time.time + 1f / fireRate;
         }
     }
-   
+
+    void RotateTowardsPlayer()
+    {
+        if (target != null)
+        {
+            // 플레이어의 위치로 회전 방향 계산
+            Vector3 direction = target.position - transform.position;
+            direction.y = 0;  // y축을 고정하여 위아래 회전을 방지
+
+            // 목표 회전 방향 계산 (Y축만 회전)
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            // 회전 각도를 제한하기 위해 EulerAngles를 사용
+            Vector3 currentRotation = targetRotation.eulerAngles;
+
+            currentRotation.x = -90f;  // X는 -90도로 고정
+
+            // 목표 회전 각도와 현재 회전 각도의 차이를 구하여 제한을 적용
+            float angle = Mathf.Abs(Mathf.DeltaAngle(transform.eulerAngles.y, currentRotation.y));
+
+            if (angle <= maxRotationAngle)
+            {
+                // 회전 제한 이내일 경우 부드럽게 회전
+                RobotGun.rotation = Quaternion.Slerp(RobotGun.rotation, Quaternion.Euler(currentRotation), rotationSpeed * Time.deltaTime);
+                RobotMount.rotation = Quaternion.Slerp(RobotMount.rotation, Quaternion.Euler(currentRotation), rotationSpeed * Time.deltaTime);
+                UpperBody.rotation = Quaternion.Slerp(UpperBody.rotation, Quaternion.Euler(currentRotation), rotationSpeed * Time.deltaTime);
+            }
+            else
+            {
+                // 회전 제한을 초과하면 회전하지 않음
+                Debug.Log("Rotation restricted");
+            }
+        }
+    }
+
     void FireBullet() // 탄환 발사
     {
         // 발사된 탄환을 생성

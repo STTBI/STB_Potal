@@ -312,7 +312,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3209270008358135466, guid: 936331ed0c546444bb574f9cba3209a2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1576050663}
+    - targetCorrespondingSourceObject: {fileID: 3209270008358135466, guid: 936331ed0c546444bb574f9cba3209a2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1576050664}
   m_SourcePrefab: {fileID: 100100000, guid: 936331ed0c546444bb574f9cba3209a2, type: 3}
 --- !u!1 &267921734
 GameObject:
@@ -333,7 +339,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &267921735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,6 +353,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1837452486}
+  RobotGun: {fileID: 0}
+  RobotMount: {fileID: 0}
+  UpperBody: {fileID: 0}
+  RigBodyLower: {fileID: 0}
   detectionRange: 10
   rotationSpeed: 15
   bulletPrefab: {fileID: 1741786738198045562, guid: 1b8bee0615e48c04793d2e2f9715381d, type: 3}
@@ -442,6 +452,11 @@ Transform:
   - {fileID: 56441850}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &591957796 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1342789649968785400, guid: 936331ed0c546444bb574f9cba3209a2, type: 3}
+  m_PrefabInstance: {fileID: 124900342}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &849079806
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,6 +549,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &850545639 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4890873024485440266, guid: 936331ed0c546444bb574f9cba3209a2, type: 3}
+  m_PrefabInstance: {fileID: 124900342}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1044569559
 GameObject:
   m_ObjectHideFlags: 0
@@ -652,6 +672,70 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!4 &1268184829 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4865934689248638773, guid: 936331ed0c546444bb574f9cba3209a2, type: 3}
+  m_PrefabInstance: {fileID: 124900342}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1376609550 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6812696564847539242, guid: 936331ed0c546444bb574f9cba3209a2, type: 3}
+  m_PrefabInstance: {fileID: 124900342}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1377731585 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2907246570797301165, guid: 936331ed0c546444bb574f9cba3209a2, type: 3}
+  m_PrefabInstance: {fileID: 124900342}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1576050658 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3209270008358135466, guid: 936331ed0c546444bb574f9cba3209a2, type: 3}
+  m_PrefabInstance: {fileID: 124900342}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1576050663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576050658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34b06a732a8bd1f488a8794f8590ea2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1837452486}
+  RobotGun: {fileID: 850545639}
+  RobotMount: {fileID: 1268184829}
+  UpperBody: {fileID: 1376609550}
+  RigBodyLower: {fileID: 591957796}
+  detectionRange: 10
+  rotationSpeed: 5
+  bulletPrefab: {fileID: 1741786738198045562, guid: 1b8bee0615e48c04793d2e2f9715381d, type: 3}
+  firePoint: {fileID: 1377731585}
+  fireRate: 1
+  maxRotationAngle: 30
+--- !u!65 &1576050664
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576050658}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1837452483
 GameObject:
   m_ObjectHideFlags: 0
@@ -728,7 +812,7 @@ Transform:
   m_GameObject: {fileID: 1837452483}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.44, y: 1.58, z: 4.8}
+  m_LocalPosition: {x: 1.82, y: 2.16, z: 5.25}
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
