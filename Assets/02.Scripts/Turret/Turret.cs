@@ -37,14 +37,14 @@ public class Turret : MonoBehaviour
 
     void Update()
     {
-        // "E" 키로 터렛을 드는 기능
-        if (Input.GetKeyDown(KeyCode.E))
+        // 터렛을 드는 기능
+        if (Input.GetKeyDown(KeyCode.C))
         {
             LiftTurretByPlayer();
         }
 
-        // "Q" 키로 터렛을 놓는 기능
-        if (Input.GetKeyDown(KeyCode.Q))
+        //  터렛을 놓는 기능
+        if (Input.GetKeyDown(KeyCode.X))
         {
             DropTurret();
         }
@@ -119,6 +119,8 @@ public class Turret : MonoBehaviour
         {
             laserLine.enabled = true; //레이저 활성화
 
+            laserLine.positionCount = 2;
+
             laserLine.SetPosition(0, firePoint.position); // 시작점
             laserLine.SetPosition(1, tartgetposition); // 타겟의 위치
         }
@@ -165,5 +167,6 @@ public class Turret : MonoBehaviour
     public void DropTurret()
     {
         isLifted = false; // 터렛을 내려놓을 때
+        transform.position = new Vector3(0, 1, 0); // 원래 위치로 되돌리기
     }
 }
