@@ -8,10 +8,14 @@ public class PlayerCameraControl : MonoBehaviour
 {
     private Transform cam;
 
-    [SerializeField] private float cameraSpeed;
+    [SerializeField] private float sensivityX;
+    [SerializeField] private float sensivityY;
+
+    private Vector2 mouseSensivity;
     [SerializeField] private float clampAngle;
 
     public Quaternion TargetRotation { private set; get; }
+
 
     public Vector2 Direction { get; set; }
 
@@ -22,19 +26,27 @@ public class PlayerCameraControl : MonoBehaviour
 
     private void LateUpdate()
     {
+
+        mouseSensivity.x = -Direction.y * sensivityX * Time.deltaTime;
+        mouseSensivity.y = Direction.x * sensivityY * Time.deltaTime;
+
         // 카메라 회전
-        var rotation = new Vector2(-Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"));
-        var targetEuler = TargetRotation.eulerAngles + (Vector3)rotation * cameraSpeed;
-        if (targetEuler.x > 180.0f)
+        if (mouseSensivity.y > 180.0f)
         {
-            targetEuler.x -= 360.0f;
+            mouseSensivity.y -= 360.0f;
         }
-        targetEuler.x = Mathf.Clamp(targetEuler.x, -90.0f, 90.0f);
-        TargetRotation = Quaternion.Euler(targetEuler);
+        mouseSensivity.x = Mathf.Clamp(mouseSensivity.x, -clampAngle, clampAngle);
 
-        transform.rotation = Quaternion.Slerp(transform.rotation, TargetRotation,
-            Time.deltaTime * 15.0f);
+        Quaternion camRotation = cam.localRotation;
+        camRotation = camRotation *  Quaternion.Euler(mouseSensivity.x, 0f, 0f);
+        cam.localRotation = camRotation;
 
+        Quaternion playerRotation = transform.rotation;
+        playerRotation = playerRotation * Quaternion.Euler(0f, mouseSensivity.y, 0f);
+        transform.rotation = playerRotation;
+
+        // 포탈 마우스 동기화
+        TargetRotation = Quaternion.Euler((Vector3)mouseSensivity);
     }
 
     public void ResetTargetRotation()
