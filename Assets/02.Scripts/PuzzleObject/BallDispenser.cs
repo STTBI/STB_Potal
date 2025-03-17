@@ -1,12 +1,16 @@
-using System;
 using UnityEngine;
 
 public class BallDispenser : MonoBehaviour
 {
-    [Tooltip("발사체")]
-    public Ball ActiveBall;
-    [Tooltip("공 생성 쿨타임")]
+    private Ball _activeBall; //Projectile prefab
+
+    [Tooltip("Ball Regen Cool Down")]
     public float RegenTime;
+
+    private void Awake()
+    {
+        _activeBall = Resources.Load<Ball>("Prefabs/PuzzleObject/Ball");
+    }
 
     private void Start()
     {
@@ -15,13 +19,13 @@ public class BallDispenser : MonoBehaviour
 
     void CreateBall()
     {
-        //ActiveBall 프리팹 생성
-        Ball activeBall = Instantiate<Ball>(ActiveBall, transform.position + (transform.up * 0.5f), transform.rotation);
-        //파괴될때 호출할 메서드 등록
+        //Create ActiveBall Prefab
+        Ball activeBall = Instantiate<Ball>(_activeBall, transform.position + (transform.up * 0.5f), transform.rotation);
+        //Add Method to event
         activeBall.BallDestroy += DelayCreateTime;
     }
 
-    void DelayCreateTime() //생성 딜레이 
+    void DelayCreateTime() //Create Delay
     {
         Invoke(nameof(CreateBall),RegenTime);
     }
