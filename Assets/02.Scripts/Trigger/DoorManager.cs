@@ -11,6 +11,12 @@ public interface ITriggerObject
     void Exit();
 }
 
+public interface IInteractable
+{
+    public string GetinteractText();    //È­¸é¿¡ ¶ç¿öÁÙ ÅØ½ºÆ®¸¦ ¹İÈ¯ÇÏ´Â ÇÔ¼ö
+    public void OnInteract();           //»óÈ£ÀÛ¿ëÀ» ÇßÀ» ¶§ ½ÇÇàÇÒ ÇÔ¼ö
+}
+
 public class DoorManager : MonoBehaviour
 {
     public ITriggerObject[] triggerObject;
@@ -21,13 +27,10 @@ public class DoorManager : MonoBehaviour
 
     private void OnValidate()
     {
-        //ICheckTrigger¸¦ »ó¼Ó ¹ŞÀº ¸ğµç ÀÚ½ÄµéÀ» Ã£¾Æ¿Â´Ù.
         triggerObject = GetComponentsInChildren<ITriggerObject>();
 
-        //Æ®¸®°Å¿Í ¿¬°áÇØÁÙ ¹®À» Ã£¾Æ¿Â´Ù. (¹®Àº ÇÑ °³¿©¾ß ÇÔ)
         door = GetComponentInChildren<Door>();
 
-        //È®ÀÎ¿ë
         TriggerObjectCount = triggerObject.Length;
     }
 
@@ -38,8 +41,10 @@ public class DoorManager : MonoBehaviour
 
     public void Decision()
     {
-        //ÀüºÎ true¶ó¸é Open
-        //ÇÏ³ª¶óµµ false¸é Close
+        //?ê¾¨? true?ì‡°ãˆƒ Open
+        //?ì„êµ¹?ì‡°ë£„ falseï§?Close
+        //?è¢? true??ê²¹ëŠº Open
+        //??ë¡ªëŒ??ê³•ì¦² falseç­Œ?Close
         for (int i = 0; i < triggerObject.Length; i++)
         {
             if (triggerObject[i].TriggerCheck == false)

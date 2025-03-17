@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     public PlayerMovement Movement { get; private set; }
     public PlayerStateSystem StateSystem { get; private set; }
     public PlayerCameraLook CameraLook { get; private set; }
+    public PlayerInteraction Interaction { get; private set; }
 
     private void OnValidate()
     {
@@ -26,15 +27,17 @@ public class PlayerController : MonoBehaviour
         StateSystem = GetComponent<PlayerStateSystem>();
         Movement = GetComponent<PlayerMovement>();
         CameraLook = GetComponentInChildren<PlayerCameraLook>();
-        
+        Interaction = GetComponent<PlayerInteraction>();
 
-        // 일반 스크립트
-        playerInput = new PlayerInput(this);
+        
     }
 
     // 플레이어 입력 이벤트 관리
     private void Awake()
     {
+        // 일반 스크립트
+        playerInput = new PlayerInput(this);
+
         // 인풋 시스템 초기화
         playerInput.Initionalize();
     }
@@ -42,7 +45,6 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         playerInput.Enable();
-        
     }
 
     private void OnDisable()
