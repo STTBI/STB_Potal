@@ -4,8 +4,23 @@ using UnityEngine;
 
 public class PlayerEventTriggers : MonoBehaviour
 {
+    PlayerMovement movement;
+
+    private void OnValidate()
+    {
+        movement = GetComponentInParent<PlayerMovement>();
+    }
+
     public void StepEvent(int index)
     {
-        AudioManager.Instance.PlaySFX($"Step{index:D2}", false);
+        if(Mathf.Abs(movement.Direction.x) > 0.9f || Mathf.Abs(movement.Direction.y) > 0.9f)
+        {
+            AudioManager.Instance.PlaySFX($"Step{index:D2}");
+        }
+    }
+
+    public void LandStepEvent(int index)
+    {
+        AudioManager.Instance.PlaySFX($"Step{index:D2}");
     }
 }

@@ -66,8 +66,8 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.47181022
-        functionName: StepEvent
+      - time: 0
+        functionName: LandStepEvent
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
@@ -102,8 +102,8 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.10089021
-        functionName: StepEvent
+      - time: 0.100222714
+        functionName: LandStepEvent
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

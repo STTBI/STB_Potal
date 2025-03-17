@@ -30,7 +30,7 @@ public class PlayerIdleState : PlayerGroundedState
         movement.StopMove(rigid);
 
         // 입력값이 있으면 움직임 상태 처리
-        if (movement.Direction.magnitude != 0)
+        if (movement.Direction.magnitude != 0 && movement.CheckGround())
         {
             stateMachine.ChangeState(stateSystem.MoveState);
         }
