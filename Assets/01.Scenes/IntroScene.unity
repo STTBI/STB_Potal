@@ -3817,11 +3817,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5684f7bcb47621a42b2edf827be68138, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NewGame: {fileID: 0}
-  LoadGame: {fileID: 0}
-  Option: {fileID: 0}
-  Achievements: {fileID: 0}
-  Quit: {fileID: 0}
+  NewGame: {fileID: 5155782507715936390}
+  LoadGame: {fileID: 333620020}
+  Option: {fileID: 980561852}
+  Achievements: {fileID: 1195012238}
+  Quit: {fileID: 1954929392}
 --- !u!222 &5717536245649962107
 CanvasRenderer:
   m_ObjectHideFlags: 0
