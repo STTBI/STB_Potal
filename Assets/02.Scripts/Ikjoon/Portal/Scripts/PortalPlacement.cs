@@ -18,26 +18,13 @@ public class PortalPlacement : MonoBehaviour
 
     private PlayerCameraControl cameraMove;
 
-    
-    private void Awake()
-    {
-        //portalGun = GameManager.Instance.player.CurrentGun;
-        cameraMove = GetComponentInParent<PlayerCameraControl>();
-        //portalGun.firePortal = FirePortal;
-        // 
-    }
 
-    /*private void Update()
+    private void Start()
     {
-        if (Input.GetButtonDown("Fire1"))
-        {
-            FirePortal(0, transform.position, transform.forward, 250.0f);
-        }
-        else if (Input.GetButtonDown("Fire2"))
-        {
-            FirePortal(1, transform.position, transform.forward, 250.0f);
-        }
-    }*/
+        portalGun = GameManager.Instance.player.CurrentGun;
+        cameraMove = GetComponentInParent<PlayerCameraControl>();
+        portalGun.firePortal = FirePortal;
+    }
 
     private void FirePortal(int portalID, Vector3 pos, Vector3 dir, float distance)
     {

@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.ConstrainedExecution;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
@@ -16,6 +17,7 @@ public class Ball : MonoBehaviour
     public int reflectCount = 4;
     [Tooltip("Effect on Destroy")]
     public bool fxOnDestroy = true;
+    private Collider cd;
 
     private void Awake()
     {
@@ -28,16 +30,33 @@ public class Ball : MonoBehaviour
         //Set dir,speed
         _direction = transform.up;
         _rigidbody.velocity = _direction * ballSpeed;
+        cd = GetComponent<Collider>();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Portal"))
+        {
+            cd.isTrigger = true;
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.CompareTag("Portal"))
+        {
+            cd.isTrigger = false;
+        }
     }
     private void OnCollisionEnter(Collision collision)
     {
         if (_isCatched) return;
 
         //is can Reflect 
-        if (reflectCount > 0)
+        if (!cd.isTrigger && reflectCount > 0)
         {
             //_direction : MoveDir , GetContact : Vertical Vector dir
             _direction = Vector3.Reflect(_direction, collision.GetContact(0).normal);
+            transform.up = _direction;
             //Set Speed,Dir
             _rigidbody.velocity = _direction * ballSpeed;
             reflectCount--;

@@ -9,6 +9,7 @@ public class PlayerInput
     Player_AC playerAC;
 
     private Transform playerTrans;
+    private Camera cam;
     private PlayerMovement movement;
     private PlayerCameraControl cameraLook;
     private PortalGun portalGun;
@@ -18,6 +19,7 @@ public class PlayerInput
         playerAC = new Player_AC();
 
         playerTrans = player.transform;
+        cam = Camera.main;
         movement = player.Movement;
         cameraLook = player.CameraLook;
         portalGun = player.CurrentGun;
@@ -33,8 +35,8 @@ public class PlayerInput
         playerAC.Player.Jump.started += ctx => movement.CanJump();
 
         playerAC.Player.Look.performed += ctx => cameraLook.Direction = ctx.ReadValue<Vector2>();
-        playerAC.Player.LeftFire.started += ctx => portalGun.Fire(0, playerTrans.position, playerTrans.forward, 250.0f);
-        playerAC.Player.RightFire.started += ctx => portalGun.Fire(1, playerTrans.position, playerTrans.forward, 250.0f);
+        playerAC.Player.LeftFire.started += ctx => portalGun.Fire(0, cam.transform.position, cam.transform.forward, 250.0f);
+        playerAC.Player.RightFire.started += ctx => portalGun.Fire(1, cam.transform.position, cam.transform.forward, 250.0f);
     }
 
     public void Enable()

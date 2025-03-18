@@ -61,6 +61,7 @@ public class PlayerStateSystem : MonoBehaviour
     private IEnumerator CanRestart()
     {
         float curDelay = 3f;
+        SetBool("IsDeath", true);
         while (curDelay > 0f)
         {
             curDelay -= Time.deltaTime;
@@ -69,6 +70,9 @@ public class PlayerStateSystem : MonoBehaviour
 
         player.transform.position = player.SavePoint;
         player.IsDeath = false;
+        SetBool("IsDeath", false);
+        player.CameraLook.fpsViewCamera.gameObject.SetActive(true);
+        player.CameraLook.deathCamera.gameObject.SetActive(false);
         dontCoroutine = null;
     }
 
