@@ -199,15 +199,7 @@ public class Turret : MonoBehaviour
     void FireBullet() // 탄환 발사
     {
         // 발사된 탄환을 생성
-        if (firePoint != null)
-        {
-            // firePoint 방향으로 탄환이 나가게 회전 적용
-            Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        }
-        else
-        {
-            Debug.LogWarning("FirePoint is not assigned");
-        }
+        ObjectPool.SpawnFromPool("Bullet", firePoint.position, firePoint.rotation); // ObjectPool에서 Bullet을 Spawn하도록
     }
 
     public void StopTurret()
@@ -228,17 +220,6 @@ public class Turret : MonoBehaviour
         transform.position = new Vector3(0, 1, 0); // 원래 위치로 되돌리기
     }
 
-    /*
-     코드 수정하실꺼
-    
-    FireBullet함수 아래로 변경 ObjectPool에서 Bullet을 Spawn하도록
-    void FireBullet() // 탄환 발사
-    {
-        // 발사된 탄환을 생성
-        ObjectPool.SpawnFromPool("Bullet", firePoint.position, firePoint.rotation);
-    }
-
-     */
 
 }
 
