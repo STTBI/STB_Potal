@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -135,6 +135,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4097429880864271429, guid: bff7390326692984d9c0ab80c39e8ec2, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4639639681583815385, guid: bff7390326692984d9c0ab80c39e8ec2, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -203,6 +207,14 @@ PrefabInstance:
     - target: {fileID: 4101313778020861826, guid: de5736ebcf60845b8afa99212b979ce7, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 6309701376745471390, guid: de5736ebcf60845b8afa99212b979ce7, type: 3}
+      propertyPath: selectedTag
+      value: Obstacle
+      objectReference: {fileID: 0}
+    - target: {fileID: 6309701376745471390, guid: de5736ebcf60845b8afa99212b979ce7, type: 3}
+      propertyPath: layerMask.m_Bits
+      value: 3221227223
       objectReference: {fileID: 0}
     - target: {fileID: 6875588734490081313, guid: de5736ebcf60845b8afa99212b979ce7, type: 3}
       propertyPath: m_Name
