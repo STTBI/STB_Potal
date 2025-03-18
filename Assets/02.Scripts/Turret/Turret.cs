@@ -45,10 +45,12 @@ public class Turret : MonoBehaviour
         if (playerObject != null)
         {
             Transform target = playerObject.transform;  // 플레이어의 Transform을 동적으로 찾기
-
+            Debug.Log($"playerObject {playerObject.IsDeath}");
+            Debug.Log($"Turret {isDying}");
             // 플레이어가 죽지 않았고, 터렛이 죽지 않은 경우
-            if (!isDying && !playerObject.IsDeath)  // 플레이어가 죽었는지를 체크
+            if (!isDying)  // 플레이어가 죽었는지를 체크
             {
+                if (playerObject.IsDeath) return;
                 RotateTowardsPlayer(target); // 상반신만 플레이어 쪽으로 회전
 
                 // 플레이어를 감지할 레이저를 쏘는 부분

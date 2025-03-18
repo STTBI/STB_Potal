@@ -24,10 +24,11 @@ public class bullet : MonoBehaviour
         if (collision.collider.CompareTag("Player"))
         {
             // IsDeath를 true로 설정
-            PlayerController playerController = collision.collider.GetComponent<PlayerController>();
-            if (playerController != null)
+            PlayerController player = GameManager.Instance.player;
+            if (player != null)
             {
-                playerController.IsDeath = true;  // 플레이어 죽음 처리
+                if (player.IsDeath == false)
+                    player.IsDeath = true;  // 플레이어 죽음 처리
             }
 
             UnActive(); // 플레이어와 충돌 시 탄환 삭제
