@@ -85,16 +85,12 @@ public class Turret : MonoBehaviour
                 float angle = Vector3.Angle(transform.forward, direction);
                 if (angle <= maxRotationAngle)
                 {
-                    // 레이저를 플레이어를 향해 쏘기
-                    if (Physics.Raycast(transform.position, direction.normalized, out hit, detectionRange))
+                    // 플레이어가 감지 범위 내에 있는지 확인
+                    float distance = Vector3.Distance(transform.position, target.position);
+                    if (distance <= detectionRange) // 감지 범위 내에 플레이어가 있으면
                     {
-                        // 레이저가 플레이어와 충돌하면
-                        if (hit.collider.transform == target)
-                        {
-                            // 플레이어를 감지한 경우
-                            RotateAndFire();
-                            DrawLaser(hit.point); // 레이저 그리기
-                        }
+                        RotateAndFire();
+                        DrawLaser(target.position); // 레이저 그리기
                     }
                     else
                     {
@@ -180,7 +176,6 @@ public class Turret : MonoBehaviour
 
             // X와 Z축을 고정 (Y축만 회전)
             currentRotation.x = -90f;  // X는 고정
-            //currentRotation.z = -180f; // Z는 고정
 
             // 목표 회전 각도와 현재 회전 각도의 차이를 구하여 제한을 적용
             float angle = Mathf.Abs(Mathf.DeltaAngle(transform.eulerAngles.y, currentRotation.y));
