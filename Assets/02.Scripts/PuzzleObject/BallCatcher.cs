@@ -8,6 +8,7 @@ public class BallCatcher : MonoBehaviour, ITriggerObj
     private bool check;
 
     public event Action OnTriggerUpdate;
+    public Transform Pivot;
 
     public bool TriggerCheck
     {
@@ -39,6 +40,7 @@ public class BallCatcher : MonoBehaviour, ITriggerObj
     {
         Material mr = gameObject.GetComponentInChildren<MeshRenderer>().material;
         mr.color = Color.green;
+        gameObject.GetComponentInChildren<Light>().gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -46,7 +48,9 @@ public class BallCatcher : MonoBehaviour, ITriggerObj
         if (other.gameObject.TryGetComponent<Ball>(out _catchedBall))
         {
             TriggerCheck = true;
+            _catchedBall.transform.position = Pivot.position;
             _catchedBall.OnCatched();
+
         }
     }
 }
