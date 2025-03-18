@@ -1,24 +1,25 @@
 using UnityEngine;
-using System.IO;
-using System.Collections;
 
 public class SavePoint : MonoBehaviour
 {
-    public Camera cameraToUse; // 카메라를 직접 할당할 수 있는 public 변수
+    // 세이브 메시지
     public string saveMessage = "Player position saved at save point!";
     
+    // 위치가 이미 저장되었는지 확인하는 변수
+    private bool isSaved = false;
+
     private void OnTriggerEnter(Collider other)
     {
         // 플레이어가 세이브 포인트에 들어오면 위치 저장
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !isSaved) // 이미 저장되지 않은 경우에만 실행
         {
-            PlayerPositionManager playerPositionManager = other.GetComponent<PlayerPositionManager>();
+            PlayerPositionManager playerPositionManager = PlayerPositionManager.Instance;
             if (playerPositionManager != null)
             {
-                playerPositionManager.SavePlayerPosition();
-                Debug.Log(saveMessage);
+                playerPositionManager.SavePlayerPosition();  // 위치 저장
+                isSaved = true;  // 저장된 상태로 변경
+                Debug.Log(saveMessage);  // 저장된 메시지 출력
             }
         }
     }
-
 }
