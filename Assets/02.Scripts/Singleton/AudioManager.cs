@@ -1,10 +1,12 @@
 using System;
+using System.Collections;
+using System.Resources;
 using UnityEngine;
 using UnityEngine.Audio;
 
 public class AudioManager : Singleton<AudioManager>
 {
-    public Sound[] musicSounds, sfxSounds;
+    ResourceManager resourceManager;
     public AudioMixer myMixer;
     public AudioSource musicSource, sfxSource;
 
@@ -12,9 +14,18 @@ public class AudioManager : Singleton<AudioManager>
     public float MusicValue { get; private set; }
     public float SFXValue { get; private set; }
 
-    private void Awake()
+    private IEnumerator Start()
     {
-        PlayMusic("BGM");
+        yield return (new WaitUntil(() => ResourceManager.Instance != null));
+        resourceManager = ResourceManager.Instance;
+
+        resourceManager.LoadAllResources<AudioClip>("Audios\\Musics", "Music");
+        resourceManager.LoadAllResources<AudioClip>("Audios\\Player\\Step", "Step");
+        resourceManager.LoadResource<AudioClip>("Audios\\Player", "Die");
+        resourceManager.LoadResource<AudioClip>("Audios\\Player", "Fire");
+
+
+        PlayMusic("Music2");
     }
 
     public void PlayMusic(string name)
@@ -53,14 +64,14 @@ public class AudioManager : Singleton<AudioManager>
         }
 
 
-        Sound s = Array.Find(musicSounds, x => x.name == name);
-        if (s == null)
+        AudioClip clip = resourceManager.GetResource<AudioClip>(name);
+        if (clip == null)
         {
             Debug.Log("Sound Not Found");
         }
         else
         {
-            musicSource.clip = s.clip;
+            musicSource.clip = clip;
             musicSource.loop = true;
             musicSource.Play();
         }
@@ -68,8 +79,8 @@ public class AudioManager : Singleton<AudioManager>
 
     public void PlaySFX(string name, bool isOneShot = true)
     {
-        Sound s = Array.Find(sfxSounds, x => x.name == name);
-        if (s == null)
+        AudioClip clip = resourceManager.GetResource<AudioClip>(name);
+        if (clip == null)
         {
             Debug.Log("Sound Not Found");
         }
@@ -77,11 +88,11 @@ public class AudioManager : Singleton<AudioManager>
         {
             if(isOneShot)
             {
-                sfxSource.PlayOneShot(s.clip);
+                sfxSource.PlayOneShot(clip);
             }
             else
             {
-                sfxSource.clip = s.clip;
+                sfxSource.clip = clip;
                 sfxSource.loop = false;
                 sfxSource.Play();
             }

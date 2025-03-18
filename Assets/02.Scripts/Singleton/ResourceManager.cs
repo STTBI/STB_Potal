@@ -14,7 +14,7 @@ public class ResourceManager : Singleton<ResourceManager>
         objResources = new Dictionary<string, Object>();
 
         // 플레이어 가져오기
-        LoadResource<GameObject>("Prefabs\\Player", "player");
+        LoadResource<GameObject>("Prefabs", "Player");
         //LoadAllResources<GameObject>("Prefabs\\enemy", enemy); enemy폴더안에 들어있는 프리펩들을 enemy1, enemy2, enemy3 불러와서 키값을 가진다. 
     }
 
@@ -43,26 +43,26 @@ public class ResourceManager : Singleton<ResourceManager>
     /// <typeparam name="T">ObjectType</typeparam>
     /// <param name="path">경로</param>
     /// <param name="key"></param>
-    private void LoadResource<T>(string path, string key) where T : Object
+    public void LoadResource<T>(string path, string key) where T : Object
     {
         if(!objResources.ContainsKey(key))
         {
-            T resource = Resources.Load<T>(path);
+            T resource = Resources.Load<T>($"{path}\\{key}");
             if(resource != null)
             {
                 objResources[key] = resource;
             }
             else
             {
-                Debug.LogError($"[ResourceManager] Failed to load resource at path: {path}");
+                Debug.LogError($"[ResourceManager] Failed to load resource at path: {path}\\{key}");
             }
         }
     }
 
-    private void LoadAllResources<T>(string path, string key) where T : Object
+    public void LoadAllResources<T>(string path, string key) where T : Object
     {
         T[] resources = Resources.LoadAll<T>(path);
-        int numbering = 0;
+        int numbering = 1;
         foreach (T resource in resources)
         {
             if (resource != null)
