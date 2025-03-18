@@ -13,9 +13,11 @@ GameObject:
   - component: {fileID: 4936326790048943438}
   - component: {fileID: 4460763423777217555}
   - component: {fileID: 7736237026640274510}
+  - component: {fileID: 1209463215168899578}
+  - component: {fileID: 6701843386000797343}
   m_Layer: 0
   m_Name: Box
-  m_TagString: Obstacle
+  m_TagString: Handle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,3 +135,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1209463215168899578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1353244032430431164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9581fdc03f0e386459a466474b74272c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsInPortal: 0
+--- !u!114 &6701843386000797343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1353244032430431164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbf885dbaa5d04d76ac16cff7f09d02b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

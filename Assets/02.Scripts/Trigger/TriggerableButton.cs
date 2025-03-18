@@ -45,8 +45,8 @@ public class TriggerableButton : MonoBehaviour, ITriggerObject
                 TriggerCheck = true;
                 break;
 
-            case "Obstacle":
-                Debug.Log("Obstacle와 충돌함");
+            case "Handle":
+                Debug.Log("Handle 충돌함");
                 TriggerCheck = true;
                 break;
         }
@@ -60,8 +60,8 @@ public class TriggerableButton : MonoBehaviour, ITriggerObject
                 Debug.Log("Player 떨어짐");
                 TriggerCheck = false;
                 break;
-            case "Obstacle":
-                Debug.Log("Obstacle 떨어짐");
+            case "Handle":
+                Debug.Log("Handle 떨어짐");
                 TriggerCheck = false;
                 break;
         }
