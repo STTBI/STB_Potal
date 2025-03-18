@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
+    public Vector3 GoalPosition;
     public Transform RobotGun; // 에셋 총구
     public Transform RobotMount; // 에셋 연결부
     public Transform UpperBody; // 에셋 상반신
@@ -45,13 +46,15 @@ public class Turret : MonoBehaviour
         {
             Transform target = playerObject.transform;  // 플레이어의 Transform을 동적으로 찾기
 
-            RotateTowardsPlayer(target); // 상반신만 플레이어 쪽으로 회전
-
             if (!isDying)
             {
+                
+
+                RotateTowardsPlayer(target); // 상반신만 플레이어 쪽으로 회전
+
                 // 플레이어를 감지할 레이저를 쏘는 부분
                 RaycastHit hit;
-                Vector3 GoalPosition = target.position;
+                GoalPosition = target.position;
                 GoalPosition.y = transform.position.y + 0.6f; // y값으로 레이저 높이 조정
 
                 Vector3 direction = GoalPosition - transform.position;
@@ -84,7 +87,7 @@ public class Turret : MonoBehaviour
                 if (dyingTimer <= 0f)
                 {
                     RotateAndFire(); // 죽기 직전까지 공격 
-                    DrawLaser(target.position);
+                    DrawLaser(GoalPosition);
                 }
                 else
                 {
@@ -141,9 +144,24 @@ public class Turret : MonoBehaviour
         ObjectPool.SpawnFromPool("Bullet", firePoint.position, firePoint.rotation); // ObjectPool에서 Bullet을 Spawn하도록
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Rigidbody rb = GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.AddForce(Vector3.up * 5f, ForceMode.Impulse);  // 힘 조절
+                rb.AddTorque(Vector3.right * 1f, ForceMode.Impulse); // 회전력 조절
+            }
+
+            isDying = true; // 터렛 중지
+        }
+    }
+
     public void StopTurret()
     {
-        isDying = false;
+        isDying = true;
         nextFireTime = Mathf.Infinity;
         laserLine.enabled = false; // 레이저 비활성화
     }
