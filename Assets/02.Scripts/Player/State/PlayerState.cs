@@ -1,5 +1,6 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerState
@@ -33,11 +34,11 @@ public class PlayerState
 
     public virtual void Enter()
     {
-
     }
 
     public virtual void FixedUpdate()
     {
+        movement.OnMove(rigid);
     }
 
     public virtual void Update()
@@ -56,6 +57,5 @@ public class PlayerState
 
     public virtual void Exit()
     {
-
     }
 }

@@ -30,6 +30,10 @@ public class PortalableObject : MonoBehaviour
     // 포탈의 시점에서 이동할 때 물체의 회전을 반전시킴.
     private static readonly Quaternion halfTurn = Quaternion.Euler(0.0f, 180.0f, 0.0f);
 
+    // 워프 제한 시간
+    private float lastWarpTime = -1f;
+    private float warpCooldown = 0.3f; // 0.4초 동안 다시 워프하지 않도록 제한
+
     // 초기화: 포탈 객체의 복제본 생성 및 설정
     protected virtual void Awake()
     {
@@ -87,7 +91,7 @@ public class PortalableObject : MonoBehaviour
     {
         this.inPortal = inPortal;  // 입력 포탈
         this.outPortal = outPortal;  // 출력 포탈
-        IsInPortal = true;
+        //IsInPortal = true;
 
         // 포탈 벽과 충돌하지 않도록 처리
         Physics.IgnoreCollision(collider, wallCollider);
@@ -103,15 +107,15 @@ public class PortalableObject : MonoBehaviour
     {
         // 포탈 벽과 충돌 처리를 복원
         Physics.IgnoreCollision(collider, wallCollider, false);
-        IsInPortal = false;
+        //IsInPortal = false;
         --inPortalCount;  // 포탈을 나간 객체의 수 감소
 
         // 포탈 내부에 남아있는 객체가 없으면 클론 객체를 비활성화
         if (inPortalCount == 0)
         {
-            Invoke(nameof(DisableCloneObject),0.5f);
-            
+            Invoke(nameof(DisableCloneObject), 0.5f);
         }
+        //collider.isTrigger = false;
     }
 
     private void DisableCloneObject()
@@ -122,6 +126,12 @@ public class PortalableObject : MonoBehaviour
     // 포탈을 통한 이동
     public virtual void Warp()
     {
+        // // 워프 쿨타임 체크
+        // if (Time.time - lastWarpTime < warpCooldown)
+        // {
+        //     return; // 0.4초 이내로 다시 워프하지 않음
+        // }
+
         var inTransform = inPortal.transform;
         var outTransform = outPortal.transform;
 
@@ -144,5 +154,6 @@ public class PortalableObject : MonoBehaviour
         var tmp = inPortal;
         inPortal = outPortal;
         outPortal = tmp;
+        
     }
 }

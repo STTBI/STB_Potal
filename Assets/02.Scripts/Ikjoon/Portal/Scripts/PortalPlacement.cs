@@ -1,9 +1,12 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PortalPlacement : MonoBehaviour
 {
+    //포탈건
+    private PortalGun portalGun;
+
     [SerializeField]
     private PortalPair portals;
 
@@ -13,15 +16,18 @@ public class PortalPlacement : MonoBehaviour
     [SerializeField]
     private Crosshair crosshair;
 
-    private CameraMove cameraMove;
+    private PlayerCameraControl cameraMove;
 
     
     private void Awake()
     {
-        cameraMove = GetComponent<CameraMove>();
+        //portalGun = GameManager.Instance.player.CurrentGun;
+        cameraMove = GetComponentInParent<PlayerCameraControl>();
+        //portalGun.firePortal = FirePortal;
+        // 
     }
 
-    private void Update()
+    /*private void Update()
     {
         if (Input.GetButtonDown("Fire1"))
         {
@@ -31,7 +37,7 @@ public class PortalPlacement : MonoBehaviour
         {
             FirePortal(1, transform.position, transform.forward, 250.0f);
         }
-    }
+    }*/
 
     private void FirePortal(int portalID, Vector3 pos, Vector3 dir, float distance)
     {
