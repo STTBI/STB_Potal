@@ -46,10 +46,9 @@ public class Turret : MonoBehaviour
         {
             Transform target = playerObject.transform;  // 플레이어의 Transform을 동적으로 찾기
 
-            if (!isDying)
+            // 플레이어가 죽지 않았고, 터렛이 죽지 않은 경우
+            if (!isDying && !playerObject.IsDeath)  // 플레이어가 죽었는지를 체크
             {
-                
-
                 RotateTowardsPlayer(target); // 상반신만 플레이어 쪽으로 회전
 
                 // 플레이어를 감지할 레이저를 쏘는 부분
@@ -72,28 +71,35 @@ public class Turret : MonoBehaviour
                     }
                     else
                     {
-                        laserLine.enabled = false; // 플레이어 감지 못하면 레이저x
+                        laserLine.enabled = false; // 플레이어 감지 못하면 레이저 끄기
                     }
                 }
                 else
                 {
-                    laserLine.enabled = false; // 정해진 각도 외에 플레이어 감지x
+                    laserLine.enabled = false; // 정해진 각도 외에 플레이어 감지 못함
                 }
             }
             else
             {
-                dyingTimer -= Time.deltaTime;
+                // 플레이어가 죽으면 레이저 끄기
+                laserLine.enabled = false;
 
+                // 죽은 상태에서 타이머가 다 끝나면 터렛이 죽은 상태로 처리
+                dyingTimer -= Time.deltaTime;
                 if (dyingTimer <= 0f)
                 {
                     RotateAndFire(); // 죽기 직전까지 공격 
-                    DrawLaser(GoalPosition);
                 }
                 else
                 {
                     StopTurret(); // 터렛 중지
                 }
             }
+        }
+        else
+        {
+            // 플레이어 오브젝트가 없다면 레이저 끄기
+            laserLine.enabled = false;
         }
     }
 

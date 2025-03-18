@@ -23,9 +23,17 @@ public class bullet : MonoBehaviour
     {
         if (collision.collider.CompareTag("Player"))
         {
-            UnActive(); // 플레이어와 충돌시 탄환 삭제
+            // IsDeath를 true로 설정
+            PlayerController playerController = collision.collider.GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.IsDeath = true;  // 플레이어 죽음 처리
+            }
+
+            UnActive(); // 플레이어와 충돌 시 탄환 삭제
         }
     }
+
     void OnDisable()
     {
         ObjectPool.ReturnToPool(gameObject);
