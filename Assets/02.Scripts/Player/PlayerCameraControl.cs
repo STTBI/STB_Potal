@@ -7,7 +7,10 @@ using UnityEngine.UIElements;
 
 public class PlayerCameraControl : MonoBehaviour
 {
-    private Transform cam;
+    private PlayerController player;
+
+    public Camera fpsViewCamera;
+    public Camera deathCamera;
 
     [SerializeField] private float sensivityX;
     [SerializeField] private float sensivityY;
@@ -25,27 +28,48 @@ public class PlayerCameraControl : MonoBehaviour
 
     private void Awake()
     {
-        cam = Camera.main.transform;
         playerRotation = transform.rotation;
         camRotation = Vector3.zero;
     }
 
+    private void Start()
+    {
+        player = GetComponent<PlayerController>();
+    }
+
+    private void Update()
+    {
+        DeathView();
+    }
+
+    private void DeathView()
+    {
+        if (player.IsDeath && !deathCamera.gameObject.activeSelf)
+        {
+            fpsViewCamera.gameObject.SetActive(false);
+            deathCamera.gameObject.SetActive(true);
+        }
+    }
+
     private void LateUpdate()
-{
-    playerRotation = transform.rotation; // ±âÁ¸ È¸Àü°ª °¡Á®¿À±â
+    {
+        if (player.IsDeath)
+            return;
 
-    mouseSensivity.x = -Direction.y * sensivityX * Time.deltaTime;
-    mouseSensivity.y = Direction.x * sensivityY * Time.deltaTime;
+        playerRotation = transform.rotation; // ê¸°ì¡´ íšŒì „ê°’ ê°€ì ¸ì˜¤ê¸°
 
-    playerRotation *= Quaternion.Euler(0f, mouseSensivity.y, 0f);
-    transform.rotation = playerRotation;
+        mouseSensivity.x = -Direction.y * sensivityX * Time.deltaTime;
+        mouseSensivity.y = Direction.x * sensivityY * Time.deltaTime;
 
-    camRotation += Vector3.right * mouseSensivity.x;
-    camRotation.x = Mathf.Clamp(camRotation.x, -clampAngle, clampAngle);
-    cam.localRotation = Quaternion.Euler(camRotation.x, 0, 0);
+        playerRotation *= Quaternion.Euler(0f, mouseSensivity.y, 0f);
+        transform.rotation = playerRotation;
 
-    TargetRotation = Quaternion.Euler(camRotation.x, playerRotation.eulerAngles.y, 0f);
-}
+        camRotation += Vector3.right * mouseSensivity.x;
+        camRotation.x = Mathf.Clamp(camRotation.x, -clampAngle, clampAngle);
+        fpsViewCamera.transform.localRotation = Quaternion.Euler(camRotation.x, 0, 0);
+
+        TargetRotation = Quaternion.Euler(camRotation.x, playerRotation.eulerAngles.y, 0f);
+    }
 
     public void ResetTargetRotation()
     {

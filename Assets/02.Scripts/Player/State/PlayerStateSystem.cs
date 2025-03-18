@@ -48,6 +48,11 @@ public class PlayerStateSystem : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            player.IsDeath = true;
+        }
+
         if (!player.IsDeath)
             stateMachine.CurrentState.Update();
         else if(dontCoroutine == null)
@@ -61,6 +66,7 @@ public class PlayerStateSystem : MonoBehaviour
     private IEnumerator CanRestart()
     {
         float curDelay = 3f;
+        SetBool("IsDeath", true);
         while (curDelay > 0f)
         {
             curDelay -= Time.deltaTime;
@@ -69,6 +75,9 @@ public class PlayerStateSystem : MonoBehaviour
 
         player.transform.position = player.SavePoint;
         player.IsDeath = false;
+        SetBool("IsDeath", false);
+        player.CameraLook.fpsViewCamera.gameObject.SetActive(true);
+        player.CameraLook.deathCamera.gameObject.SetActive(false);
         dontCoroutine = null;
     }
 
