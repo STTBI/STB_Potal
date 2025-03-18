@@ -21,7 +21,7 @@ public class ObjectHandler : MonoBehaviour
     ray = new Ray(transform.position, transform.forward);
     if (Physics.Raycast(ray, out hit, rayDistance, layerMask)) // 특정 레이어 무시
     {
-        if (hit.collider.CompareTag("Handle"))
+        if (hit.collider.CompareTag("Obstacle"))
         {
             // E키를 누르면 오브젝트를 잡거나 놓음
             if (Input.GetKeyDown(KeyCode.E))

@@ -109,16 +109,18 @@ public class MovingPlatform : MonoBehaviour, IPuzzleObj
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Obstacle"))
         {
-            collision.gameObject.transform.parent = transform;
+            collision.gameObject.transform.SetParent(transform);
+       
         }
     }
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Obstacle"))
         {
             collision.gameObject.transform.parent = null;
+     
         }
     }
 
