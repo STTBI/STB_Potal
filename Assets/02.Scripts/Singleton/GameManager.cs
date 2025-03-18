@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    public GameObject player { get; private set; }
+    public PlayerController player { get; private set; }
 
-    public GameObject CreatePlayer(Quaternion quater,Vector3 originVelocity, float x = 0f, float y = 0f, float z = 0f)
+    public PlayerController CreatePlayer(Quaternion quater,Vector3 originVelocity, float x = 0f, float y = 0f, float z = 0f)
     {
         Vector3 newPosition = new Vector3(x, y, z);
         GameObject prefabs = ResourceManager.Instance.GetResource<GameObject>("player");
         GameObject objPlayer = Instantiate(prefabs, newPosition, quater);
         objPlayer.transform.position = newPosition;
         //objPlayer.GetComponent<PlayerController>().MoveMent.playerVelocity = originVelocity;
-        return objPlayer;
+        return objPlayer.AddComponent<PlayerController>();
     }
 
-    public GameObject ChangePlayerOwner(GameObject playerObject)
+    public PlayerController ChangePlayerOwner(PlayerController playerObject)
     {
         if (playerObject == null || player == playerObject)
         {

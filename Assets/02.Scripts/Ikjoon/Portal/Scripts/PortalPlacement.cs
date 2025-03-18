@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PortalPlacement : MonoBehaviour
 {
+    //포탈건
+    private PortalGun portalGun;
+
     [SerializeField]
     private PortalPair portals;
 
@@ -18,7 +21,10 @@ public class PortalPlacement : MonoBehaviour
     
     private void Awake()
     {
+        portalGun = GameManager.Instance.player.CurrentGun;
         cameraMove = GetComponent<CameraMove>();
+        portalGun.firePortal = FirePortal;
+        // 
     }
 
     private void Update()
