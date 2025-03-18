@@ -77,8 +77,8 @@ public class Portal : MonoBehaviour
             
             if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
-                CameraMove cameraMove = other.GetComponent<CameraMove>();
-                ObjectHandler objectHandler = other.GetComponent<ObjectHandler>();
+                PlayerMovement cameraMove = other.GetComponent<PlayerMovement>();
+                ObjectHandler objectHandler = other.GetComponentInChildren<ObjectHandler>();
                 objectHandler.isWalkInPortal = true;
                 if(cameraMove.currentVelocity.magnitude > 10f)
                 {

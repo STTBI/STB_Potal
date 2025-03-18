@@ -62548,10 +62548,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9acb834dcf31d64abe66e5d452a1b49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_vcamOwner: {fileID: 7555094057274762215}
   player: {fileID: 2628282640753125901}
   sensivityX: 10
   sensivityY: 10
   clampAngle: 80
+  startingRotation: {x: 0, y: 0, z: 0}
+  <Direction>k__BackingField: {x: 0, y: 0}
 --- !u!4 &5796702340784257318
 Transform:
   m_ObjectHideFlags: 0

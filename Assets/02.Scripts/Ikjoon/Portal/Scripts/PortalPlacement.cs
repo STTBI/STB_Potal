@@ -16,14 +16,14 @@ public class PortalPlacement : MonoBehaviour
     [SerializeField]
     private Crosshair crosshair;
 
-    private CameraMove cameraMove;
+    private PlayerCameraControl cameraMove;
 
     
     private void Awake()
     {
-        portalGun = GameManager.Instance.player.CurrentGun;
-        cameraMove = GetComponent<CameraMove>();
-        portalGun.firePortal = FirePortal;
+        //portalGun = GameManager.Instance.player.CurrentGun;
+        cameraMove = GetComponentInParent<PlayerCameraControl>();
+        //portalGun.firePortal = FirePortal;
         // 
     }
 

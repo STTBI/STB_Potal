@@ -154,8 +154,6 @@ public class PortalableObject : MonoBehaviour
         var tmp = inPortal;
         inPortal = outPortal;
         outPortal = tmp;
-
-        // 마지막 워프 시간을 기록
-        lastWarpTime = Time.time;
+        
     }
 }

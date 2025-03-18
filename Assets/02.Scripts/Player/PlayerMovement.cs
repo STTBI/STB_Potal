@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEditor.Callbacks;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -17,6 +19,13 @@ public class PlayerMovement : MovementHandler
     [SerializeField] private float RunSpeed;
     [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpSlopeHeight;
+    [SerializeField] public Vector3 currentVelocity;
+
+
+    private Rigidbody rb;
+
+    public bool isInPortal;
+
     #endregion
 
     private Vector3 moveDirection;
@@ -28,6 +37,22 @@ public class PlayerMovement : MovementHandler
     private void OnValidate()
     {
         CurrentSpeed = frontWalkSpeed;
+    }
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    private void FixedUpdate()
+    {
+        // Quaternion targetRotation = quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+        // rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * 5f));
+        // 현재 회전값
+    Vector3 currentRotation = transform.rotation.eulerAngles;
+
+    // 회전값을 (0, y, 0)으로 되돌림
+    transform.rotation = Quaternion.Euler(0f, currentRotation.y, 0f);
     }
 
     // 현재 스피드 변경
@@ -63,6 +88,7 @@ public class PlayerMovement : MovementHandler
             gravity += Vector3.down * 9.81f * Time.fixedDeltaTime;
         
         rigid.velocity = moveDirection * CurrentSpeed + gravity;
+        currentVelocity = rigid.velocity;
         return Direction.magnitude > 0f;
     }
 
