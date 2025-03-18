@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
     public PlayerStateSystem StateSystem { get; private set; }
     public PlayerCameraControl CameraLook { get; private set; }
 
+    // 현재 플레이어가 들고있는 포탈건
+    public PortalGun CurrentGun { get; set; }
+
     private void OnValidate()
     {
         // 유니티 컴포넌트
@@ -26,7 +29,9 @@ public class PlayerController : MonoBehaviour
         StateSystem = GetComponent<PlayerStateSystem>();
         Movement = GetComponent<PlayerMovement>();
         CameraLook = GetComponentInChildren<PlayerCameraControl>();
-        
+        // 포탈 건이 한개 밖에 없는 이유로 그냥 참조
+        CurrentGun = GetComponentInChildren<PortalGun>();
+
 
         // 일반 스크립트
         playerInput = new PlayerInput(this);
