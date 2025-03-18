@@ -6,13 +6,16 @@ using UnityEngine;
 public class Turret : MonoBehaviour
 {
     public Transform target;  // 플레이어
+    public Transform RobotGun; // 에셋 총구
+    public Transform RobotMount; // 에셋 연결부
+    public Transform UpperBody; // 에셋 상반신
+    public Transform RigBodyLower; // 에셋 하반신
     public float detectionRange = 10f;  // 감지 범위
     public float rotationSpeed = 5f;  // 회전 속도
     public GameObject bulletPrefab;  // 발사할 탄환 프리팹
     public Transform firePoint;  // 탄환 발사 위치
     public float fireRate = 1f;  // 발사 간격
     private float nextFireTime = 0f;
-
 
     private bool isDying = false; // 터렛이 죽기 직전인지 여부
     private float dyingTimer = 3f; // 터렛이 죽기 직전 타이머
@@ -32,22 +35,38 @@ public class Turret : MonoBehaviour
         laserLine.material = new Material(Shader.Find("Sprites/Default")); // 레이저 색상
         laserLine.startColor = Color.white;
         laserLine.endColor = Color.red;
-    }
 
+        // 플레이어 태그로 찾기
+        GameObject player = GameObject.FindWithTag("Player");
+
+        // SentryRobot에서 RobotGun을 찾고, RobotGun의 자식으로 있는 firePoint를 할당
+        GameObject sentryRobot = GameObject.Find("SentryRobot");
+        if (sentryRobot != null)
+        {
+            Transform robotGun = sentryRobot.transform.Find("Rig_Body_Upper/RobotGun");
+            if (robotGun != null)
+            {
+                // RobotGun의 자식으로 firePoint가 있으므로, 그 자식 Transform을 firePoint로 설정
+                firePoint = robotGun.Find("firePoint");  // RobotGun의 자식에 있는 firePoint를 찾기
+                if (firePoint == null)
+                {
+                    Debug.LogWarning("firePoint not found in RobotGun");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("RobotGun not found in SentryRobot");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("SentryRobot not found in the scene");
+        }
+    }
 
     void Update()
     {
-        // 터렛을 드는 기능
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            LiftTurretByPlayer();
-        }
-
-        //  터렛을 놓는 기능
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            DropTurret();
-        }
+        RotateTowardsPlayer(); // 상반신만 플레이어 쪽으로 회전
 
         if (isLifted)
         {
@@ -60,22 +79,21 @@ public class Turret : MonoBehaviour
             {
                 // 플레이어를 감지할 레이저를 쏘는 부분
                 RaycastHit hit;
-                Vector3 direction = target.position - transform.position;
+                Vector3 GoalPosition = target.position;
+                GoalPosition.y = transform.position.y + 0.6f; // y값으로 레이저 높이 조정
+
+                Vector3 direction = GoalPosition - transform.position;
 
                 // 정면에서만 감지하게 각도 조절
                 float angle = Vector3.Angle(transform.forward, direction);
                 if (angle <= maxRotationAngle)
                 {
-                    // 레이저를 플레이어를 향해 쏘기
-                    if (Physics.Raycast(transform.position, direction.normalized, out hit, detectionRange))
+                    // 플레이어가 감지 범위 내에 있는지 확인
+                    float distance = Vector3.Distance(transform.position, GoalPosition);
+                    if (distance <= detectionRange) // 감지 범위 내에 플레이어가 있으면
                     {
-                        // 레이저가 플레이어와 충돌하면
-                        if (hit.collider.transform == target)
-                        {
-                            // 플레이어를 감지한 경우
-                            RotateAndFire();
-                            DrawLaser(hit.point); // 레이저 그리기
-                        }
+                        RotateAndFire();
+                        DrawLaser(GoalPosition); // 레이저 그리기
                     }
                     else
                     {
@@ -113,29 +131,22 @@ public class Turret : MonoBehaviour
         }
     }
 
-    void DrawLaser(Vector3 tartgetposition)
+    void DrawLaser(Vector3 targetPosition)
     {
-        if(laserLine != null)
+        if (laserLine != null)
         {
             laserLine.enabled = true; //레이저 활성화
 
             laserLine.positionCount = 2;
 
             laserLine.SetPosition(0, firePoint.position); // 시작점
-            laserLine.SetPosition(1, tartgetposition); // 타겟의 위치
+            laserLine.SetPosition(1, targetPosition); // 타겟의 위치
         }
     }
 
     void RotateAndFire()
     {
         if (isDying) return;
-
-        // 타겟을 향해 회전
-        Vector3 direction = target.position - transform.position;
-        direction.y = 0;  // y축 회전 안함
-
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
         // 발사 타이밍 확인
         if (Time.time > nextFireTime)
@@ -144,13 +155,48 @@ public class Turret : MonoBehaviour
             nextFireTime = Time.time + 1f / fireRate;
         }
     }
-   
+
+    void RotateTowardsPlayer()
+    {
+        if (target != null)
+        {
+            // 플레이어의 위치로 회전 방향 계산
+            Vector3 direction = target.position - transform.position;
+            direction.y = 0;  // Y축을 고정하여 위아래 회전 방지
+
+            // 목표 회전 방향 계산 (Y축만 회전)
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+            // 회전 각도를 제한하기 위해 EulerAngles 사용
+            Vector3 currentRotation = targetRotation.eulerAngles;
+
+            // X와 Z축을 고정 (Y축만 회전)
+            currentRotation.x = -90f;  // X는 고정
+
+            // 목표 회전 각도와 현재 회전 각도의 차이를 구하여 제한을 적용
+            float angle = Mathf.Abs(Mathf.DeltaAngle(transform.eulerAngles.y, currentRotation.y));
+
+            // 회전 제한
+            if (angle <= maxRotationAngle)
+            {
+                // RobotGun, RobotMount, UpperBody만 회전시키기
+                RobotGun.rotation = Quaternion.Slerp(RobotGun.rotation, Quaternion.Euler(currentRotation), rotationSpeed * Time.deltaTime);
+                RobotMount.rotation = Quaternion.Slerp(RobotMount.rotation, Quaternion.Euler(currentRotation), rotationSpeed * Time.deltaTime);
+                UpperBody.rotation = Quaternion.Slerp(UpperBody.rotation, Quaternion.Euler(currentRotation), rotationSpeed * Time.deltaTime);
+            }
+            else
+            {
+                // 회전 제한을 초과하면 회전하지 않음
+                Debug.Log("Rotation restricted");
+            }
+        }
+    }
+
     void FireBullet() // 탄환 발사
     {
         // 발사된 탄환을 생성
-        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        ObjectPool.SpawnFromPool("Bullet", firePoint.position, firePoint.rotation); // ObjectPool에서 Bullet을 Spawn하도록
     }
-
 
     public void StopTurret()
     {
@@ -169,4 +215,7 @@ public class Turret : MonoBehaviour
         isLifted = false; // 터렛을 내려놓을 때
         transform.position = new Vector3(0, 1, 0); // 원래 위치로 되돌리기
     }
+
+
 }
+

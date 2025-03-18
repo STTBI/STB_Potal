@@ -4,25 +4,33 @@ using UnityEngine;
 
 public class bullet : MonoBehaviour
 {
-    public float bulletSpeed = 5f; // íƒ„í™˜ ì†ë„
-    public float lifespawn = 5f; // íƒ„í™˜ ìˆ˜ëª…
+    public float bulletSpeed = 5f; // ÅºÈ¯ ¼Óµµ
+    public float lifespawn = 5f; // ÅºÈ¯ ¼ö¸í
 
-    void Start()
+    private void OnEnable()
     {
-        Destroy(gameObject, lifespawn); //íƒ„í™˜ ë°œì‚¬ í›„ ì¼ì • ì‹œê°„ ì§€ë‚œ ë’¤ íŒŒê´´
+        Invoke(nameof(UnActive), lifespawn);
     }
+
+    void UnActive() => gameObject.SetActive(false);
 
     void Update()
     {
-        transform.Translate(Vector3.forward * bulletSpeed * Time.deltaTime); //íƒ„í™˜ì˜ ì „ë°©ìœ¼ë¡œ ê³„ì† ì´ë™
+        transform.Translate(Vector3.forward * bulletSpeed * Time.deltaTime); //ÅºÈ¯ÀÇ Àü¹æÀ¸·Î °è¼Ó ÀÌµ¿
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Player"))
         {
-            GameManager.Instance.player.IsDeath = true;
-            Destroy(gameObject); // í”Œë ˆì´ì–´ì™€ ì¶©ëŒì‹œ íƒ„í™˜ ì‚­ì œ
+            UnActive(); // ÇÃ·¹ÀÌ¾î¿Í Ãæµ¹½Ã ÅºÈ¯ »èÁ¦
         }
     }
+    void OnDisable()
+    {
+        ObjectPool.ReturnToPool(gameObject);
+        CancelInvoke();
+    }
+
+
 }
