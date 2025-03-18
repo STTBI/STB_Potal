@@ -21,13 +21,13 @@ public class DoorManager : MonoBehaviour
 
     private void OnValidate()
     {
-        //ICheckTrigger¸¦ »ó¼Ó ¹ŞÀº ¸ğµç ÀÚ½ÄµéÀ» Ã£¾Æ¿Â´Ù.
+        //ICheckTriggerç‘œ??ê³¸ëƒ½ è«›ì†? ï§â‘¤ë±º ?ë¨¯ë–‡?ã…¼ì“£ ï§¡ì– ë¸˜?â‘¤ë–.
         triggerObject = GetComponentsInChildren<ITriggerObject>();
 
-        //Æ®¸®°Å¿Í ¿¬°áÇØÁÙ ¹®À» Ã£¾Æ¿Â´Ù. (¹®Àº ÇÑ °³¿©¾ß ÇÔ)
+        //?ëªƒâ”å«„ê³—? ?ê³Œê»?ëŒì¨ª è‡¾ëª„ì“£ ï§¡ì– ë¸˜?â‘¤ë–. (è‡¾ëª„? ??åª›ì’–ë¿¬????
         door = GetComponentInChildren<Door>();
 
-        //È®ÀÎ¿ë
+        //?ëº¤ì”¤??
         TriggerObjectCount = triggerObject.Length;
     }
 
@@ -38,8 +38,8 @@ public class DoorManager : MonoBehaviour
 
     public void Decision()
     {
-        //ÀüºÎ true¶ó¸é Open
-        //ÇÏ³ª¶óµµ false¸é Close
+        //?ê¾¨? true?ì‡°ãˆƒ Open
+        //?ì„êµ¹?ì‡°ë£„ falseï§?Close
         for (int i = 0; i < triggerObject.Length; i++)
         {
             if (triggerObject[i].TriggerCheck == false)
