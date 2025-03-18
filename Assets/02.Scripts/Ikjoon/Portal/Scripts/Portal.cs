@@ -52,6 +52,7 @@ public class Portal : MonoBehaviour
         Renderer.enabled = OtherPortal.IsPlaced;
 
         // 포탈에 들어간 모든 물체들에 대해 Warp 실행.
+        
         for (int i = 0; i < portalObjects.Count; ++i)
         {
             Vector3 objPos = transform.InverseTransformPoint(portalObjects[i].transform.position);
@@ -70,13 +71,16 @@ public class Portal : MonoBehaviour
         var obj = other.GetComponent<PortalableObject>();
         if (obj != null)
         {
+            obj.IsInPortal = true;
             portalObjects.Add(obj);
             obj.SetIsInPortal(this, OtherPortal, wallCollider);
             
             if(other.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
-                CameraMove cameraMove = other.GetComponent<CameraMove>();
-                if(cameraMove.currentVelocity.magnitude > 10f)
+                PlayerMovement cameraMove = other.GetComponent<PlayerMovement>();
+                ObjectHandler objectHandler = other.GetComponentInChildren<ObjectHandler>();
+                objectHandler.isWalkInPortal = true;
+                if(cameraMove.currentVelocity.magnitude > 7f)
                 {
                     cameraMove.isInPortal = true;
                 }
@@ -88,6 +92,14 @@ public class Portal : MonoBehaviour
     {
         // 포탈을 나가는 물체 처리.
         var obj = other.GetComponent<PortalableObject>();
+        obj.IsInPortal = false;
+        ObjectHandler objectHandler = other.GetComponent<ObjectHandler>();
+        PlayerMovement cameraMove = other.GetComponent<PlayerMovement>();
+        cameraMove.isInPortal = false;
+        if(objectHandler != null)
+        {
+            objectHandler.isWalkInPortal = false;
+        }
 
         if(portalObjects.Contains(obj))
         {

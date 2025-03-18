@@ -31,28 +31,21 @@ public class PlayerCameraControl : MonoBehaviour
     }
 
     private void LateUpdate()
-    {
+{
+    playerRotation = transform.rotation; // 기존 회전값 가져오기
 
-        mouseSensivity.x = -Direction.y * sensivityX * Time.deltaTime;
-        mouseSensivity.y = Direction.x * sensivityY * Time.deltaTime;
+    mouseSensivity.x = -Direction.y * sensivityX * Time.deltaTime;
+    mouseSensivity.y = Direction.x * sensivityY * Time.deltaTime;
 
-        // 카메라 회전
-        if (mouseSensivity.y > 180.0f)
-        {
-            mouseSensivity.y -= 360.0f;
-        }
+    playerRotation *= Quaternion.Euler(0f, mouseSensivity.y, 0f);
+    transform.rotation = playerRotation;
 
-        playerRotation = playerRotation * Quaternion.Euler(0f, mouseSensivity.y, 0f);
-        transform.rotation = playerRotation;
+    camRotation += Vector3.right * mouseSensivity.x;
+    camRotation.x = Mathf.Clamp(camRotation.x, -clampAngle, clampAngle);
+    cam.localRotation = Quaternion.Euler(camRotation.x, 0, 0);
 
-        camRotation += Vector3.right * mouseSensivity.x;
-        camRotation.x = Mathf.Clamp(camRotation.x, -clampAngle, clampAngle);
-        cam.localRotation = Quaternion.Euler(camRotation.x, 0, 0);
-
-
-        // 포탈 마우스 동기화
-        TargetRotation = Quaternion.Euler(camRotation.x, playerRotation.y, 0f);
-    }
+    TargetRotation = Quaternion.Euler(camRotation.x, playerRotation.eulerAngles.y, 0f);
+}
 
     public void ResetTargetRotation()
     {
