@@ -126,12 +126,6 @@ public class PortalableObject : MonoBehaviour
     // 포탈을 통한 이동
     public virtual void Warp()
     {
-        // // 워프 쿨타임 체크
-        // if (Time.time - lastWarpTime < warpCooldown)
-        // {
-        //     return; // 0.4초 이내로 다시 워프하지 않음
-        // }
-
         var inTransform = inPortal.transform;
         var outTransform = outPortal.transform;
 

@@ -16,9 +16,13 @@ public class PlayerMovement : MovementHandler
     [SerializeField] private float backWalkSpeed;
     [SerializeField] private float sideWalkSpeed;
     [SerializeField] private float frontWalkSpeed;
+    [SerializeField] private float RunSpeed;
     [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpSlopeHeight;
     [SerializeField] public Vector3 currentVelocity;
+
+    [Header("Velocity Limits")]
+    [SerializeField] private float ySpeedMax = 25f;
 
 
     private Rigidbody rb;
@@ -30,12 +34,16 @@ public class PlayerMovement : MovementHandler
     private Vector3 moveDirection;
     private Vector3 gravity;
 
-    // í”„ë¡œí¼í‹°
+    // ÇÁ·ÎÆÛÆ¼
     public bool IsJump { get; private set; }
+
+    private void OnValidate()
+    {
+        CurrentSpeed = frontWalkSpeed;
+    }
 
     private void Awake()
     {
-        CurrentSpeed = frontWalkSpeed;
         rb = GetComponent<Rigidbody>();
     }
 
@@ -43,17 +51,47 @@ public class PlayerMovement : MovementHandler
     {
         Vector3 currentRotation = transform.rotation.eulerAngles;
 
-        if(currentRotation.x != 0f || currentRotation.z != 0f)
-        {
-            //transform.rotation = Quaternion.Euler(0f, currentRotation.y, 0f);
-            float targetX= Mathf.LerpAngle(currentRotation.x, 0f, Time.deltaTime * 3f);
-            float targetZ= Mathf.LerpAngle(currentRotation.z, 0f, Time.deltaTime * 3f);
+        // È¸Àü°ªÀ» int·Î º¯È¯
+        int rotX = Mathf.RoundToInt(currentRotation.x);
+        int rotZ = Mathf.RoundToInt(currentRotation.z);
 
-            transform.rotation = Quaternion.Euler(targetX,currentRotation.y,targetZ);
+        // X, Z È¸Àü°ªÀÌ 0¿¡ °¡±î¿îÁö È®ÀÎ (0°úÀÇ ºñ±³)
+        if (rotX != 0 || rotZ != 0)
+        {
+            // X, Z È¸Àü°ªÀ» 0À¸·Î ºÎµå·´°Ô º¯°æ
+            float targetX = Mathf.LerpAngle(currentRotation.x, 0f, Time.deltaTime * 5f);
+            float targetZ = Mathf.LerpAngle(currentRotation.z, 0f, Time.deltaTime * 5f);
+
+            // ÀÌµ¿ ¹æÇâÀÇ ¹İ´ë ¹æÇâÀ» ³ªÅ¸³»´Â Y°ª °è»ê
+            float targetY = Mathf.Atan2(Direction.x, Direction.y) * Mathf.Rad2Deg + 180f;
+
+            transform.rotation = Quaternion.Euler(targetX, targetY, targetZ);
+        }
+
+        // ÇöÀç ¼Óµµ °¡Á®¿À±â
+        Vector3 velocity = rb.velocity;
+
+        // YÃà ¼Óµµ Á¦ÇÑ (ySpeedMax ÀÌÇÏ·Î)
+        velocity.y = Mathf.Sign(velocity.y) * Mathf.Min(Mathf.Abs(velocity.y), ySpeedMax);  // Àı´ñ°ªÀ¸·Î Å¬·¥ÇÁ
+
+        // Á¦ÇÑµÈ ¼Óµµ¸¦ Rigidbody¿¡ ´Ù½Ã ¹İ¿µ
+        rb.velocity = velocity;
+
+        Debug.Log("rot");
+    }
+    void Update()
+    {
+        if(Input.GetKey(KeyCode.F))
+        {
+            Time.timeScale = 0.3f;
+        }else{
+            Time.timeScale = 1;
         }
     }
 
-    // í˜„ì¬ ìŠ¤í”¼ë“œ ë³€ê²½
+
+
+    // ÇöÀç ½ºÇÇµå º¯°æ
     public void ChangeSpeed()
     {
         if (Direction.y > 0f)
@@ -70,9 +108,9 @@ public class PlayerMovement : MovementHandler
             return false;
 
         bool isGround = CheckGround();
-        bool onSlope = IsOnSlope(); // ê²½ì‚¬ë©´ ì²´í¬
+        bool onSlope = IsOnSlope(); // °æ»ç¸é Ã¼Å©
         moveDirection = Vector3.right * Direction.x + Vector3.forward * Direction.y;
-        moveDirection = transform.TransformDirection(moveDirection); // ë¡œì»¬ ì¢Œí‘œì—ì„œ ì›”ë“œ ì¢Œí‘œë¡œ ë³€ê²½
+        moveDirection = transform.TransformDirection(moveDirection); // ·ÎÄÃ ÁÂÇ¥¿¡¼­ ¿ùµå ÁÂÇ¥·Î º¯°æ
 
         if (isGround && onSlope)
         {
@@ -111,9 +149,7 @@ public class PlayerMovement : MovementHandler
 
     public bool OnJump(Rigidbody rigid)
     {
-        if(isInPortal)
-            return false;
-
+        
         if(IsJump)
         {
             rigid.useGravity = true;
@@ -129,6 +165,7 @@ public class PlayerMovement : MovementHandler
     public void CanJump()
     {
         if(CheckGround())
+            isInPortal = false;
             IsJump = true;
     }
 }
