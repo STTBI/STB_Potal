@@ -48,11 +48,6 @@ public class PlayerStateSystem : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            player.IsDeath = true;
-        }
-
         if (!player.IsDeath)
             stateMachine.CurrentState.Update();
         else if(dontCoroutine == null)
