@@ -51,6 +51,9 @@ public class Ball : MonoBehaviour
     {
         if (_isCatched) return;
 
+        Vector3 pos = collision.collider.ClosestPoint(transform.position);
+        ObjectPool.SpawnFromPool("BallTrace", pos, Quaternion.FromToRotation(Vector3.up, collision.GetContact(0).normal));
+
         //is can Reflect 
         if (!cd.isTrigger && reflectCount > 0)
         {

@@ -7,7 +7,7 @@ public class PlayerStateSystem : MonoBehaviour
 {
     private PlayerController player;
 
-    // 상태 불능 코루틴
+    // ?곹깭 遺덈뒫 肄붾（??
     private Coroutine dontCoroutine;
 
     #region Animator
