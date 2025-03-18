@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
-    public Transform target;  // 플레이어
     public Transform RobotGun; // 에셋 총구
     public Transform RobotMount; // 에셋 연결부
     public Transform UpperBody; // 에셋 상반신
@@ -27,54 +26,27 @@ public class Turret : MonoBehaviour
     private bool isLifted = false; // 플레이어가 터렛을 들었는지 여부
     private Vector3 liftOffset = new Vector3(0, 3f, 0); // 터렛이 플레이어에게 들릴 때
 
+    private PlayerController playerObject;
+
     void Start()
     {
+        playerObject = GameManager.Instance.player;
         laserLine = firePoint.GetComponent<LineRenderer>();
         laserLine.startWidth = 0.01f;  // 레이저 크기
         laserLine.endWidth = 0.02f;
         laserLine.material = new Material(Shader.Find("Sprites/Default")); // 레이저 색상
         laserLine.startColor = Color.white;
         laserLine.endColor = Color.red;
-
-        // 플레이어 태그로 찾기
-        GameObject player = GameObject.FindWithTag("Player");
-
-        // SentryRobot에서 RobotGun을 찾고, RobotGun의 자식으로 있는 firePoint를 할당
-        GameObject sentryRobot = GameObject.Find("SentryRobot");
-        if (sentryRobot != null)
-        {
-            Transform robotGun = sentryRobot.transform.Find("Rig_Body_Upper/RobotGun");
-            if (robotGun != null)
-            {
-                // RobotGun의 자식으로 firePoint가 있으므로, 그 자식 Transform을 firePoint로 설정
-                firePoint = robotGun.Find("firePoint");  // RobotGun의 자식에 있는 firePoint를 찾기
-                if (firePoint == null)
-                {
-                    Debug.LogWarning("firePoint not found in RobotGun");
-                }
-            }
-            else
-            {
-                Debug.LogWarning("RobotGun not found in SentryRobot");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("SentryRobot not found in the scene");
-        }
     }
 
     void Update()
     {
-        RotateTowardsPlayer(); // 상반신만 플레이어 쪽으로 회전
+        if (playerObject != null)
+        {
+            Transform target = playerObject.transform;  // 플레이어의 Transform을 동적으로 찾기
 
-        if (isLifted)
-        {
-            // 플레이어 위치에 맞춰 터렛을 이동
-            LiftTurret();
-        }
-        else
-        {
+            RotateTowardsPlayer(target); // 상반신만 플레이어 쪽으로 회전
+
             if (!isDying)
             {
                 // 플레이어를 감지할 레이저를 쏘는 부분
@@ -122,20 +94,11 @@ public class Turret : MonoBehaviour
         }
     }
 
-    void LiftTurret()
-    {
-        if (target != null)
-        {
-            // 플레이어에게 터렛이 들린 상태에서 플레이어 위치에 따라 이동
-            transform.position = target.position + liftOffset;
-        }
-    }
-
     void DrawLaser(Vector3 targetPosition)
     {
         if (laserLine != null)
         {
-            laserLine.enabled = true; //레이저 활성화
+            laserLine.enabled = true; // 레이저 활성화
 
             laserLine.positionCount = 2;
 
@@ -156,7 +119,7 @@ public class Turret : MonoBehaviour
         }
     }
 
-    void RotateTowardsPlayer()
+    void RotateTowardsPlayer(Transform target)
     {
         if (target != null)
         {
@@ -167,28 +130,8 @@ public class Turret : MonoBehaviour
             // 목표 회전 방향 계산 (Y축만 회전)
             Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-            // 회전 각도를 제한하기 위해 EulerAngles 사용
-            Vector3 currentRotation = targetRotation.eulerAngles;
-
-            // X와 Z축을 고정 (Y축만 회전)
-            currentRotation.x = -90f;  // X는 고정
-
-            // 목표 회전 각도와 현재 회전 각도의 차이를 구하여 제한을 적용
-            float angle = Mathf.Abs(Mathf.DeltaAngle(transform.eulerAngles.y, currentRotation.y));
-
-            // 회전 제한
-            if (angle <= maxRotationAngle)
-            {
-                // RobotGun, RobotMount, UpperBody만 회전시키기
-                RobotGun.rotation = Quaternion.Slerp(RobotGun.rotation, Quaternion.Euler(currentRotation), rotationSpeed * Time.deltaTime);
-                RobotMount.rotation = Quaternion.Slerp(RobotMount.rotation, Quaternion.Euler(currentRotation), rotationSpeed * Time.deltaTime);
-                UpperBody.rotation = Quaternion.Slerp(UpperBody.rotation, Quaternion.Euler(currentRotation), rotationSpeed * Time.deltaTime);
-            }
-            else
-            {
-                // 회전 제한을 초과하면 회전하지 않음
-                Debug.Log("Rotation restricted");
-            }
+            // 터렛 회전
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
     }
 
