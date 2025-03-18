@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +6,9 @@ using UnityEngine;
 public class PlayerStateSystem : MonoBehaviour
 {
     private PlayerController player;
+
+    // 상태 불능 코루틴
+    private Coroutine dontCoroutine;
 
     #region Animator
     public Animator animBody;
@@ -39,32 +42,54 @@ public class PlayerStateSystem : MonoBehaviour
 
     private void FixedUpdate()
     {
-        stateMachine.CurrentState.FixedUpdate();
+        if(!player.IsDeath)
+            stateMachine.CurrentState.FixedUpdate();
     }
 
     private void Update()
     {
-        stateMachine.CurrentState.Update();
+        if (!player.IsDeath)
+            stateMachine.CurrentState.Update();
+        else if(dontCoroutine == null)
+        {
+            SetTrigger("Death");
+            player.Rigid.velocity = Vector3.zero;
+            dontCoroutine = StartCoroutine(CanRestart());
+        }
+    }
+
+    private IEnumerator CanRestart()
+    {
+        float curDelay = 3f;
+        while (curDelay > 0f)
+        {
+            curDelay -= Time.deltaTime;
+            yield return null;
+        }
+
+        player.transform.position = player.SavePoint;
+        player.IsDeath = false;
+        dontCoroutine = null;
     }
 
     public void SetTrigger(string animName)
     {
         animBody.SetTrigger(animName);
         animShadow.SetTrigger(animName);
-        //animArms.SetTrigger(animName);
+        animArms.SetTrigger(animName);
     }
 
     public void SetFloat(string valueName, float value)
     {
         animBody.SetFloat(valueName, value);
         animShadow.SetFloat(valueName, value);
-        //animArms.SetFloat(valueName, value);
+        animArms.SetFloat(valueName, value);
     }
 
     public void SetBool(string boolName, bool value)
     {
         animBody.SetBool(boolName, value);
         animShadow.SetBool(boolName, value);
-        //animArms.SetBool(boolName, value);
+        animArms.SetBool(boolName, value);
     }
 }

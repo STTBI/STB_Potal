@@ -38,6 +38,10 @@ public class IKFootPlacement : MonoBehaviour
                     anim.SetIKPosition(AvatarIKGoal.LeftFoot, hitPosition);
                     anim.SetIKRotation(AvatarIKGoal.LeftFoot, Quaternion.LookRotation(transform.forward, hit.normal));
                 }
+                else
+                {
+                    weightLeftIK = 0f;
+                }
             }
             else
             {
@@ -58,6 +62,10 @@ public class IKFootPlacement : MonoBehaviour
                     hitPosition.y += DistanceToGround;
                     anim.SetIKPosition(AvatarIKGoal.RightFoot, hitPosition);
                     anim.SetIKRotation(AvatarIKGoal.RightFoot, Quaternion.LookRotation(transform.forward, hit.normal));
+                }
+                else
+                {
+                    weightLeftIK = 0f;
                 }
             }
             else

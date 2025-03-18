@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEditor.Callbacks;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,22 +16,44 @@ public class PlayerMovement : MovementHandler
     [SerializeField] private float backWalkSpeed;
     [SerializeField] private float sideWalkSpeed;
     [SerializeField] private float frontWalkSpeed;
-    [SerializeField] private float RunSpeed;
     [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpSlopeHeight;
+    [SerializeField] public Vector3 currentVelocity;
+
+
+    private Rigidbody rb;
+
+    public bool isInPortal = false;
+
     #endregion
 
     private Vector3 moveDirection;
+    private Vector3 gravity;
 
-    // «¡∑Œ∆€∆º
+    // ÌîÑÎ°úÌçºÌã∞
     public bool IsJump { get; private set; }
 
-    private void OnValidate()
+    private void Awake()
     {
         CurrentSpeed = frontWalkSpeed;
+        rb = GetComponent<Rigidbody>();
     }
 
-    // «ˆ¿Á Ω∫««µÂ ∫Ø∞Ê
+    private void FixedUpdate()
+    {
+        Vector3 currentRotation = transform.rotation.eulerAngles;
+
+        if(currentRotation.x != 0f || currentRotation.z != 0f)
+        {
+            //transform.rotation = Quaternion.Euler(0f, currentRotation.y, 0f);
+            float targetX= Mathf.LerpAngle(currentRotation.x, 0f, Time.deltaTime * 3f);
+            float targetZ= Mathf.LerpAngle(currentRotation.z, 0f, Time.deltaTime * 3f);
+
+            transform.rotation = Quaternion.Euler(targetX,currentRotation.y,targetZ);
+        }
+    }
+
+    // ÌòÑÏû¨ Ïä§ÌîºÎìú Î≥ÄÍ≤Ω
     public void ChangeSpeed()
     {
         if (Direction.y > 0f)
@@ -42,16 +66,13 @@ public class PlayerMovement : MovementHandler
 
     public bool OnMove(Rigidbody rigid)
     {
+        if(isInPortal)
+            return false;
+
         bool isGround = CheckGround();
-        bool onSlope = IsOnSlope(); // ∞ÊªÁ∏È √º≈©
+        bool onSlope = IsOnSlope(); // Í≤ΩÏÇ¨Î©¥ Ï≤¥ÌÅ¨
         moveDirection = Vector3.right * Direction.x + Vector3.forward * Direction.y;
-        moveDirection = transform.TransformDirection(moveDirection); // ∑Œƒ√ ¡¬«•ø°º≠ ø˘µÂ ¡¬«•∑Œ ∫Ø∞Ê
-        //moveDirection = (onSlope) ? AdjustDirectionToSlope(moveDirection) : moveDirection; // π˝º±∫§≈ÕπÊ«‚ : ø˘µÂπÊ«‚
-
-        // π˝º± ∫§≈Õ ∏Æ≈œ∞™¿Ã y√‡ ∆˜«‘µ«æÓº≠ ≥™ø¿±‚ø° ¡ﬂ∑¬¿ª 0¿∏∑Œ ∏∏µÈæÓ¡ÿ¥Ÿ.
-        //Vector3 gravity = (onSlope) ? Vector3.zero : Vector3.down * Mathf.Abs(rigid.velocity.y);
-        Vector3 gravity = Vector3.down * Mathf.Abs(rigid.velocity.y);
-
+        moveDirection = transform.TransformDirection(moveDirection); // Î°úÏª¨ Ï¢åÌëúÏóêÏÑú ÏõîÎìú Ï¢åÌëúÎ°ú Î≥ÄÍ≤Ω
 
         if (isGround && onSlope)
         {
@@ -62,23 +83,42 @@ public class PlayerMovement : MovementHandler
         else
         {
             rigid.useGravity = true;
-            //rigid.velocity = new Vector3(moveDirection.x * CurrentSpeed, rigid.velocity.y, moveDirection.z * CurrentSpeed);
         }
 
+        if(rigid.useGravity)
+            gravity += Vector3.down * 9.81f * Time.fixedDeltaTime;
+        
         rigid.velocity = moveDirection * CurrentSpeed + gravity;
+        currentVelocity = rigid.velocity;
         return Direction.magnitude > 0f;
+    }
+
+    public void ZeroGravity()
+    {
+        if(!isInPortal)
+            {
+                 gravity = Vector3.zero;
+            }
     }
 
     public void StopMove(Rigidbody rigid)
     {
-        rigid.velocity = Vector3.up * rigid.velocity.y;
+        if(!isInPortal)
+        {
+            rigid.velocity = Vector3.up * rigid.velocity.y;
+        }
     }
+
     public bool OnJump(Rigidbody rigid)
     {
+        if(isInPortal)
+            return false;
+
         if(IsJump)
         {
             rigid.useGravity = true;
-            rigid.AddForce(Vector3.up * (IsOnSlope() ? jumpSlopeHeight : jumpHeight), ForceMode.Impulse);
+            gravity = new Vector3(gravity.x, jumpHeight, gravity.z);
+            rigid.AddForce(gravity, ForceMode.Impulse);
             IsJump = false;
             return true;
         }
@@ -88,7 +128,7 @@ public class PlayerMovement : MovementHandler
 
     public void CanJump()
     {
-        if(CheckGround() && !IsJump)
+        if(CheckGround())
             IsJump = true;
     }
 }

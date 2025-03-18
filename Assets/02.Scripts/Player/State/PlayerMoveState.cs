@@ -26,7 +26,7 @@ public class PlayerMoveState : PlayerGroundedState
     public override void Update()
     {
         base.Update();
-        if(movement.Direction.magnitude == 0)
+        if(movement.Direction.magnitude == 0 && movement.CheckGround())
         {
             stateMachine.ChangeState(stateSystem.IdleState);
         }

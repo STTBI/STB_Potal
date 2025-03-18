@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class bullet : MonoBehaviour
 {
-    public float bulletSpeed = 5f; // ÅºÈ¯ ¼Óµµ
-    public float lifespawn = 5f; // ÅºÈ¯ ¼ö¸í
+    public float bulletSpeed = 5f; // íƒ„í™˜ ì†ë„
+    public float lifespawn = 5f; // íƒ„í™˜ ìˆ˜ëª…
 
     private void OnEnable()
     {
@@ -16,14 +16,14 @@ public class bullet : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(Vector3.forward * bulletSpeed * Time.deltaTime); //ÅºÈ¯ÀÇ Àü¹æÀ¸·Î °è¼Ó ÀÌµ¿
+        transform.Translate(Vector3.forward * bulletSpeed * Time.deltaTime); //íƒ„í™˜ì˜ ì „ë°©ìœ¼ë¡œ ê³„ì† ì´ë™
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Player"))
         {
-            UnActive(); // ÇÃ·¹ÀÌ¾î¿Í Ãæµ¹½Ã ÅºÈ¯ »èÁ¦
+            UnActive(); // í”Œë ˆì´ì–´ì™€ ì¶©ëŒì‹œ íƒ„í™˜ ì‚­ì œ
         }
     }
     void OnDisable()
