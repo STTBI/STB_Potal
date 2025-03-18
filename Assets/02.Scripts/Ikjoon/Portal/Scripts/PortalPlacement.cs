@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,7 +27,7 @@ public class PortalPlacement : MonoBehaviour
         // 
     }
 
-    private void Update()
+    /*private void Update()
     {
         if (Input.GetButtonDown("Fire1"))
         {
@@ -37,7 +37,7 @@ public class PortalPlacement : MonoBehaviour
         {
             FirePortal(1, transform.position, transform.forward, 250.0f);
         }
-    }
+    }*/
 
     private void FirePortal(int portalID, Vector3 pos, Vector3 dir, float distance)
     {

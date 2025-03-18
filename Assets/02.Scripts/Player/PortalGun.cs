@@ -19,17 +19,21 @@ public class PortalGun : MonoBehaviour
 
     private void Update()
     {
-        curDelay -= Time.deltaTime;
+        if(curDelay >= 0f)
+        {
+            curDelay -= Time.deltaTime;
+        }
+        
     }
 
     public void Fire(int portalID, Vector3 pos, Vector3 dir, float distance)
     {
-        stateSystem.SetFloat("FireDelay", curDelay);
 
         if (curDelay < 0f)
         {
-            curDelay = fireDelay;
+            stateSystem.SetTrigger("Fire");
             firePortal?.Invoke(portalID, pos, dir, distance);
+            curDelay = fireDelay;
         }
     }
 

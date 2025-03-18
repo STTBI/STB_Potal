@@ -20,8 +20,8 @@ public class MovementHandler : MonoBehaviour
     [SerializeField] private LayerMask whatIsGround;
     #endregion
 
-    // «¡∑Œ∆€∆º
-    public Vector3 Direction { get; set; }
+    // ÌîÑÎ°úÌçºÌã∞
+    public Vector2 Direction { get; set; }
     public float CurrentSpeed { get; set; }
 
     public bool CheckGround()
@@ -30,7 +30,7 @@ public class MovementHandler : MonoBehaviour
         //return Physics.CheckSphere(checkGround.position, radius, whatIsGround);
     }
 
-    // ∞ÊªÁ∏È √º≈©
+    // Í≤ΩÏÇ¨Î©¥ Ï≤¥ÌÅ¨
     public bool IsOnSlope()
     {
         Ray ray = new Ray(checkGround.position, Vector3.down);
@@ -43,7 +43,7 @@ public class MovementHandler : MonoBehaviour
         return false;
     }
 
-    // πÊ«‚ ∫§≈Õ √ﬂ√‚
+    // Î∞©Ìñ• Î≤°ÌÑ∞ Ï∂îÏ∂ú
     public Vector3 AdjustDirectionToSlope(Vector3 direction)
     {
         return Vector3.ProjectOnPlane(direction, slopeHit.normal).normalized;

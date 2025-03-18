@@ -16,7 +16,6 @@ public class PlayerMovement : MovementHandler
     [SerializeField] private float backWalkSpeed;
     [SerializeField] private float sideWalkSpeed;
     [SerializeField] private float frontWalkSpeed;
-    [SerializeField] private float RunSpeed;
     [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpSlopeHeight;
     [SerializeField] public Vector3 currentVelocity;
@@ -31,7 +30,7 @@ public class PlayerMovement : MovementHandler
     private Vector3 moveDirection;
     private Vector3 gravity;
 
-    // ÇÁ·ÎÆÛÆ¼
+    // í”„ë¡œí¼í‹°
     public bool IsJump { get; private set; }
 
     private void OnValidate()
@@ -58,7 +57,7 @@ public class PlayerMovement : MovementHandler
         }
     }
 
-    // ÇöÀç ½ºÇÇµå º¯°æ
+    // í˜„ì¬ ìŠ¤í”¼ë“œ ë³€ê²½
     public void ChangeSpeed()
     {
         if (Direction.y > 0f)
@@ -75,9 +74,9 @@ public class PlayerMovement : MovementHandler
             return false;
 
         bool isGround = CheckGround();
-        bool onSlope = IsOnSlope(); // °æ»ç¸é Ã¼Å©
+        bool onSlope = IsOnSlope(); // ê²½ì‚¬ë©´ ì²´í¬
         moveDirection = Vector3.right * Direction.x + Vector3.forward * Direction.y;
-        moveDirection = transform.TransformDirection(moveDirection); // ·ÎÄÃ ÁÂÇ¥¿¡¼­ ¿ùµå ÁÂÇ¥·Î º¯°æ
+        moveDirection = transform.TransformDirection(moveDirection); // ë¡œì»¬ ì¢Œí‘œì—ì„œ ì›”ë“œ ì¢Œí‘œë¡œ ë³€ê²½
 
         if (isGround && onSlope)
         {

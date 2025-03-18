@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -34,7 +34,6 @@ public class PlayerState
 
     public virtual void Enter()
     {
-
     }
 
     public virtual void FixedUpdate()
@@ -45,11 +44,6 @@ public class PlayerState
     public virtual void Update()
     {
         stateTimer -= Time.deltaTime;
-
-        if(Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            stateSystem.SetTrigger("Fire");
-        }
 
         if (!movement.CheckGround())
             rigid.useGravity = true;
@@ -63,6 +57,5 @@ public class PlayerState
 
     public virtual void Exit()
     {
-
     }
 }
