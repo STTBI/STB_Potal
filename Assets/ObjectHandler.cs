@@ -15,6 +15,8 @@ public class ObjectHandler : MonoBehaviour
     public bool isWalkInPortal = false;
 
     public bool isGrab = false;
+
+    public LayerMask layerMask;
     
 
     private Ray ray;
@@ -22,10 +24,10 @@ public class ObjectHandler : MonoBehaviour
     void Update()
     {
         RaycastHit hit;
-        int layerMask = ~LayerMask.GetMask("Portal"); // "PortalLayer"를 제외한 모든 레이어 감지
+        int layerMaskWithIgnore = ~layerMask;
 
         ray = new Ray(transform.position, transform.forward);
-        if (Physics.Raycast(ray, out hit, rayDistance, layerMask)) // 특정 레이어 무시
+        if (Physics.Raycast(ray, out hit, rayDistance, layerMaskWithIgnore)) // 특정 레이어 무시
         {
             if (hit.collider.CompareTag(selectedTag))
             {

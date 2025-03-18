@@ -21,6 +21,9 @@ public class PlayerMovement : MovementHandler
     [SerializeField] private float jumpSlopeHeight;
     [SerializeField] public Vector3 currentVelocity;
 
+    [Header("Velocity Limits")]
+    [SerializeField] private float ySpeedMax = 25f;
+
 
     private Rigidbody rb;
 
@@ -47,16 +50,46 @@ public class PlayerMovement : MovementHandler
     private void FixedUpdate()
     {
         Vector3 currentRotation = transform.rotation.eulerAngles;
-    
-        if(currentRotation.x != 0f || currentRotation.z != 0f)
-        {
-            //transform.rotation = Quaternion.Euler(0f, currentRotation.y, 0f);
-            float targetX= Mathf.LerpAngle(currentRotation.x, 0f, Time.deltaTime * 3f);
-            float targetZ= Mathf.LerpAngle(currentRotation.z, 0f, Time.deltaTime * 3f);
 
-            transform.rotation = Quaternion.Euler(targetX,currentRotation.y,targetZ);
+        // 회전값을 int로 변환
+        int rotX = Mathf.RoundToInt(currentRotation.x);
+        int rotZ = Mathf.RoundToInt(currentRotation.z);
+
+        // X, Z 회전값이 0에 가까운지 확인 (0과의 비교)
+        if (rotX != 0 || rotZ != 0)
+        {
+            // X, Z 회전값을 0으로 부드럽게 변경
+            float targetX = Mathf.LerpAngle(currentRotation.x, 0f, Time.deltaTime * 5f);
+            float targetZ = Mathf.LerpAngle(currentRotation.z, 0f, Time.deltaTime * 5f);
+
+            // 이동 방향의 반대 방향을 나타내는 Y값 계산
+            float targetY = Mathf.Atan2(Direction.x, Direction.y) * Mathf.Rad2Deg + 180f;
+
+            transform.rotation = Quaternion.Euler(targetX, targetY, targetZ);
+        }
+
+        // 현재 속도 가져오기
+        Vector3 velocity = rb.velocity;
+
+        // Y축 속도 제한 (ySpeedMax 이하로)
+        velocity.y = Mathf.Sign(velocity.y) * Mathf.Min(Mathf.Abs(velocity.y), ySpeedMax);  // 절댓값으로 클램프
+
+        // 제한된 속도를 Rigidbody에 다시 반영
+        rb.velocity = velocity;
+
+        Debug.Log("rot");
+    }
+    void Update()
+    {
+        if(Input.GetKey(KeyCode.F))
+        {
+            Time.timeScale = 0.3f;
+        }else{
+            Time.timeScale = 1;
         }
     }
+
+
 
     // 현재 스피드 변경
     public void ChangeSpeed()
@@ -116,9 +149,7 @@ public class PlayerMovement : MovementHandler
 
     public bool OnJump(Rigidbody rigid)
     {
-        if(isInPortal)
-            return false;
-
+        
         if(IsJump)
         {
             rigid.useGravity = true;
@@ -134,6 +165,7 @@ public class PlayerMovement : MovementHandler
     public void CanJump()
     {
         if(CheckGround())
+            isInPortal = false;
             IsJump = true;
     }
 }
