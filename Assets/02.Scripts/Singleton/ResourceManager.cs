@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -13,13 +13,13 @@ public class ResourceManager : Singleton<ResourceManager>
     {
         objResources = new Dictionary<string, Object>();
 
-        // ÇÃ·¹ÀÌ¾î °¡Á®¿À±â
+        // í”Œë ˆì´ì–´ ê°€ì ¸ì˜¤ê¸°
         LoadResource<GameObject>("Prefabs", "Player");
-        //LoadAllResources<GameObject>("Prefabs\\enemy", enemy); enemyÆú´õ¾È¿¡ µé¾îÀÖ´Â ÇÁ¸®ÆéµéÀ» enemy1, enemy2, enemy3 ºÒ·¯¿Í¼­ Å°°ªÀ» °¡Áø´Ù. 
+        //LoadAllResources<GameObject>("Prefabs\\enemy", enemy); enemyí´ë”ì•ˆì— ë“¤ì–´ìˆëŠ” í”„ë¦¬í©ë“¤ì„ enemy1, enemy2, enemy3 ë¶ˆëŸ¬ì™€ì„œ í‚¤ê°’ì„ ê°€ì§„ë‹¤. 
     }
 
     /// <summary>
-    /// Object¸¦ »ó¼Ó¹ŞÀº ¸®¼Ò½ºµéÀ» ½ºÅ©¸³Æ®¿¡¼­ °¡Á®¿Ã ¼ö ÀÖ½À´Ï´Ù.
+    /// Objectë¥¼ ìƒì†ë°›ì€ ë¦¬ì†ŒìŠ¤ë“¤ì„ ìŠ¤í¬ë¦½íŠ¸ì—ì„œ ê°€ì ¸ì˜¬ ìˆ˜ ìˆìŠµë‹ˆë‹¤.
     /// </summary>
     /// <typeparam name="T">ObjectType</typeparam>
     /// <param name="key">Resource name</param>
@@ -28,20 +28,20 @@ public class ResourceManager : Singleton<ResourceManager>
     {
         if (objResources.TryGetValue(key, out var obj))
         {
-            if (obj is T t) // Å¸ÀÔº¯°æÀÌ °¡´ÉÇÏ¸é ¹İÈ¯
+            if (obj is T t) // íƒ€ì…ë³€ê²½ì´ ê°€ëŠ¥í•˜ë©´ ë°˜í™˜
                 return t as T;
         }
 
-        // Å¸ÀÔ º¯°æÇÒ ¼ö ¾ø´Ù´Â ¿¡·¯¸Ş½ÃÁö Ãâ·Â
+        // íƒ€ì… ë³€ê²½í•  ìˆ˜ ì—†ë‹¤ëŠ” ì—ëŸ¬ë©”ì‹œì§€ ì¶œë ¥
         Debug.LogError($"[ResourceManager] Resource with key '{key}' is not of type {typeof(T)}.");
         return null;
     }
 
     /// <summary>
-    /// Object¸¦ »ó¼Ó¹ŞÀº ¸®¼Ò½ºµéÀ» ºÒ·¯¿Ã ¼ö ÀÖ½À´Ï´Ù.
+    /// Objectë¥¼ ìƒì†ë°›ì€ ë¦¬ì†ŒìŠ¤ë“¤ì„ ë¶ˆëŸ¬ì˜¬ ìˆ˜ ìˆìŠµë‹ˆë‹¤.
     /// </summary>
     /// <typeparam name="T">ObjectType</typeparam>
-    /// <param name="path">°æ·Î</param>
+    /// <param name="path">ê²½ë¡œ</param>
     /// <param name="key"></param>
     public void LoadResource<T>(string path, string key) where T : Object
     {
@@ -67,7 +67,7 @@ public class ResourceManager : Singleton<ResourceManager>
         {
             if (resource != null)
             {
-                // ¡ØÀÌ¸§ ¼øÀ¸·Î Â÷·Ê´ë·Î ºÒ·¯¿Í¼­ ³Ö½À´Ï´Ù.
+                // â€»ì´ë¦„ ìˆœìœ¼ë¡œ ì°¨ë¡€ëŒ€ë¡œ ë¶ˆëŸ¬ì™€ì„œ ë„£ìŠµë‹ˆë‹¤.
                 objResources[$"{key}{numbering++}"] = resource;
             }
             else
