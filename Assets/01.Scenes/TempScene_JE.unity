@@ -7950,7 +7950,7 @@ GameObject:
   - component: {fileID: 3209270008348783965}
   m_Layer: 0
   m_Name: SentryRobot
-  m_TagString: Untagged
+  m_TagString: Handle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
