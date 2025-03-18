@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public interface ITriggerObj //í¼ì¦ ì ê¸ˆí•´ì œ ì¥ì¹˜
+public interface ITriggerObj //ÆÛÁñ Àá±İÇØÁ¦ ÀåÄ¡
 {
     public event Action OnTriggerUpdate;
     bool TriggerCheck { get; set; }
@@ -9,14 +9,14 @@ public interface ITriggerObj //í¼ì¦ ì ê¸ˆí•´ì œ ì¥ì¹˜
     void TriggerFalse();
 }
 
-public interface ICheckObj // í•˜ìœ„ í¼ì¦ ì ê¸ˆí•´ì œì¥ì¹˜ê°€ ëª¨ë‘ í•´ì œì‹œ True
+public interface ICheckObj // ÇÏÀ§ ÆÛÁñ Àá±İÇØÁ¦ÀåÄ¡°¡ ¸ğµÎ ÇØÁ¦½Ã True
 {
     bool isTrue { get; set; }
     void True();
     void False();
 }
 
-//PuzzleSystem í•˜ìœ„ ëª¨ë“  Triggerë¥¼ ê²€ì‚¬ 
+//PuzzleSystem ÇÏÀ§ ¸ğµç Trigger¸¦ °Ë»ç 
 public class TriggerCheckSystem : MonoBehaviour
 {
 
@@ -43,7 +43,7 @@ public class TriggerCheckSystem : MonoBehaviour
         triggerObject = GetComponentsInChildren<ITriggerObj>();
         checkObject = GetComponentsInChildren<ICheckObj>();
 
-        //ì´ë²¤íŠ¸ í•¨ìˆ˜ ì¶”ê°€, ITriggerObj boolë³€ìˆ˜ê°€ setë ë•Œ Invoke
+        //ÀÌº¥Æ® ÇÔ¼ö Ãß°¡, ITriggerObj boolº¯¼ö°¡ setµÉ¶§ Invoke
         foreach (var obj in triggerObject)
         {
             obj.OnTriggerUpdate += Decision;
@@ -52,7 +52,7 @@ public class TriggerCheckSystem : MonoBehaviour
 
     public void Decision()
     {
-        //ëª¨ë“  ITriggerObjê°€ Trueì¼ë•Œë§Œ AllTriggerTrueë¥¼ ì°¸ìœ¼ë¡œ
+        //¸ğµç ITriggerObj°¡ TrueÀÏ¶§¸¸ AllTriggerTrue¸¦ ÂüÀ¸·Î
         for (int i = 0; i < triggerObject.Length; i++)
         {
             if (triggerObject[i].TriggerCheck == false)
@@ -66,7 +66,7 @@ public class TriggerCheckSystem : MonoBehaviour
         IsTriggerTrue(AllTirggerTrue);
     }
 
-    //ëª¨ë“ ICheckObjì˜ True ë˜ëŠ” False í˜¸ì¶œ
+    //¸ğµçICheckObjÀÇ True ¶Ç´Â False È£Ãâ
     public void IsTriggerTrue(bool val)
     {
         for (int i = 0; i < checkObject.Length; i++)

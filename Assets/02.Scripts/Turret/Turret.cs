@@ -227,5 +227,18 @@ public class Turret : MonoBehaviour
         isLifted = false; // 터렛을 내려놓을 때
         transform.position = new Vector3(0, 1, 0); // 원래 위치로 되돌리기
     }
+
+    /*
+     코드 수정하실꺼
+    
+    FireBullet함수 아래로 변경 ObjectPool에서 Bullet을 Spawn하도록
+    void FireBullet() // 탄환 발사
+    {
+        // 발사된 탄환을 생성
+        ObjectPool.SpawnFromPool("Bullet", firePoint.position, firePoint.rotation);
+    }
+
+     */
+
 }
 

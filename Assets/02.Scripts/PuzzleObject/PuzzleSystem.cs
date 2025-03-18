@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IPuzzleObj // í•˜ìœ„ TriggerCheckSystemê°€ ëª¨ë‘ Trueì¼ ì‹œ True
+public interface IPuzzleObj  // ÇÏÀ§ TriggerCheckSystem°¡ ¸ğµÎ TrueÀÏ ½Ã True
 {
     void PuzzleTrue();
     void PuzzleFalse();
@@ -11,19 +11,19 @@ public interface IPuzzleObj // í•˜ìœ„ TriggerCheckSystemê°€ ëª¨ë‘ Trueì¼ ì‹œ T
 
 public class PuzzleSystem : MonoBehaviour
 {
-    public TriggerCheckSystem[] checkObjects; //CheckObjects ìì‹ Triggerë“¤ì´ ëª¨ë‘ í’€ë¦´ê²½ìš° True
-    public IPuzzleObj puzzleObject; // CheckObjectsë“¤ì´ Trueê°€ ë˜ë©´ í•´ê¸ˆë  í¼ì¦
+    public TriggerCheckSystem[] checkObjects; //CheckObjects ÀÚ½Ä TriggerµéÀÌ ¸ğµÎ Ç®¸±°æ¿ì True
+    public IPuzzleObj puzzleObject; // CheckObjectsµéÀÌ True°¡ µÇ¸é ÇØ±İµÉ ÆÛÁñ
 
     [SerializeField] private int TriggerObjectCount = 0;
 
-    private bool _allCheckTrue = false; //ëª¨ë“  CheckObjê°€ Trueì¼ì‹œ í¼ì¦ í•´ì œ
+    private bool _allCheckTrue = false; //¸ğµç CheckObj°¡ TrueÀÏ½Ã ÆÛÁñ ÇØÁ¦
 
     private void Start()
     {
         puzzleObject = GetComponentInChildren<IPuzzleObj>();
         checkObjects = GetComponentsInChildren<TriggerCheckSystem>();
 
-        //ì´ë²¤íŠ¸ í•¨ìˆ˜ ì¶”ê°€, TriggerCheckSystemì˜ AllTirggerTrueê°€ setë ë•Œ Invoke
+        //ÀÌº¥Æ® ÇÔ¼ö Ãß°¡, TriggerCheckSystemÀÇ AllTirggerTrue°¡ setµÉ¶§ Invoke
         foreach (var obj in checkObjects)
         {
             obj.OnPuzzleUpdate += Decision;
