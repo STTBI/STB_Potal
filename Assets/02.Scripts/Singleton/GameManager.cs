@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    public PlayerController player { get; private set; }
-
-    private void Start()
-    {
-        player = CreatePlayer();
-    }
+    public PlayerController player { get; set; }
 
     public PlayerController CreatePlayer(float x = 0f, float y = 0f, float z = 0f)
     {

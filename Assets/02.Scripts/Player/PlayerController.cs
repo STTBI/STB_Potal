@@ -45,6 +45,8 @@ public class PlayerController : MonoBehaviour
         playerInput = new PlayerInput(this);
         // 인풋 시스템 초기화
         playerInput.Initionalize();
+
+        GameManager.Instance.player = this;
     }
 
     private void OnEnable()
