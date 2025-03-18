@@ -5,8 +5,7 @@ using UnityEngine;
 public class PlayerEventTriggers : MonoBehaviour
 {
     PlayerMovement movement;
-
-    private void OnValidate()
+    private void Awake()
     {
         movement = GetComponentInParent<PlayerMovement>();
     }

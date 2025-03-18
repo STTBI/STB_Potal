@@ -33,13 +33,9 @@ public class PlayerMovement : MovementHandler
     // 프로퍼티
     public bool IsJump { get; private set; }
 
-    private void OnValidate()
-    {
-        CurrentSpeed = frontWalkSpeed;
-    }
-
     private void Awake()
     {
+        CurrentSpeed = frontWalkSpeed;
         rb = GetComponent<Rigidbody>();
     }
 

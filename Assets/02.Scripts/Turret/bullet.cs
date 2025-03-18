@@ -4,24 +4,25 @@ using UnityEngine;
 
 public class bullet : MonoBehaviour
 {
-    public float bulletSpeed = 5f; // ÅºÈ¯ ¼Óµµ
-    public float lifespawn = 5f; // ÅºÈ¯ ¼ö¸í
+    public float bulletSpeed = 5f; // íƒ„í™˜ ì†ë„
+    public float lifespawn = 5f; // íƒ„í™˜ ìˆ˜ëª…
 
     void Start()
     {
-        Destroy(gameObject, lifespawn); //ÅºÈ¯ ¹ß»ç ÈÄ ÀÏÁ¤ ½Ã°£ Áö³­ µÚ ÆÄ±«
+        Destroy(gameObject, lifespawn); //íƒ„í™˜ ë°œì‚¬ í›„ ì¼ì • ì‹œê°„ ì§€ë‚œ ë’¤ íŒŒê´´
     }
 
     void Update()
     {
-        transform.Translate(Vector3.forward * bulletSpeed * Time.deltaTime); //ÅºÈ¯ÀÇ Àü¹æÀ¸·Î °è¼Ó ÀÌµ¿
+        transform.Translate(Vector3.forward * bulletSpeed * Time.deltaTime); //íƒ„í™˜ì˜ ì „ë°©ìœ¼ë¡œ ê³„ì† ì´ë™
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.CompareTag("Player"))
         {
-            Destroy(gameObject); // ÇÃ·¹ÀÌ¾î¿Í Ãæµ¹½Ã ÅºÈ¯ »èÁ¦
+            GameManager.Instance.player.IsDeath = true;
+            Destroy(gameObject); // í”Œë ˆì´ì–´ì™€ ì¶©ëŒì‹œ íƒ„í™˜ ì‚­ì œ
         }
     }
 }
