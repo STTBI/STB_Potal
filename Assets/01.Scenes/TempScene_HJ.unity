@@ -196,6 +196,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2799107548085506454, guid: de5736ebcf60845b8afa99212b979ce7, type: 3}
+      propertyPath: boxSize.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4101313778020861826, guid: de5736ebcf60845b8afa99212b979ce7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.06
+      objectReference: {fileID: 0}
     - target: {fileID: 6875588734490081313, guid: de5736ebcf60845b8afa99212b979ce7, type: 3}
       propertyPath: m_Name
       value: PortalObjects
