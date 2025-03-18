@@ -79,18 +79,21 @@ public class Turret : MonoBehaviour
             {
                 // 플레이어를 감지할 레이저를 쏘는 부분
                 RaycastHit hit;
-                Vector3 direction = target.position - transform.position;
+                Vector3 GoalPosition = target.position;
+                GoalPosition.y = transform.position.y + 0.6f; // y값으로 레이저 높이 조정
+
+                Vector3 direction = GoalPosition - transform.position;
 
                 // 정면에서만 감지하게 각도 조절
                 float angle = Vector3.Angle(transform.forward, direction);
                 if (angle <= maxRotationAngle)
                 {
                     // 플레이어가 감지 범위 내에 있는지 확인
-                    float distance = Vector3.Distance(transform.position, target.position);
+                    float distance = Vector3.Distance(transform.position, GoalPosition);
                     if (distance <= detectionRange) // 감지 범위 내에 플레이어가 있으면
                     {
                         RotateAndFire();
-                        DrawLaser(target.position); // 레이저 그리기
+                        DrawLaser(GoalPosition); // 레이저 그리기
                     }
                     else
                     {
@@ -145,13 +148,6 @@ public class Turret : MonoBehaviour
     {
         if (isDying) return;
 
-        // 타겟을 향해 회전
-        Vector3 direction = target.position - transform.position;
-        direction.y = 0;  // y축 회전 안함
-
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
         // 발사 타이밍 확인
         if (Time.time > nextFireTime)
         {
@@ -183,7 +179,7 @@ public class Turret : MonoBehaviour
             // 회전 제한
             if (angle <= maxRotationAngle)
             {
-                // 회전 제한 이내일 경우 부드럽게 회전
+                // RobotGun, RobotMount, UpperBody만 회전시키기
                 RobotGun.rotation = Quaternion.Slerp(RobotGun.rotation, Quaternion.Euler(currentRotation), rotationSpeed * Time.deltaTime);
                 RobotMount.rotation = Quaternion.Slerp(RobotMount.rotation, Quaternion.Euler(currentRotation), rotationSpeed * Time.deltaTime);
                 UpperBody.rotation = Quaternion.Slerp(UpperBody.rotation, Quaternion.Euler(currentRotation), rotationSpeed * Time.deltaTime);
