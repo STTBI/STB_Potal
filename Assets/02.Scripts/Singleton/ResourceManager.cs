@@ -9,13 +9,12 @@ public class ResourceManager : Singleton<ResourceManager>
     // key: string, value: Prefab
     private Dictionary<string, Object> objResources;
 
-    private void OnValidate()
+    private void Start()
     {
         objResources = new Dictionary<string, Object>();
 
         // 플레이어 가져오기
         LoadResource<GameObject>("Prefabs", "Player");
-        //LoadAllResources<GameObject>("Prefabs\\enemy", enemy); enemy폴더안에 들어있는 프리펩들을 enemy1, enemy2, enemy3 불러와서 키값을 가진다. 
     }
 
     /// <summary>
