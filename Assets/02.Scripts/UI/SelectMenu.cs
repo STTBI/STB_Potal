@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System;
 
 public class SelectMenu : MonoBehaviour
 {
@@ -11,6 +13,16 @@ public class SelectMenu : MonoBehaviour
     public Button Achievements;
     public Button Quit;
 
+    public GameObject loadPanel;
+
+    public PlayerPositionManager playerPositionManager;
+
+    [SerializeField]
+    public String scene;
+    void Start()
+    {
+        playerPositionManager = FindObjectOfType<PlayerPositionManager>();
+    }
     private void OnValidate()
     {
         NewGame = transform.Find("NewGame").GetComponent<Button>();
@@ -22,8 +34,8 @@ public class SelectMenu : MonoBehaviour
 
     public void OnNewGameButton()
     {
-        //바로 게임 씬 이동?
-        //아니면 단계 선택할 수 있도록?
+        playerPositionManager.ResetPlayerPosition();
+        SceneManager.LoadScene(scene);
     }
 
     public void OnLoadGameButton()
@@ -32,7 +44,8 @@ public class SelectMenu : MonoBehaviour
 
         //근데 슬롯 컨트롤러도 있어야 할 것 같음
         //목록이 비어있으면 Empty 를 띄워준다던가...
-        //
+        SceneManager.LoadScene(scene);
+        
     }
 
     public void OnOptionButton()
