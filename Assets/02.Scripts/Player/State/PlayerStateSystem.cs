@@ -28,11 +28,13 @@ public class PlayerStateSystem : MonoBehaviour
         player = GetComponent<PlayerController>();
         stateMachine = new StateMachine();
 
+
         #region State
         IdleState = new PlayerIdleState(player, stateMachine, "Idle");
         MoveState = new PlayerMoveState(player, stateMachine, "Move");
         AirState = new PlayerAirState(player, stateMachine, "IsJump");
         #endregion
+        player.SavePoint = PlayerPositionManager.Instance.playerPosition;
     }
 
     private void Start()

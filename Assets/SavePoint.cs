@@ -19,6 +19,8 @@ public class SavePoint : MonoBehaviour
                 playerPositionManager.SavePlayerPosition();  // 위치 저장
                 isSaved = true;  // 저장된 상태로 변경
                 Debug.Log(saveMessage);  // 저장된 메시지 출력
+
+                GameManager.Instance.player.SavePoint = PlayerPositionManager.Instance.playerPosition;
             }
         }
     }
