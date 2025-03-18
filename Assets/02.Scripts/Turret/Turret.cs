@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
+    public Vector3 GoalPosition;
     public Transform RobotGun; // 에셋 총구
     public Transform RobotMount; // 에셋 연결부
     public Transform UpperBody; // 에셋 상반신
@@ -44,14 +45,17 @@ public class Turret : MonoBehaviour
         if (playerObject != null)
         {
             Transform target = playerObject.transform;  // 플레이어의 Transform을 동적으로 찾기
-
-            RotateTowardsPlayer(target); // 상반신만 플레이어 쪽으로 회전
-
-            if (!isDying)
+            Debug.Log($"playerObject {playerObject.IsDeath}");
+            Debug.Log($"Turret {isDying}");
+            // 플레이어가 죽지 않았고, 터렛이 죽지 않은 경우
+            if (!isDying)  // 플레이어가 죽었는지를 체크
             {
+                if (playerObject.IsDeath) return;
+                RotateTowardsPlayer(target); // 상반신만 플레이어 쪽으로 회전
+
                 // 플레이어를 감지할 레이저를 쏘는 부분
                 RaycastHit hit;
-                Vector3 GoalPosition = target.position;
+                GoalPosition = target.position;
                 GoalPosition.y = transform.position.y + 0.6f; // y값으로 레이저 높이 조정
 
                 Vector3 direction = GoalPosition - transform.position;
@@ -69,28 +73,35 @@ public class Turret : MonoBehaviour
                     }
                     else
                     {
-                        laserLine.enabled = false; // 플레이어 감지 못하면 레이저x
+                        laserLine.enabled = false; // 플레이어 감지 못하면 레이저 끄기
                     }
                 }
                 else
                 {
-                    laserLine.enabled = false; // 정해진 각도 외에 플레이어 감지x
+                    laserLine.enabled = false; // 정해진 각도 외에 플레이어 감지 못함
                 }
             }
             else
             {
-                dyingTimer -= Time.deltaTime;
+                // 플레이어가 죽으면 레이저 끄기
+                laserLine.enabled = false;
 
+                // 죽은 상태에서 타이머가 다 끝나면 터렛이 죽은 상태로 처리
+                dyingTimer -= Time.deltaTime;
                 if (dyingTimer <= 0f)
                 {
                     RotateAndFire(); // 죽기 직전까지 공격 
-                    DrawLaser(target.position);
                 }
                 else
                 {
                     StopTurret(); // 터렛 중지
                 }
             }
+        }
+        else
+        {
+            // 플레이어 오브젝트가 없다면 레이저 끄기
+            laserLine.enabled = false;
         }
     }
 
@@ -141,9 +152,24 @@ public class Turret : MonoBehaviour
         ObjectPool.SpawnFromPool("Bullet", firePoint.position, firePoint.rotation); // ObjectPool에서 Bullet을 Spawn하도록
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Rigidbody rb = GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.AddForce(Vector3.up * 5f, ForceMode.Impulse);  // 힘 조절
+                rb.AddTorque(Vector3.right * 1f, ForceMode.Impulse); // 회전력 조절
+            }
+
+            isDying = true; // 터렛 중지
+        }
+    }
+
     public void StopTurret()
     {
-        isDying = false;
+        isDying = true;
         nextFireTime = Mathf.Infinity;
         laserLine.enabled = false; // 레이저 비활성화
     }
