@@ -95,7 +95,7 @@ public class Portal : MonoBehaviour
         obj.IsInPortal = false;
         ObjectHandler objectHandler = other.GetComponent<ObjectHandler>();
         PlayerMovement cameraMove = other.GetComponent<PlayerMovement>();
-        cameraMove.isInPortal = false;
+        //cameraMove.isInPortal = false;
         if(objectHandler != null)
         {
             objectHandler.isWalkInPortal = false;

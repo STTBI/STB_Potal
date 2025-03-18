@@ -27,7 +27,7 @@ public class PlayerAirState : PlayerState
     {
         base.Update();
 
-        if (movement.CheckGround())
+        if (movement.CheckGround() && !movement.isInPortal)
         {
             stateSystem.SetFloat("VerticalY", 0f);
             rigid.velocity = Vector3.zero;

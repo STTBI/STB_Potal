@@ -47,7 +47,7 @@ public class PlayerMovement : MovementHandler
     private void FixedUpdate()
     {
         Vector3 currentRotation = transform.rotation.eulerAngles;
-
+    
         if(currentRotation.x != 0f || currentRotation.z != 0f)
         {
             //transform.rotation = Quaternion.Euler(0f, currentRotation.y, 0f);
