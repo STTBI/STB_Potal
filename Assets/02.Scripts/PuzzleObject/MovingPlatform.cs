@@ -111,7 +111,8 @@ public class MovingPlatform : MonoBehaviour, IPuzzleObj
     {
         if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Obstacle"))
         {
-            collision.gameObject.transform.parent = transform;
+            collision.gameObject.transform.SetParent(transform);
+       
         }
     }
     private void OnCollisionExit(Collision collision)
@@ -119,6 +120,7 @@ public class MovingPlatform : MonoBehaviour, IPuzzleObj
         if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Obstacle"))
         {
             collision.gameObject.transform.parent = null;
+     
         }
     }
 
