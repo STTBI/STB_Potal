@@ -8,7 +8,7 @@ using UnityEngine;
 public class TriggerableButton : MonoBehaviour, ITriggerObject
 {
     [SerializeField] private Animator buttonAnim;
-    private static readonly int IsPressed = Animator.StringToHash("IsPressed"); // ¹Ì¸® ÇØ½Ã °ª ÀúÀå
+    private static readonly int IsPressed = Animator.StringToHash("IsPressed"); // ë¯¸ë¦¬ í•´ì‹œ ê°’ ì €ì¥
 
     private bool check;
     public bool TriggerCheck
@@ -41,12 +41,12 @@ public class TriggerableButton : MonoBehaviour, ITriggerObject
         switch(collider.gameObject.tag)
         {
             case "Player":
-                Debug.Log("Player¿Í Ãæµ¹ÇÔ");
+                Debug.Log("Playerì™€ ì¶©ëŒí•¨");
                 TriggerCheck = true;
                 break;
 
             case "Obstacle":
-                Debug.Log("Obstacle¿Í Ãæµ¹ÇÔ");
+                Debug.Log("Obstacleì™€ ì¶©ëŒí•¨");
                 TriggerCheck = true;
                 break;
         }
@@ -57,15 +57,17 @@ public class TriggerableButton : MonoBehaviour, ITriggerObject
         switch (collider.gameObject.tag)
         {
             case "Player":
-                Debug.Log("Player ¶³¾îÁü");
+                Debug.Log("Player ë–¨ì–´ì§");
                 TriggerCheck = false;
                 break;
             case "Obstacle":
-                Debug.Log("Obstacle ¶³¾îÁü");
+                Debug.Log("Obstacle ë–¨ì–´ì§");
                 TriggerCheck = false;
                 break;
         }
     }
+
+
 
     public void Enter()
     {    

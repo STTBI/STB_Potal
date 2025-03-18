@@ -18,13 +18,15 @@ public class PortalPlacement : MonoBehaviour
 
     private PlayerCameraControl cameraMove;
 
-    
-    private void Awake()
+
+    private void Start()
     {
-        //portalGun = GameManager.Instance.player.CurrentGun;
+        portalGun = GameManager.Instance.player.CurrentGun;
         cameraMove = GetComponentInParent<PlayerCameraControl>();
-        //portalGun.firePortal = FirePortal;
-        // 
+        portalGun.firePortal = FirePortal;
+
+        int a = 3;
+        Debug.Log("Awake 들어옴");
     }
 
     /*private void Update()
