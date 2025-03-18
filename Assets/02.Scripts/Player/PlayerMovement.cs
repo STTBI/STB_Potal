@@ -76,8 +76,6 @@ public class PlayerMovement : MovementHandler
 
         // 제한된 속도를 Rigidbody에 다시 반영
         rb.velocity = velocity;
-
-        Debug.Log("rot");
     }
     void Update()
     {
