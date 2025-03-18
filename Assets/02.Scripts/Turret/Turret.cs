@@ -5,104 +5,76 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour
 {
-    public Transform target;  // ÇÃ·¹ÀÌ¾î
-    public Transform RobotGun; // ¿¡¼Â ÃÑ±¸
-    public Transform RobotMount; // ¿¡¼Â ¿¬°áºÎ
-    public Transform UpperBody; // ¿¡¼Â »ó¹İ½Å
-    public Transform RigBodyLower; // ¿¡¼Â ÇÏ¹İ½Å
-    public float detectionRange = 10f;  // °¨Áö ¹üÀ§
-    public float rotationSpeed = 5f;  // È¸Àü ¼Óµµ
-    public GameObject bulletPrefab;  // ¹ß»çÇÒ ÅºÈ¯ ÇÁ¸®ÆÕ
-    public Transform firePoint;  // ÅºÈ¯ ¹ß»ç À§Ä¡
-    public float fireRate = 1f;  // ¹ß»ç °£°İ
+    public Transform RobotGun; // ì—ì…‹ ì´êµ¬
+    public Transform RobotMount; // ì—ì…‹ ì—°ê²°ë¶€
+    public Transform UpperBody; // ì—ì…‹ ìƒë°˜ì‹ 
+    public Transform RigBodyLower; // ì—ì…‹ í•˜ë°˜ì‹ 
+    public float detectionRange = 10f;  // ê°ì§€ ë²”ìœ„
+    public float rotationSpeed = 5f;  // íšŒì „ ì†ë„
+    public GameObject bulletPrefab;  // ë°œì‚¬í•  íƒ„í™˜ í”„ë¦¬íŒ¹
+    public Transform firePoint;  // íƒ„í™˜ ë°œì‚¬ ìœ„ì¹˜
+    public float fireRate = 1f;  // ë°œì‚¬ ê°„ê²©
     private float nextFireTime = 0f;
 
-    private bool isDying = false; // ÅÍ·¿ÀÌ Á×±â Á÷ÀüÀÎÁö ¿©ºÎ
-    private float dyingTimer = 3f; // ÅÍ·¿ÀÌ Á×±â Á÷Àü Å¸ÀÌ¸Ó
+    private bool isDying = false; // í„°ë ›ì´ ì£½ê¸° ì§ì „ì¸ì§€ ì—¬ë¶€
+    private float dyingTimer = 3f; // í„°ë ›ì´ ì£½ê¸° ì§ì „ íƒ€ì´ë¨¸
 
-    private LineRenderer laserLine; // ·¹ÀÌÀú¸¦ ³ªÅ¸³»´Â ¶óÀÎ·£´õ·¯
+    private LineRenderer laserLine; // ë ˆì´ì €ë¥¼ ë‚˜íƒ€ë‚´ëŠ” ë¼ì¸ëœë”ëŸ¬
 
-    public float maxRotationAngle = 30f; // ÅÍ·¿ÀÌ È¸ÀüÇÒ ¼ö ÀÖ´Â ÃÖ´ë °¢µµ
+    public float maxRotationAngle = 30f; // í„°ë ›ì´ íšŒì „í•  ìˆ˜ ìˆëŠ” ìµœëŒ€ ê°ë„
 
-    private bool isLifted = false; // ÇÃ·¹ÀÌ¾î°¡ ÅÍ·¿À» µé¾ú´ÂÁö ¿©ºÎ
-    private Vector3 liftOffset = new Vector3(0, 3f, 0); // ÅÍ·¿ÀÌ ÇÃ·¹ÀÌ¾î¿¡°Ô µé¸± ¶§
+    private bool isLifted = false; // í”Œë ˆì´ì–´ê°€ í„°ë ›ì„ ë“¤ì—ˆëŠ”ì§€ ì—¬ë¶€
+    private Vector3 liftOffset = new Vector3(0, 3f, 0); // í„°ë ›ì´ í”Œë ˆì´ì–´ì—ê²Œ ë“¤ë¦´ ë•Œ
+
+    private PlayerController playerObject;
 
     void Start()
     {
+        playerObject = GameManager.Instance.player;
         laserLine = firePoint.GetComponent<LineRenderer>();
-        laserLine.startWidth = 0.01f;  // ·¹ÀÌÀú Å©±â
+        laserLine.startWidth = 0.01f;  // ë ˆì´ì € í¬ê¸°
         laserLine.endWidth = 0.02f;
-        laserLine.material = new Material(Shader.Find("Sprites/Default")); // ·¹ÀÌÀú »ö»ó
+        laserLine.material = new Material(Shader.Find("Sprites/Default")); // ë ˆì´ì € ìƒ‰ìƒ
         laserLine.startColor = Color.white;
         laserLine.endColor = Color.red;
-
-        // ÇÃ·¹ÀÌ¾î ÅÂ±×·Î Ã£±â
-        GameObject player = GameObject.FindWithTag("Player");
-
-        // SentryRobot¿¡¼­ RobotGunÀ» Ã£°í, RobotGunÀÇ ÀÚ½ÄÀ¸·Î ÀÖ´Â firePoint¸¦ ÇÒ´ç
-        GameObject sentryRobot = GameObject.Find("SentryRobot");
-        if (sentryRobot != null)
-        {
-            Transform robotGun = sentryRobot.transform.Find("Rig_Body_Upper/RobotGun");
-            if (robotGun != null)
-            {
-                // RobotGunÀÇ ÀÚ½ÄÀ¸·Î firePoint°¡ ÀÖÀ¸¹Ç·Î, ±× ÀÚ½Ä TransformÀ» firePoint·Î ¼³Á¤
-                firePoint = robotGun.Find("firePoint");  // RobotGunÀÇ ÀÚ½Ä¿¡ ÀÖ´Â firePoint¸¦ Ã£±â
-                if (firePoint == null)
-                {
-                    Debug.LogWarning("firePoint not found in RobotGun");
-                }
-            }
-            else
-            {
-                Debug.LogWarning("RobotGun not found in SentryRobot");
-            }
-        }
-        else
-        {
-            Debug.LogWarning("SentryRobot not found in the scene");
-        }
     }
 
     void Update()
     {
-        RotateTowardsPlayer(); // »ó¹İ½Å¸¸ ÇÃ·¹ÀÌ¾î ÂÊÀ¸·Î È¸Àü
+        if (playerObject != null)
+        {
+            Transform target = playerObject.transform;  // í”Œë ˆì´ì–´ì˜ Transformì„ ë™ì ìœ¼ë¡œ ì°¾ê¸°
 
-        if (isLifted)
-        {
-            // ÇÃ·¹ÀÌ¾î À§Ä¡¿¡ ¸ÂÃç ÅÍ·¿À» ÀÌµ¿
-            LiftTurret();
-        }
-        else
-        {
+            RotateTowardsPlayer(target); // ìƒë°˜ì‹ ë§Œ í”Œë ˆì´ì–´ ìª½ìœ¼ë¡œ íšŒì „
+
             if (!isDying)
             {
-                // ÇÃ·¹ÀÌ¾î¸¦ °¨ÁöÇÒ ·¹ÀÌÀú¸¦ ½î´Â ºÎºĞ
+                // í”Œë ˆì´ì–´ë¥¼ ê°ì§€í•  ë ˆì´ì €ë¥¼ ì˜ëŠ” ë¶€ë¶„
                 RaycastHit hit;
                 Vector3 GoalPosition = target.position;
-                GoalPosition.y = transform.position.y + 0.6f; // y°ªÀ¸·Î ·¹ÀÌÀú ³ôÀÌ Á¶Á¤
+                GoalPosition.y = transform.position.y + 0.6f; // yê°’ìœ¼ë¡œ ë ˆì´ì € ë†’ì´ ì¡°ì •
 
                 Vector3 direction = GoalPosition - transform.position;
 
-                // Á¤¸é¿¡¼­¸¸ °¨ÁöÇÏ°Ô °¢µµ Á¶Àı
+                // ì •ë©´ì—ì„œë§Œ ê°ì§€í•˜ê²Œ ê°ë„ ì¡°ì ˆ
                 float angle = Vector3.Angle(transform.forward, direction);
                 if (angle <= maxRotationAngle)
                 {
-                    // ÇÃ·¹ÀÌ¾î°¡ °¨Áö ¹üÀ§ ³»¿¡ ÀÖ´ÂÁö È®ÀÎ
+                    // í”Œë ˆì´ì–´ê°€ ê°ì§€ ë²”ìœ„ ë‚´ì— ìˆëŠ”ì§€ í™•ì¸
                     float distance = Vector3.Distance(transform.position, GoalPosition);
-                    if (distance <= detectionRange) // °¨Áö ¹üÀ§ ³»¿¡ ÇÃ·¹ÀÌ¾î°¡ ÀÖÀ¸¸é
+                    if (distance <= detectionRange) // ê°ì§€ ë²”ìœ„ ë‚´ì— í”Œë ˆì´ì–´ê°€ ìˆìœ¼ë©´
                     {
                         RotateAndFire();
-                        DrawLaser(GoalPosition); // ·¹ÀÌÀú ±×¸®±â
+                        DrawLaser(GoalPosition); // ë ˆì´ì € ê·¸ë¦¬ê¸°
                     }
                     else
                     {
-                        laserLine.enabled = false; // ÇÃ·¹ÀÌ¾î °¨Áö ¸øÇÏ¸é ·¹ÀÌÀúx
+                        laserLine.enabled = false; // í”Œë ˆì´ì–´ ê°ì§€ ëª»í•˜ë©´ ë ˆì´ì €x
                     }
                 }
                 else
                 {
-                    laserLine.enabled = false; // Á¤ÇØÁø °¢µµ ¿Ü¿¡ ÇÃ·¹ÀÌ¾î °¨Áöx
+                    laserLine.enabled = false; // ì •í•´ì§„ ê°ë„ ì™¸ì— í”Œë ˆì´ì–´ ê°ì§€x
                 }
             }
             else
@@ -111,23 +83,14 @@ public class Turret : MonoBehaviour
 
                 if (dyingTimer <= 0f)
                 {
-                    RotateAndFire(); // Á×±â Á÷Àü±îÁö °ø°İ 
+                    RotateAndFire(); // ì£½ê¸° ì§ì „ê¹Œì§€ ê³µê²© 
                     DrawLaser(target.position);
                 }
                 else
                 {
-                    StopTurret(); // ÅÍ·¿ ÁßÁö
+                    StopTurret(); // í„°ë › ì¤‘ì§€
                 }
             }
-        }
-    }
-
-    void LiftTurret()
-    {
-        if (target != null)
-        {
-            // ÇÃ·¹ÀÌ¾î¿¡°Ô ÅÍ·¿ÀÌ µé¸° »óÅÂ¿¡¼­ ÇÃ·¹ÀÌ¾î À§Ä¡¿¡ µû¶ó ÀÌµ¿
-            transform.position = target.position + liftOffset;
         }
     }
 
@@ -135,12 +98,12 @@ public class Turret : MonoBehaviour
     {
         if (laserLine != null)
         {
-            laserLine.enabled = true; //·¹ÀÌÀú È°¼ºÈ­
+            laserLine.enabled = true; // ë ˆì´ì € í™œì„±í™”
 
             laserLine.positionCount = 2;
 
-            laserLine.SetPosition(0, firePoint.position); // ½ÃÀÛÁ¡
-            laserLine.SetPosition(1, targetPosition); // Å¸°ÙÀÇ À§Ä¡
+            laserLine.SetPosition(0, firePoint.position); // ì‹œì‘ì 
+            laserLine.SetPosition(1, targetPosition); // íƒ€ê²Ÿì˜ ìœ„ì¹˜
         }
     }
 
@@ -148,7 +111,7 @@ public class Turret : MonoBehaviour
     {
         if (isDying) return;
 
-        // ¹ß»ç Å¸ÀÌ¹Ö È®ÀÎ
+        // ë°œì‚¬ íƒ€ì´ë° í™•ì¸
         if (Time.time > nextFireTime)
         {
             FireBullet();
@@ -156,66 +119,43 @@ public class Turret : MonoBehaviour
         }
     }
 
-    void RotateTowardsPlayer()
+    void RotateTowardsPlayer(Transform target)
     {
         if (target != null)
         {
-            // ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡·Î È¸Àü ¹æÇâ °è»ê
+            // í”Œë ˆì´ì–´ì˜ ìœ„ì¹˜ë¡œ íšŒì „ ë°©í–¥ ê³„ì‚°
             Vector3 direction = target.position - transform.position;
-            direction.y = 0;  // YÃàÀ» °íÁ¤ÇÏ¿© À§¾Æ·¡ È¸Àü ¹æÁö
+            direction.y = 0;  // Yì¶•ì„ ê³ ì •í•˜ì—¬ ìœ„ì•„ë˜ íšŒì „ ë°©ì§€
 
-            // ¸ñÇ¥ È¸Àü ¹æÇâ °è»ê (YÃà¸¸ È¸Àü)
+            // ëª©í‘œ íšŒì „ ë°©í–¥ ê³„ì‚° (Yì¶•ë§Œ íšŒì „)
             Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-            // È¸Àü °¢µµ¸¦ Á¦ÇÑÇÏ±â À§ÇØ EulerAngles »ç¿ë
-            Vector3 currentRotation = targetRotation.eulerAngles;
-
-            // X¿Í ZÃàÀ» °íÁ¤ (YÃà¸¸ È¸Àü)
-            currentRotation.x = -90f;  // X´Â °íÁ¤
-
-            // ¸ñÇ¥ È¸Àü °¢µµ¿Í ÇöÀç È¸Àü °¢µµÀÇ Â÷ÀÌ¸¦ ±¸ÇÏ¿© Á¦ÇÑÀ» Àû¿ë
-            float angle = Mathf.Abs(Mathf.DeltaAngle(transform.eulerAngles.y, currentRotation.y));
-
-            // È¸Àü Á¦ÇÑ
-            if (angle <= maxRotationAngle)
-            {
-                // RobotGun, RobotMount, UpperBody¸¸ È¸Àü½ÃÅ°±â
-                RobotGun.rotation = Quaternion.Slerp(RobotGun.rotation, Quaternion.Euler(currentRotation), rotationSpeed * Time.deltaTime);
-                RobotMount.rotation = Quaternion.Slerp(RobotMount.rotation, Quaternion.Euler(currentRotation), rotationSpeed * Time.deltaTime);
-                UpperBody.rotation = Quaternion.Slerp(UpperBody.rotation, Quaternion.Euler(currentRotation), rotationSpeed * Time.deltaTime);
-            }
-            else
-            {
-                // È¸Àü Á¦ÇÑÀ» ÃÊ°úÇÏ¸é È¸ÀüÇÏÁö ¾ÊÀ½
-                Debug.Log("Rotation restricted");
-            }
+            // í„°ë › íšŒì „
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
     }
 
-    void FireBullet() // ÅºÈ¯ ¹ß»ç
+    void FireBullet() // íƒ„í™˜ ë°œì‚¬
     {
-        // ¹ß»çµÈ ÅºÈ¯À» »ı¼º
-        ObjectPool.SpawnFromPool("Bullet", firePoint.position, firePoint.rotation); // ObjectPool¿¡¼­ BulletÀ» SpawnÇÏµµ·Ï
+        // ë°œì‚¬ëœ íƒ„í™˜ì„ ìƒì„±
+        ObjectPool.SpawnFromPool("Bullet", firePoint.position, firePoint.rotation); // ObjectPoolì—ì„œ Bulletì„ Spawní•˜ë„ë¡
     }
 
     public void StopTurret()
     {
         isDying = false;
         nextFireTime = Mathf.Infinity;
-        laserLine.enabled = false; // ·¹ÀÌÀú ºñÈ°¼ºÈ­
+        laserLine.enabled = false; // ë ˆì´ì € ë¹„í™œì„±í™”
     }
 
     public void LiftTurretByPlayer()
     {
-        isLifted = true; // ÅÍ·¿ÀÌ µé¸° »óÅÂ
+        isLifted = true; // í„°ë ›ì´ ë“¤ë¦° ìƒíƒœ
     }
 
     public void DropTurret()
     {
-        isLifted = false; // ÅÍ·¿À» ³»·Á³õÀ» ¶§
-        transform.position = new Vector3(0, 1, 0); // ¿ø·¡ À§Ä¡·Î µÇµ¹¸®±â
+        isLifted = false; // í„°ë ›ì„ ë‚´ë ¤ë†“ì„ ë•Œ
+        transform.position = new Vector3(0, 1, 0); // ì›ë˜ ìœ„ì¹˜ë¡œ ë˜ëŒë¦¬ê¸°
     }
-
-
 }
-

@@ -163,7 +163,9 @@ public class PlayerMovement : MovementHandler
     public void CanJump()
     {
         if(CheckGround())
+        {
             isInPortal = false;
             IsJump = true;
+        }
     }
 }
