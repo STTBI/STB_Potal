@@ -24,7 +24,7 @@ public class PlayerMovement : MovementHandler
 
     private Rigidbody rb;
 
-    public bool isInPortal;
+    public bool isInPortal = false;
 
     #endregion
 
@@ -46,13 +46,16 @@ public class PlayerMovement : MovementHandler
 
     private void FixedUpdate()
     {
-        // Quaternion targetRotation = quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-        // rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * 5f));
-        // 현재 회전값
-    Vector3 currentRotation = transform.rotation.eulerAngles;
+        Vector3 currentRotation = transform.rotation.eulerAngles;
 
-    // 회전값을 (0, y, 0)으로 되돌림
-    transform.rotation = Quaternion.Euler(0f, currentRotation.y, 0f);
+        if(currentRotation.x != 0f || currentRotation.z != 0f)
+        {
+            //transform.rotation = Quaternion.Euler(0f, currentRotation.y, 0f);
+            float targetX= Mathf.LerpAngle(currentRotation.x, 0f, Time.deltaTime * 3f);
+            float targetZ= Mathf.LerpAngle(currentRotation.z, 0f, Time.deltaTime * 3f);
+
+            transform.rotation = Quaternion.Euler(targetX,currentRotation.y,targetZ);
+        }
     }
 
     // 현재 스피드 변경
@@ -68,6 +71,9 @@ public class PlayerMovement : MovementHandler
 
     public bool OnMove(Rigidbody rigid)
     {
+        if(isInPortal)
+            return false;
+
         bool isGround = CheckGround();
         bool onSlope = IsOnSlope(); // 경사면 체크
         moveDirection = Vector3.right * Direction.x + Vector3.forward * Direction.y;
@@ -94,16 +100,25 @@ public class PlayerMovement : MovementHandler
 
     public void ZeroGravity()
     {
-        gravity = Vector3.zero;
+        if(!isInPortal)
+            {
+                 gravity = Vector3.zero;
+            }
     }
 
     public void StopMove(Rigidbody rigid)
     {
-        rigid.velocity = Vector3.up * rigid.velocity.y;
+        if(!isInPortal)
+        {
+            rigid.velocity = Vector3.up * rigid.velocity.y;
+        }
     }
 
     public bool OnJump(Rigidbody rigid)
     {
+        if(isInPortal)
+            return false;
+
         if(IsJump)
         {
             rigid.useGravity = true;
@@ -118,7 +133,7 @@ public class PlayerMovement : MovementHandler
 
     public void CanJump()
     {
-        if(CheckGround() && !IsJump)
+        if(CheckGround())
             IsJump = true;
     }
 }

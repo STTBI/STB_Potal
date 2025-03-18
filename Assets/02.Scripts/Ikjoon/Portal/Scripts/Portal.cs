@@ -80,7 +80,7 @@ public class Portal : MonoBehaviour
                 PlayerMovement cameraMove = other.GetComponent<PlayerMovement>();
                 ObjectHandler objectHandler = other.GetComponentInChildren<ObjectHandler>();
                 objectHandler.isWalkInPortal = true;
-                if(cameraMove.currentVelocity.magnitude > 10f)
+                if(cameraMove.currentVelocity.magnitude > 7f)
                 {
                     cameraMove.isInPortal = true;
                 }
@@ -94,6 +94,8 @@ public class Portal : MonoBehaviour
         var obj = other.GetComponent<PortalableObject>();
         obj.IsInPortal = false;
         ObjectHandler objectHandler = other.GetComponent<ObjectHandler>();
+        PlayerMovement cameraMove = other.GetComponent<PlayerMovement>();
+        cameraMove.isInPortal = false;
         if(objectHandler != null)
         {
             objectHandler.isWalkInPortal = false;
