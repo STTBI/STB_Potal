@@ -34,11 +34,6 @@ public class DoorManager : MonoBehaviour
         TriggerObjectCount = triggerObject.Length;
     }
 
-    private void Update()
-    {
-        Decision();
-    }
-
     public void Decision()
     {
         for (int i = 0; i < triggerObject.Length; i++)

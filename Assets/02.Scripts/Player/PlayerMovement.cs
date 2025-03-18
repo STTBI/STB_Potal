@@ -34,7 +34,7 @@ public class PlayerMovement : MovementHandler
     private Vector3 moveDirection;
     private Vector3 gravity;
 
-    // ÇÁ·ÎÆÛÆ¼
+    // í”„ë¡œí¼í‹°
     public bool IsJump { get; private set; }
 
     private void OnValidate()
@@ -51,30 +51,30 @@ public class PlayerMovement : MovementHandler
     {
         Vector3 currentRotation = transform.rotation.eulerAngles;
 
-        // È¸Àü°ªÀ» int·Î º¯È¯
+        // íšŒì „ê°’ì„ intë¡œ ë³€í™˜
         int rotX = Mathf.RoundToInt(currentRotation.x);
         int rotZ = Mathf.RoundToInt(currentRotation.z);
 
-        // X, Z È¸Àü°ªÀÌ 0¿¡ °¡±î¿îÁö È®ÀÎ (0°úÀÇ ºñ±³)
+        // X, Z íšŒì „ê°’ì´ 0ì— ê°€ê¹Œìš´ì§€ í™•ì¸ (0ê³¼ì˜ ë¹„êµ)
         if (rotX != 0 || rotZ != 0)
         {
-            // X, Z È¸Àü°ªÀ» 0À¸·Î ºÎµå·´°Ô º¯°æ
+            // X, Z íšŒì „ê°’ì„ 0ìœ¼ë¡œ ë¶€ë“œëŸ½ê²Œ ë³€ê²½
             float targetX = Mathf.LerpAngle(currentRotation.x, 0f, Time.deltaTime * 5f);
             float targetZ = Mathf.LerpAngle(currentRotation.z, 0f, Time.deltaTime * 5f);
 
-            // ÀÌµ¿ ¹æÇâÀÇ ¹İ´ë ¹æÇâÀ» ³ªÅ¸³»´Â Y°ª °è»ê
+            // ì´ë™ ë°©í–¥ì˜ ë°˜ëŒ€ ë°©í–¥ì„ ë‚˜íƒ€ë‚´ëŠ” Yê°’ ê³„ì‚°
             float targetY = Mathf.Atan2(Direction.x, Direction.y) * Mathf.Rad2Deg + 180f;
 
             transform.rotation = Quaternion.Euler(targetX, targetY, targetZ);
         }
 
-        // ÇöÀç ¼Óµµ °¡Á®¿À±â
+        // í˜„ì¬ ì†ë„ ê°€ì ¸ì˜¤ê¸°
         Vector3 velocity = rb.velocity;
 
-        // YÃà ¼Óµµ Á¦ÇÑ (ySpeedMax ÀÌÇÏ·Î)
-        velocity.y = Mathf.Sign(velocity.y) * Mathf.Min(Mathf.Abs(velocity.y), ySpeedMax);  // Àı´ñ°ªÀ¸·Î Å¬·¥ÇÁ
+        // Yì¶• ì†ë„ ì œí•œ (ySpeedMax ì´í•˜ë¡œ)
+        velocity.y = Mathf.Sign(velocity.y) * Mathf.Min(Mathf.Abs(velocity.y), ySpeedMax);  // ì ˆëŒ“ê°’ìœ¼ë¡œ í´ë¨í”„
 
-        // Á¦ÇÑµÈ ¼Óµµ¸¦ Rigidbody¿¡ ´Ù½Ã ¹İ¿µ
+        // ì œí•œëœ ì†ë„ë¥¼ Rigidbodyì— ë‹¤ì‹œ ë°˜ì˜
         rb.velocity = velocity;
 
         Debug.Log("rot");
@@ -91,7 +91,7 @@ public class PlayerMovement : MovementHandler
 
 
 
-    // ÇöÀç ½ºÇÇµå º¯°æ
+    // í˜„ì¬ ìŠ¤í”¼ë“œ ë³€ê²½
     public void ChangeSpeed()
     {
         if (Direction.y > 0f)
@@ -108,9 +108,9 @@ public class PlayerMovement : MovementHandler
             return false;
 
         bool isGround = CheckGround();
-        bool onSlope = IsOnSlope(); // °æ»ç¸é Ã¼Å©
+        bool onSlope = IsOnSlope(); // ê²½ì‚¬ë©´ ì²´í¬
         moveDirection = Vector3.right * Direction.x + Vector3.forward * Direction.y;
-        moveDirection = transform.TransformDirection(moveDirection); // ·ÎÄÃ ÁÂÇ¥¿¡¼­ ¿ùµå ÁÂÇ¥·Î º¯°æ
+        moveDirection = transform.TransformDirection(moveDirection); // ë¡œì»¬ ì¢Œí‘œì—ì„œ ì›”ë“œ ì¢Œí‘œë¡œ ë³€ê²½
 
         if (isGround && onSlope)
         {
