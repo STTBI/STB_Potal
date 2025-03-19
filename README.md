@@ -85,16 +85,18 @@ OnCollisionEnter(): 플레이어와 충돌 시 터렛이 물리적으로 반응�
 
 
 <h3>플레이어 주요 기능</h3>
+
+
 1. PlayerStateSystem : PlayerState를 상속받은 상태들을 관리해주는 역할, stateMachine으로 상태 변경가능
 
 
 2. PlayerInput : 플레이어 입력값을 관리해주는 역할, 플레이어 컨트롤러에서 객체생성 및 초기화 작업
 
 
-3. MovementHandler : PlayerMovement가 상속받고 있으며 플레이어가 움직였을때 AdjustDirectionToSlope(Vector3 Direction)을 사용해서 경사면 바닥 방향벡터을 추출해서 경사면도 자연스러운 이동이 가능하도록 작업
+4. MovementHandler : PlayerMovement가 상속받고 있으며 플레이어가 움직였을때 AdjustDirectionToSlope(Vector3 Direction)을 사용해서 경사면 바닥 방향벡터을 추출해서 경사면도 자연스러운 이동이 가능하도록 작업
 
 
-4. IKFootPlacement : 간단한 IK이며 경사면에 올라가면 발이 위치가 변경되도록 작업
+5. IKFootPlacement : 간단한 IK이며 경사면에 올라가면 발이 위치가 변경되도록 작업
 
 
 ----
@@ -122,8 +124,11 @@ OnCollisionEnter(): 플레이어와 충돌 시 터렛이 물리적으로 반응�
 즉, 플레이어가 포탈을 탔다면 PlayerController.Cs  중력가속도 관련 로직을 땅에 닿기 전까지 중단시켜 해결
 
 
+
+
 - 플레이어
 문제 : 플레이어가 경사면에서 이동시 통통튀기는 현상
+![경사면문제](https://github.com/user-attachments/assets/99b2d423-75e4-4977-a489-401295f343a2)
 
 원인 : 플레이어는 항상 중력의 영향을 받기때문에 아무런 설정없이 방향대로 힘을 가하면 나타는 현상
 
