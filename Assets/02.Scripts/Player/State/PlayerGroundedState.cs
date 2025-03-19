@@ -27,9 +27,9 @@ public class PlayerGroundedState : PlayerState
         base.FixedUpdate();
         movement.ZeroGravity();
 
-        stateSystem.SetBool("Move", movement.OnMove(rigid));
+        stateSystem.SetBool("Move", movement.OnMove());
 
-        if (movement.OnJump(rigid))
+        if (movement.OnJump())
         {
             stateSystem.SetTrigger("Jump");
             stateMachine.ChangeState(stateSystem.AirState);

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -27,7 +27,7 @@ public class PlayerIdleState : PlayerGroundedState
     public override void Update()
     {
         base.Update();
-        movement.StopMove(rigid);
+        movement.StopMove();
 
         // 입력값이 있으면 움직임 상태 처리
         if (movement.Direction.magnitude != 0 && movement.CheckGround())
