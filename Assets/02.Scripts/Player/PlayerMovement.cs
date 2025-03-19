@@ -100,7 +100,7 @@ public class PlayerMovement : MovementHandler
             CurrentSpeed = sideWalkSpeed;
     }
 
-    public bool OnMove(Rigidbody rigid)
+    public bool OnMove()
     {
         if(isInPortal)
             return false;
@@ -114,18 +114,18 @@ public class PlayerMovement : MovementHandler
         {
             moveDirection = AdjustDirectionToSlope(moveDirection);
             gravity = Vector3.zero;
-            rigid.useGravity = false;
+            rb.useGravity = false;
         }
         else
         {
-            rigid.useGravity = true;
+            rb.useGravity = true;
         }
 
-        if(rigid.useGravity)
+        if(rb.useGravity)
             gravity += Vector3.down * 9.81f * Time.fixedDeltaTime;
         
-        rigid.velocity = moveDirection * CurrentSpeed + gravity;
-        currentVelocity = rigid.velocity;
+        rb.velocity = moveDirection * CurrentSpeed + gravity;
+        currentVelocity = rb.velocity;
         return Direction.magnitude > 0f;
     }
 
@@ -137,22 +137,22 @@ public class PlayerMovement : MovementHandler
             }
     }
 
-    public void StopMove(Rigidbody rigid)
+    public void StopMove()
     {
         if(!isInPortal)
         {
-            rigid.velocity = Vector3.up * rigid.velocity.y;
+            rb.velocity = Vector3.up * rb.velocity.y;
         }
     }
 
-    public bool OnJump(Rigidbody rigid)
+    public bool OnJump()
     {
         
         if(IsJump)
         {
-            rigid.useGravity = true;
+            rb.useGravity = true;
             gravity = new Vector3(gravity.x, jumpHeight, gravity.z);
-            rigid.AddForce(gravity, ForceMode.Impulse);
+            rb.AddForce(gravity, ForceMode.Impulse);
             IsJump = false;
             return true;
         }

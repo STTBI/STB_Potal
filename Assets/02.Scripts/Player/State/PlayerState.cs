@@ -38,7 +38,7 @@ public class PlayerState
 
     public virtual void FixedUpdate()
     {
-        movement.OnMove(rigid);
+        movement.OnMove();
     }
 
     public virtual void Update()
