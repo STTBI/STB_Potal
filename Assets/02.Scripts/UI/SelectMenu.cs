@@ -13,6 +13,8 @@ public class SelectMenu : MonoBehaviour
     public Button Achievements;
     public Button Quit;
 
+    public GameObject optionPanel;
+
     public GameObject loadPanel;
 
     public PlayerPositionManager playerPositionManager;
@@ -55,7 +57,7 @@ public class SelectMenu : MonoBehaviour
         //창모드 전체모드?
         //게임 켜보고 뭐 설정할 수 있는지 한 번 확인해보기
 
-        Option.enabled = true;
+        optionPanel.SetActive(!optionPanel.activeSelf);
     }
 
     public void OnAchievementsButton()

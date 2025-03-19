@@ -992,6 +992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f437acc03d8643e59669798733ca4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initalizePoint: {x: 2, y: 2, z: -132}
   playerPosition: {x: -1, y: 5.5, z: -83}
 --- !u!224 &75065960795491909
 RectTransform:
@@ -4468,13 +4469,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 170589513667325017}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 8664249024234309035}
+        m_TargetAssemblyTypeName: SelectMenu, Assembly-CSharp
+        m_MethodName: OnOptionButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -5109,6 +5110,7 @@ MonoBehaviour:
   Option: {fileID: 6991667766647039855}
   Achievements: {fileID: 1083373049474928734}
   Quit: {fileID: 3294121000515799059}
+  optionPanel: {fileID: 6222558584867713473}
   loadPanel: {fileID: 3522736095409769322}
   playerPositionManager: {fileID: 0}
   scene: TempScene_HJ
