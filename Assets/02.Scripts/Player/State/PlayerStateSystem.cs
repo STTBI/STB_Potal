@@ -70,7 +70,7 @@ public class PlayerStateSystem : MonoBehaviour
             yield return null;
         }
 
-        player.transform.position = player.SavePoint;
+        player.transform.localPosition = player.SavePoint;
         player.IsDeath = false;
         SetBool("IsDeath", false);
         player.CameraLook.fpsViewCamera.gameObject.SetActive(true);

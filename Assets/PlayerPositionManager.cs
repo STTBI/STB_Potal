@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class PlayerPositionManager : MonoBehaviour
 {
-    public Vector3 playerPosition = new Vector3(19f, -7.2f, -58.3f); // 기본값 설정
+    public Vector3 initalizePoint = new Vector3(2f, 2f, -132f);
+    public Vector3 playerPosition; // 기본값 설정
     private GameObject player; // Player 객체를 참조할 변수
     private bool isPlayerPositionLoaded = false; // 위치를 이미 불러왔는지 확인하는 변수
 
@@ -51,7 +52,7 @@ public class PlayerPositionManager : MonoBehaviour
     public void SavePlayerPosition()
     {
         // 현재 플레이어 위치를 저장
-        playerPosition = player.transform.position;
+        playerPosition = player.transform.localPosition;
 
         PlayerPrefs.SetFloat("PlayerPosX", playerPosition.x);
         PlayerPrefs.SetFloat("PlayerPosY", playerPosition.y);
@@ -86,7 +87,7 @@ public class PlayerPositionManager : MonoBehaviour
         PlayerPrefs.DeleteKey("PlayerPosZ");
         PlayerPrefs.Save(); // 변경 사항 저장
 
-        playerPosition = new Vector3(-1, 5.5f, -83); // 기본값으로 초기화
+        playerPosition = initalizePoint; // 기본값으로 초기화
 
         if (player != null)
         {

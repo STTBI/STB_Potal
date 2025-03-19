@@ -40,28 +40,30 @@ public class SelectMenu : MonoBehaviour
 
     public void OnLoadGameButton()
     {
-        //¼¼ÀÌºê ÆÄÀÏ ¸ñ·Ï ºÒ·¯¿À±â
+        //ì„¸ì´ë¸Œ íŒŒì¼ ëª©ë¡ ë¶ˆëŸ¬ì˜¤ê¸°
 
-        //±Ùµ¥ ½½·Ô ÄÁÆ®·Ñ·¯µµ ÀÖ¾î¾ß ÇÒ °Í °°À½
-        //¸ñ·ÏÀÌ ºñ¾îÀÖÀ¸¸é Empty ¸¦ ¶ç¿öÁØ´Ù´ø°¡...
+        //ê·¼ë° ìŠ¬ë¡¯ ì»¨íŠ¸ë¡¤ëŸ¬ë„ ìžˆì–´ì•¼ í•  ê²ƒ ê°™ìŒ
+        //ëª©ë¡ì´ ë¹„ì–´ìžˆìœ¼ë©´ Empty ë¥¼ ë„ì›Œì¤€ë‹¤ë˜ê°€...
         SceneManager.LoadScene(scene);
         
     }
 
     public void OnOptionButton()
     {
-        //¿É¼Ç¿¡¼­ ¹» ¼³Á¤ÇÒ°ÇÁö Á¤ÇØ¾ßÇÔ
-        //»ç¿îµå ³Ö´Â´Ù¸é »ç¿îµå Á¶Àý
-        //Ã¢¸ðµå ÀüÃ¼¸ðµå?
-        //°ÔÀÓ ÄÑº¸°í ¹¹ ¼³Á¤ÇÒ ¼ö ÀÖ´ÂÁö ÇÑ ¹ø È®ÀÎÇØº¸±â
+        //ì˜µì…˜ì—ì„œ ë­˜ ì„¤ì •í• ê±´ì§€ ì •í•´ì•¼í•¨
+        //ì‚¬ìš´ë“œ ë„£ëŠ”ë‹¤ë©´ ì‚¬ìš´ë“œ ì¡°ì ˆ
+        //ì°½ëª¨ë“œ ì „ì²´ëª¨ë“œ?
+        //ê²Œìž„ ì¼œë³´ê³  ë­ ì„¤ì •í•  ìˆ˜ ìžˆëŠ”ì§€ í•œ ë²ˆ í™•ì¸í•´ë³´ê¸°
+
+        Option.enabled = true;
     }
 
     public void OnAchievementsButton()
     {
-        //¾÷Àû
-        //¿øÀÛ¿¡ ÀÖ°í Ãß°¡°úÁ¦¿¡µµ ÀÖ¾î¼­ ÀÏ´Ü ¸¸µé¾î³õÀ½
-        //ÀÏ´Ü ¸Ê Å¬¸®¾î ÇÒ ¶§¸¶´Ù ÇÏ³ª¾¿ Áàµµ ±¦ÂúÀ» °Í °°À½
-        //ÀÌ°Ç ÄÁÅÙÃ÷°¡ Á» ³ª¿À¸é »óÀÇÇØ¼­ ³Ö´Â ÆíÀÌ ÁÁ¾Æº¸ÀÓ
+        //ì—…ì 
+        //ì›ìž‘ì— ìžˆê³  ì¶”ê°€ê³¼ì œì—ë„ ìžˆì–´ì„œ ì¼ë‹¨ ë§Œë“¤ì–´ë†“ìŒ
+        //ì¼ë‹¨ ë§µ í´ë¦¬ì–´ í•  ë•Œë§ˆë‹¤ í•˜ë‚˜ì”© ì¤˜ë„ ê´œì°®ì„ ê²ƒ ê°™ìŒ
+        //ì´ê±´ ì»¨í…ì¸ ê°€ ì¢€ ë‚˜ì˜¤ë©´ ìƒì˜í•´ì„œ ë„£ëŠ” íŽ¸ì´ ì¢‹ì•„ë³´ìž„
     }
 
     public void OnQuitButton()
@@ -69,7 +71,7 @@ public class SelectMenu : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-        Application.Quit(); // ¾îÇÃ¸®ÄÉÀÌ¼Ç Á¾·á
+        Application.Quit(); // ì–´í”Œë¦¬ì¼€ì´ì…˜ ì¢…ë£Œ
 #endif
     }
 
