@@ -97,6 +97,7 @@ OnCollisionEnter(): 플레이어와 충돌 시 터렛이 물리적으로 반응�
 
 
 5. IKFootPlacement : 간단한 IK이며 경사면에 올라가면 발이 위치가 변경되도록 작업
+![Image](https://github.com/user-attachments/assets/8cc9ffe1-ff09-4ede-9e2c-25dbfed7b2f4)
 
 <br>
 
