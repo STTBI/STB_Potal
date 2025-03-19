@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerPositionManager : MonoBehaviour
 {
-    public Vector3 playerPosition = new Vector3(-1, 5.5f, -83); // 기본값 설정
+    public Vector3 playerPosition = new Vector3(19f, -7.2f, -58.3f); // 기본값 설정
     private GameObject player; // Player 객체를 참조할 변수
     private bool isPlayerPositionLoaded = false; // 위치를 이미 불러왔는지 확인하는 변수
 
